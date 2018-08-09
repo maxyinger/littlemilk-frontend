@@ -1,0 +1,36 @@
+{
+  "parser" : "babel-eslint",
+  "extends" : [
+    "standard",
+    "plugin:jest/recommended"
+  ], 
+  "plugins" : [
+  	"babel",
+  	"react", 
+  	"promise",
+    "jest"
+  ],
+  "env" : {
+  	"browser" : true
+  },
+  "globals"  : {
+  	"__DEV__"  : false,
+  	"__PROD__" : false,
+  	"__TEST__" : false
+  },
+  "rules" : {
+  	"key-spacing" : ["error", {
+  		"align" : {
+  			"beforeColon" : true,
+  			"afterColon"  : true
+  		}
+  	}], 
+      "jsx-quotes" : ["error", "prefer-single"],
+      "max-len" : ["error", {
+          "code"     : 120, 
+          "tabWidth" : 2
+      }],
+      "object-curly-spacing" : ["error", "always"],
+      "comma-dangle" : "error"
+  }
+} 

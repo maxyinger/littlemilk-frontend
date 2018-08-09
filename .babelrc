@@ -1,0 +1,25 @@
+{
+  "cacheDirectory": true,
+  "plugins": [
+    "transform-class-properties",
+    "syntax-dynamic-import",
+    ["transform-runtime", {
+      "helpers": true,
+      "polyfill": false, // we polyfill needed features in src/normalize.js
+      "regenerator": true
+    }],
+    ["transform-object-rest-spread", {
+      "useBuiltIns": false //we polyfill needed features in src/normalize.js
+    }]
+  ],
+  "presets": [
+    "react",
+    ["babel-preset-env", {
+      "modules": false,
+      "targets": {
+        "ie9": true
+      },
+      "uglify": true
+    }]
+  ]
+}
