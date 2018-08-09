@@ -1,5 +1,4 @@
 {
-  "cacheDirectory": true,
   "plugins": [
     "transform-class-properties",
     "syntax-dynamic-import",
@@ -14,10 +13,10 @@
   ],
   "presets": [
     "react",
-    ["babel-preset-env", {
+    ["env", {
       "modules": false,
       "targets": {
-        "ie9": true
+        "ie": "9"
       },
       "uglify": true
     }]

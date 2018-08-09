@@ -4,11 +4,11 @@ module.exports = {
   /* The environment to use when building the project */
   env        : NODE_ENV,
   /* The full path of the projects root directory */
-  basePath   : '__dirname',
+  basePath   : __dirname,
   /* The name of the directory conatining the projects source code */
   srcDir     : 'src',
   /* The file name of the applications entry point */
-  main       : 'main',
+  main       : 'index',
   /* The name of the directory on which to put compiled assets */
   outDir     : 'dist',
   /* The base path of all the projects assets (relative to the website root) */

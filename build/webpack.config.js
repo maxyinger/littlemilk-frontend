@@ -14,7 +14,8 @@ const __TEST__ = project.env === 'test'
 const __PROD__ = project.env === 'production'
 
 const config = {
-  entry: {
+  mode  : 'development',
+  entry : {
     normalize: [
       inProjectSrc('utils/normalize')
     ],
@@ -35,6 +36,10 @@ const config = {
     ],
     extensions: ['*', '.js', '.jsx', '.json']
   },
+  externals : project.externals,
+  module    : {
+    rules: []
+  },
   plugins: [
     new webpack.DefinePlugin(Object.assign({
       'process.env': { NODE_ENV: JSON.stringify(project.env) },
@@ -49,10 +54,13 @@ const config = {
 =            JavaScript            =
 ================================== */
 config.module.rules.push({
-  test    : /\/(js|jsx)$/,
+  test    : /\.(js|jsx)$/,
   exclude : /node_modules/,
   use     : {
-    loader: 'babel-loader'
+    loader : 'babel-loader',
+    query  : {
+      cacheDirectory: true
+    }
   }
 })
 
@@ -122,7 +130,7 @@ config.module.rules.push({
 =            HTML Template            =
 ===================================== */
 config.plugins.push(new HtmlWebpackPlugin({
-  template : inProject('index.html'),
+  template : inProjectSrc('index.html'),
   inject   : true,
   minify   : {
     collapseWhitespace: true
@@ -133,6 +141,7 @@ config.plugins.push(new HtmlWebpackPlugin({
 =            Development Tools            =
 ========================================= */
 if (__DEV__) {
+  config.mode = 'development'
   config.entry.main.push(
     `webpack-hot-middleware/client?path=${config.output.publicPath}__webpack_hmr`
   )
@@ -146,6 +155,7 @@ if (__DEV__) {
 =            Bundle Splitting            =
 ======================================== */
 if (!__TEST__) {
+  config.mode = 'none'
   /**
 
     TODO:
@@ -159,6 +169,7 @@ if (!__TEST__) {
 =            Production Optimizations            =
 ================================================ */
 if (__PROD__) {
+  config.mode = 'production'
   config.optimization.minimizer.push(
     new UglifyJsPlugin({
       cache         : true,
