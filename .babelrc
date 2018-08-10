@@ -12,13 +12,40 @@
     }]
   ],
   "presets": [
-    "react",
     ["env", {
       "modules": false,
       "targets": {
         "ie": "9"
       },
       "uglify": true
-    }]
-  ]
+    }],
+    "react",
+    "jest"
+  ],
+  "env": {
+    "test" : {
+      "presets": [
+        ["env", {
+          "modules": "commonjs",
+          "useBuiltIns": "usage",
+          "debug": false
+        }],
+        "react",
+        "jest"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "transform-es2015-modules-commonjs",
+        "syntax-dynamic-import",
+        ["transform-runtime", {
+          "helpers": true,
+          "polyfill": false, // we polyfill needed features in src/normalize.js
+          "regenerator": true
+        }],
+        ["transform-object-rest-spread", {
+          "useBuiltIns": false //we polyfill needed features in src/normalize.js
+        }]
+      ]
+    }
+  }
 }
