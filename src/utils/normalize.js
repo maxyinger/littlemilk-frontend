@@ -34,5 +34,5 @@ if (typeof Promise === 'undefined') {
 // Fetch polyfill depends on a Promise implementation, so it must come after
 // the feature check / polyfill above.
 if (typeof window.fetch === 'undefined') {
-  // require('whatwg-fetch')
+  require('whatwg-fetch')
 }

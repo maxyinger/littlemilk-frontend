@@ -20,7 +20,7 @@ module.exports = {
   /* A hash map of variables and their values to expose globally */
   globals    : {},
   /* Whether to enable verbose logging */
-  verbose    : false,
+  verbose    : true,
   /* The list of modules to bundle seperately from the core application code */
   vendors    : [
     'react',

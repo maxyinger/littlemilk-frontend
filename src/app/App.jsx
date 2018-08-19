@@ -1,8 +1,14 @@
 import React from 'react'
 
+import Home from './home'
+import Contact from './contact'
+
 function App () {
   return (
-    <h1>Hello from App</h1>
+    <div>
+      <Home />
+      <Contact />
+    </div>
   )
 }
 

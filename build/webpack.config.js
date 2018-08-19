@@ -14,7 +14,7 @@ const __TEST__ = project.env === 'test'
 const __PROD__ = project.env === 'production'
 
 const config = {
-  mode  : 'development',
+  mode  : 'production',
   entry : {
     normalize: [
       inProjectSrc('utils/normalize')
@@ -25,9 +25,10 @@ const config = {
   },
   devtool : project.sourcemap ? 'source-map' : false,
   output  : {
-    path       : inProject(project.outDir),
-    filename   : __DEV__ ? '[name].bundle.js' : '[name].bundle.[chunkhash].js',
-    publicPath : project.publicPath
+    path          : inProject(project.outDir),
+    filename      : __DEV__ ? '[name].bundle.js' : '[name].bundle.[chunkhash].js',
+    chunkFilename : __DEV__ ? '[name].bundle.js' : '[name].bundle.[chunkhash].js',
+    publicPath    : project.publicPath
   },
   resolve: {
     modules: [
@@ -47,7 +48,11 @@ const config = {
       __TEST__,
       __PROD__
     }, project.globals))
-  ]
+  ],
+  optimization: {
+    minimizer   : [],
+    splitChunks : {}
+  }
 }
 
 /* ==================================
@@ -155,14 +160,15 @@ if (__DEV__) {
 =            Bundle Splitting            =
 ======================================== */
 if (!__TEST__) {
-  config.mode = 'none'
-  /**
-
-    TODO:
-    - Look into Split Chunks Plugin
-      https://webpack.js.org/plugins/split-chunks-plugin/
-
-   */
+  config.optimization.splitChunks = {
+    cacheGroups: {
+      commons: {
+        test   : /[\\/]node_modules[\\/]/,
+        name   : 'vendor',
+        chunks : 'all'
+      }
+    }
+  }
 }
 
 /* ================================================
