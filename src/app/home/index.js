@@ -1,11 +1,10 @@
 import React from 'react'
 import Loadable from 'react-loadable'
-
-const loading = () => <div>Loading...</div>
+import LoadingDefault from '../common/LoadingDefault'
 
 const Home = Loadable({
-  loader: () => import('./HomeContainer'),
-  loading
+  loader  : () => import(/* webpackChunkName: "Home" */ './HomeContainer'),
+  loading : LoadingDefault
 })
 
 export default Home

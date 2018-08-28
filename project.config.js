@@ -2,27 +2,38 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 
 module.exports = {
   /* The environment to use when building the project */
-  env        : NODE_ENV,
+  env          : NODE_ENV,
   /* The full path of the projects root directory */
-  basePath   : __dirname,
+  basePath     : __dirname,
   /* The name of the directory conatining the projects source code */
-  srcDir     : 'src',
+  srcDir       : 'src',
   /* The file name of the applications entry point */
-  main       : 'index',
+  main         : 'index',
   /* The name of the directory on which to put compiled assets */
-  outDir     : 'dist',
+  outDir       : 'dist',
   /* The base path of all the projects assets (relative to the website root) */
-  publicPath : '/',
+  publicPath   : '/',
   /* Whether to generate sourcemaps */
-  sourcemaps : true,
+  sourcemaps   : true,
   /* A hash map of the keys that the compiler should treat as external to the project */
-  externals  : {},
+  externals    : {},
   /* A hash map of variables and their values to expose globally */
-  globals    : {},
+  globals      : {},
   /* Whether to enable verbose logging */
-  verbose    : true,
+  verbose      : true,
+  /* Stats webpack outputs on compilation */
+  webpackStats : {
+    colors      : true,
+    hash        : true,
+    version     : true,
+    timings     : true,
+    entrypoints : false,
+    builtAt     : false,
+    modules     : false,
+    children    : false
+  },
   /* The list of modules to bundle seperately from the core application code */
-  vendors    : [
+  vendors: [
     'react',
     'react-dom',
     'redux',

@@ -1,25 +1,28 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './app/App'
+import createStore from './store/createStore'
 
-/* ====================================
-=            Render Setup            =
-==================================== */
+/**
+ * * Store Initialization
+ */
+const store = createStore(window.__INITIAL_STATE__)
+
+/**
+ * * Render Setup
+ */
 const MOUNT_NODE = document.getElementById('root')
 
 let render = () => {
-  ReactDOM.render(
-    <App />,
-    MOUNT_NODE
-  )
+  ReactDOM.render(<App store={store} />, MOUNT_NODE)
 }
 
-/* =========================================
-=            Development Tools            =
-========================================= */
+/**
+ * * Development Tools
+ */
 if (module.hot) {
   const renderApp = render
-  const renderError = (error) => {
+  const renderError = error => {
     const RedBox = require('redbox-react').default
 
     ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
@@ -34,11 +37,8 @@ if (module.hot) {
     }
   }
 
-  /* ----------  Setup hot module replacement  ---------- */
-  module.hot.accept([
-    './app/App'
-    // add './routes/index' once we get there
-  ], () => {
+  /** Setup HMR */
+  module.hot.accept(['./app/App'], () => {
     setImmediate(() => {
       ReactDOM.unmountComponentAtNode(MOUNT_NODE)
       render()
@@ -46,7 +46,7 @@ if (module.hot) {
   })
 }
 
-/* ==========================================
-=            Lets have some fun            =
-========================================== */
+/**
+ * * Let's have some fun
+ */
 if (!__TEST__) render()

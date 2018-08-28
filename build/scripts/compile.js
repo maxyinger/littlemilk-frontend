@@ -6,11 +6,15 @@ const logger = require('../lib/logger')
 const webpackConfig = require('../webpack.config')
 const project = require('../../project.config')
 
-const runWebpackCompiler = (webpackConfig) =>
-  new Promise((resolve, reject) => { // eslint-disable no-new
+const runWebpackCompiler = webpackConfig =>
+  new Promise((resolve, reject) => {
+    // eslint-disable no-new
     webpack(webpackConfig, (err, stats) => {
       if (err) {
-        logger.error('Webpack compiler encountered a fatal error', err.stack || err)
+        logger.error(
+          'Webpack compiler encountered a fatal error',
+          err.stack || err
+        )
         if (err.details) {
           logger.error(err.details)
         }
@@ -30,33 +34,27 @@ const runWebpackCompiler = (webpackConfig) =>
     })
   })
 
-const compile = () => Promise.resolve()
-  .then(() => logger.info('Starting compiler...'))
-  .then(() => logger.info(`Targetapplication Environment: ${chalk.bold(project.env)}`))
-  .then(() => runWebpackCompiler(webpackConfig))
-  .then((stats) => {
-    logger.info(`Copying static assets from ./public to ./${project.outDir}.`)
-    fs.copySync(
-      path.resolve(project.basePath, 'public'),
-      path.resolve(project.basePath, project.outDir)
+const compile = () =>
+  Promise.resolve()
+    .then(() => logger.info('Starting compiler...'))
+    .then(() =>
+      logger.info(`Targetapplication Environment: ${chalk.bold(project.env)}`)
     )
-    return stats
-  })
-  .then((stats) => {
-    if (project.verbose) {
-      logger.log(stats.toString({
-        colors      : true,
-        hash        : true,
-        version     : true,
-        timings     : true,
-        entrypoints : false,
-        builtAt     : false,
-        modules     : false,
-        children    : false
-      }))
-    }
-    logger.success(`Compiler finished successfully! See ./${project.outDir}.`)
-  })
-  .catch((err) => logger.error('Compiler encountered errors.', err))
+    .then(() => runWebpackCompiler(webpackConfig))
+    .then(stats => {
+      logger.info(`Copying static assets from ./public to ./${project.outDir}.`)
+      fs.copySync(
+        path.resolve(project.basePath, 'public'),
+        path.resolve(project.basePath, project.outDir)
+      )
+      return stats
+    })
+    .then(stats => {
+      if (project.verbose) {
+        logger.log(stats.toString(project.webpackStats))
+      }
+      logger.success(`Compiler finished successfully! See ./${project.outDir}.`)
+    })
+    .catch(err => logger.error('Compiler encountered errors.', err))
 
 compile()

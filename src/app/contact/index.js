@@ -4,7 +4,7 @@ import Loadable from 'react-loadable'
 const loading = () => <div>Loading...</div>
 
 const Contact = Loadable({
-  loader: () => import('./ContactContainer'),
+  loader: () => import(/* webpackChunkName: "Contact" */ './ContactContainer'),
   loading
 })
 
