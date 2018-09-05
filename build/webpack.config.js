@@ -7,7 +7,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const project = require('../project.config')
 
 const inProject = path.resolve.bind(path, project.basePath)
-const inProjectSrc = (file) => inProject(project.srcDir, file)
+const inProjectSrc = file => inProject(project.srcDir, file)
 
 const __DEV__ = project.env === 'development'
 const __TEST__ = project.env === 'test'
@@ -16,38 +16,39 @@ const __PROD__ = project.env === 'production'
 const config = {
   mode  : 'production',
   entry : {
-    normalize: [
-      inProjectSrc('utils/normalize')
-    ],
-    main: [
-      inProjectSrc(project.main)
-    ]
+    normalize : [inProjectSrc('utils/normalize')],
+    main      : [inProjectSrc(project.main)]
   },
   devtool : project.sourcemap ? 'source-map' : false,
   output  : {
     path          : inProject(project.outDir),
     filename      : __DEV__ ? '[name].bundle.js' : '[name].bundle.[chunkhash].js',
-    chunkFilename : __DEV__ ? '[name].bundle.js' : '[name].bundle.[chunkhash].js',
-    publicPath    : project.publicPath
+    chunkFilename : __DEV__
+      ? '[name].bundle.js'
+      : '[name].bundle.[chunkhash].js',
+    globalObject : 'this',
+    publicPath   : project.publicPath
   },
   resolve: {
-    modules: [
-      inProject(project.srcDir),
-      'node_modules'
-    ],
-    extensions: ['*', '.js', '.jsx', '.json']
+    modules    : [inProject(project.srcDir), 'node_modules'],
+    extensions : ['*', '.js', '.jsx', '.json']
   },
   externals : project.externals,
   module    : {
     rules: []
   },
   plugins: [
-    new webpack.DefinePlugin(Object.assign({
-      'process.env': { NODE_ENV: JSON.stringify(project.env) },
-      __DEV__,
-      __TEST__,
-      __PROD__
-    }, project.globals))
+    new webpack.DefinePlugin(
+      Object.assign(
+        {
+          'process.env': { NODE_ENV: JSON.stringify(project.env) },
+          __DEV__,
+          __TEST__,
+          __PROD__
+        },
+        project.globals
+      )
+    )
   ],
   optimization: {
     minimizer   : [],
@@ -66,6 +67,14 @@ config.module.rules.push({
     query  : {
       cacheDirectory: true
     }
+  }
+})
+
+config.module.rules.push({
+  test : /\.worker\.js$/,
+  use  : {
+    loader  : 'worker-loader',
+    options : { inline: true }
   }
 })
 
@@ -116,7 +125,7 @@ config.module.rules.push({
   ['ttf', 'application/octet-stream'],
   ['eot', 'application/vnd.ms-fontobject'],
   ['svg', 'image/svg+xml']
-].forEach((font) => {
+].forEach(font => {
   const extension = font[0]
   const mimetype = font[1]
 
@@ -134,13 +143,15 @@ config.module.rules.push({
 /* =====================================
 =            HTML Template            =
 ===================================== */
-config.plugins.push(new HtmlWebpackPlugin({
-  template : inProjectSrc('index.html'),
-  inject   : true,
-  minify   : {
-    collapseWhitespace: true
-  }
-}))
+config.plugins.push(
+  new HtmlWebpackPlugin({
+    template : inProjectSrc('index.html'),
+    inject   : true,
+    minify   : {
+      collapseWhitespace: true
+    }
+  })
+)
 
 /* =========================================
 =            Development Tools            =
@@ -148,7 +159,9 @@ config.plugins.push(new HtmlWebpackPlugin({
 if (__DEV__) {
   config.mode = 'development'
   config.entry.main.push(
-    `webpack-hot-middleware/client?path=${config.output.publicPath}__webpack_hmr`
+    `webpack-hot-middleware/client?path=${
+      config.output.publicPath
+    }__webpack_hmr`
   )
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),

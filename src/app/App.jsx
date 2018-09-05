@@ -11,24 +11,34 @@ import Home from './home'
 import Contact from './contact'
 import FourOhFour from './common/FourOhFour'
 
+/**
+ * * App Views
+ */
+import Cursor from './cursor/CursorComponent'
+
 function App ({ store }) {
   return (
     <Provider store={store}>
-      <Router>
-        <Route
-          render={({ location }) => (
-            <TransitionGroup>
-              <Transition key={location.key} timeout={1000}>
-                <Switch location={location}>
-                  <Route path="/" exact component={Home} />
-                  <Route path="/contact" component={Contact} />
-                  <Route component={FourOhFour} />
-                </Switch>
-              </Transition>
-            </TransitionGroup>
-          )}
-        />
-      </Router>
+      <div className="app">
+        <main className="routes">
+          <Router>
+            <Route
+              render={({ location }) => (
+                <TransitionGroup>
+                  <Transition key={location.key} timeout={1000}>
+                    <Switch location={location}>
+                      <Route path="/" exact component={Home} />
+                      <Route path="/contact" component={Contact} />
+                      <Route component={FourOhFour} />
+                    </Switch>
+                  </Transition>
+                </TransitionGroup>
+              )}
+            />
+          </Router>
+        </main>
+        <Cursor />
+      </div>
     </Provider>
   )
 }
