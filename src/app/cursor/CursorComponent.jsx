@@ -38,21 +38,21 @@ class CursorComponent extends Component {
     this.size(context)
 
     /** Attach event listeners */
-    this.render = everyFrame().start(() => this.cursor(context))
+    this.animationLoop = everyFrame().start(() => this.cursor(context))
     this.trackingPhysics = this.startTrackingPhysics()
     this.pointerTracker = this.startTracking(this.trackingPhysics)
     this.resize = listen(window, 'resize').start(() => this.size(context))
     this.mouseDown = listen(document, 'mousedown').start(() =>
       this.isDraggingTween()
     )
-    this.mouseup = listen(document, 'mouseup').start(() =>
+    this.mouseUp = listen(document, 'mouseup').start(() =>
       this.isNotDraggingTween()
     )
   }
 
   componentWillUnmount () {
     /** Detach event listeners */
-    this.render.stop()
+    this.animationLoop.stop()
     this.trackingPhysics.stop()
     this.pointerTracker.stop()
     this.resize.stop()
@@ -115,8 +115,6 @@ class CursorComponent extends Component {
     const { current } = this.canvas
     current.height = 2 * window.innerHeight
     current.width = 2 * window.innerWidth
-    current.style.width = '100vw'
-    current.style.height = '100vh'
     context.scale(2, 2)
   }
 
@@ -159,8 +157,8 @@ class CursorComponent extends Component {
   }
 }
 
-CursorComponent.propTypes = {
-  canDrag: PropTypes.bool.isRequired
-}
+// CursorComponent.propTypes = {
+//   canDrag: PropTypes.bool.isRequired
+// }
 
 export default CursorComponent

@@ -1,0 +1,33 @@
+/**
+ * 
+ * * Nav
+ * 
+ */
+
+.nav {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100vh / 7);
+  background-color: blue;
+}
+
+.nav-link-wrap {
+  position: absolute;
+  bottom: 0;
+
+  &:first-of-type {
+    left: calc(100vw / 14);
+  }
+
+  &:last-of-type {
+    right: calc(100vw / 14);
+  }
+}
+
+.nav-link-inner {
+  position: relative;
+  z-index: 1;
+}

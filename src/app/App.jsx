@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import PropTypes from 'prop-types'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { TransitionGroup, Transition } from 'react-transition-group'
+import './App.scss'
 
 /**
  * * Routes
@@ -12,16 +13,17 @@ import Contact from './contact'
 import FourOhFour from './common/FourOhFour'
 
 /**
- * * App Views
+ * * App Components
  */
-import Cursor from './cursor/CursorComponent'
+import CursorComponent from './cursor/CursorComponent'
+import NavComponent from './nav/NavComponent'
 
 function App ({ store }) {
   return (
     <Provider store={store}>
-      <div className="app">
-        <main className="routes">
-          <Router>
+      <Router>
+        <div className="app">
+          <div className="routes">
             <Route
               render={({ location }) => (
                 <TransitionGroup>
@@ -35,10 +37,11 @@ function App ({ store }) {
                 </TransitionGroup>
               )}
             />
-          </Router>
-        </main>
-        <Cursor />
-      </div>
+          </div>
+          <NavComponent />
+          <CursorComponent />
+        </div>
+      </Router>
     </Provider>
   )
 }
