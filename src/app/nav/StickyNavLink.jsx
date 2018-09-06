@@ -2,110 +2,140 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { value, pointer, transform, spring, physics } from 'popmotion'
-const { linearSpring, pipe } = transform
+import { value, pointer, transform, physics, listen } from 'popmotion'
+const { linearSpring, conditional } = transform
 
-const NavLinkInner = styled.span.attrs({
-  style: ({ x, y }) => ({
-    transform: `translate3d(${x}px, ${y}px, 0px)`
-  })
-})`
+/**
+ * TODO: Target range to viewport instead of pixel unit
+ * TODO: Add history.push or <Redirect /> routing on mouse down in range
+ * TODO: Migrate utility functions out of class and test them
+ * TODO: Migrate globals to config
+ */
+
+const NavLinkInner = styled.span`
   position: relative;
   display: inline-block;
 `
 
-const NavLinkTarget = styled.div`
-  position: absolute;
-  background-color: tomato;
-  height: 500px;
-  width: 500px;
-  left: 50%;
-  top: 50%;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-`
-
-const STICKY_NAV_SPRING_STRENGTH = 0.5
+const STICKY_NAV_SPRING_STRENGTH = 0.2
+const ENTER_DIST = 100
+const EXIT_DIST = 400
 
 class StickyNavLink extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      x : 0,
-      y : 0
-    }
+    this.target = React.createRef()
   }
 
   componentDidMount () {
     /** Getters|Setters */
     this.latchPoint = value({ x: 0, y: 0 }, v => {
-      this.setState({
-        x : v.x,
-        y : v.y
-      })
+      this.targetSetter(v)
     })
-
-    /** Bind event listeners */
-    this.physics = this.latchPhysics()
+    /** Set position subscribers read from */
+    this.targetPoint = this.size()
+    /**
+     * * Bind event listeners only if not active StickyNavLink
+     * */
+    this.subscribers = [
+      (this.physics = this.startSinkPhysics()),
+      (this.emitter = this.startEmmiter()),
+      (this.sinkHole = this.startSinkHole()),
+      (this.resize = this.startResize())
+    ]
   }
 
   componentWillUnmount () {
-    // this.pointer.stop()
+    this.subscribers.forEach(subscription => subscription.stop())
   }
 
-  latchPhysics = () => {
-    return physics({
-      velocity       : this.latchPoint.getVelocity(),
-      friction       : 0.85,
-      springStrength : 150,
-      to             : this.latchPoint.get(),
-      restSpeed      : false
-    }).start(this.latchPoint)
+  targetSetter = ({ x, y }) => {
+    this.target.current.firstElementChild.style.transform = `translate3d(${x}px, ${y}px, 0px)`
   }
 
-  latch = e => {
-    /** Exit if its the active link */
-    const parent = e.target.parentElement
-    if (parent.classList.contains('active')) return
+  mappedPointer = () => {
+    return pointer().pipe(v => ({
+      x : v.x - this.targetPoint.x,
+      y : v.y - this.targetPoint.y
+    }))
+  }
 
-    console.log('latched')
+  size = () => {
+    /**
+     * * Establish offset relative to target.
+     * * client - offset = dist from target
+     */
+    const targetRect = this.target.current.getBoundingClientRect()
+    return {
+      x : targetRect.left + targetRect.width / 2,
+      y : targetRect.top + targetRect.height / 2
+    }
+  }
 
-    /** Find position inside the target */
-    const targetBoundingRect = e.target.getBoundingClientRect()
-    let x = e.pageX - targetBoundingRect.left
-    let y = e.pageY - targetBoundingRect.top
-    /** Translate to make {0, 0} at center instead of top left */
-    x -= targetBoundingRect.width / 2
-    y -= targetBoundingRect.height / 2
+  startResize = () => {
+    return listen(window, 'resize').start(
+      () => (this.targetPoint = this.size())
+    )
+  }
 
-    this.pointer = pointer({ x, y })
-      .pipe(v => ({
-        x : linearSpring(STICKY_NAV_SPRING_STRENGTH, 0)(v.x),
-        y : linearSpring(STICKY_NAV_SPRING_STRENGTH, 0)(v.y)
-      }))
+  startEmmiter = () => {
+    return this.mappedPointer()
+      .pipe(this.dist)
+      .start(distFromTarget => {
+        /** Cant be sticky if active */
+        const parent = this.target.current.parentElement
+        if (parent.classList.contains('active')) return
+        if (
+          distFromTarget < ENTER_DIST &&
+          this.props.index !== this.props.sticky
+        ) {
+          this.props.makeSticky(this.props.index, this.targetPoint)
+        }
+        if (
+          distFromTarget > EXIT_DIST &&
+          this.props.sticky === this.props.index
+        ) {
+          this.props.breakSticky()
+        }
+      })
+  }
+
+  startSinkHole = () => {
+    return this.mappedPointer()
+      .pipe(
+        conditional(
+          () => this.props.index === this.props.sticky,
+          v => ({
+            x : linearSpring(STICKY_NAV_SPRING_STRENGTH, 0)(v.x),
+            y : linearSpring(STICKY_NAV_SPRING_STRENGTH, 0)(v.y)
+          })
+        ),
+        conditional(
+          () => this.props.index !== this.props.sticky,
+          () => ({ x: 0, y: 0 })
+        )
+      )
       .start(v => {
         this.physics.setSpringTarget(v)
       })
   }
 
-  unlatch = e => {
-    const parent = e.target.parentElement
-    if (parent.classList.contains('active')) return
+  dist = ({ x, y }) => {
+    const abs = { x: Math.abs(x), y: Math.abs(y) }
+    return Math.sqrt(abs.x * abs.x + abs.y * abs.y)
+  }
 
-    console.log('unlatched')
-
-    if (this.pointer) this.pointer.stop()
-
-    spring({
-      from     : this.latchPoint.get(),
-      velocity : this.latchPoint.getVelocity(),
-      to       : { x: 0, y: 0 }
+  startSinkPhysics = () => {
+    return physics({
+      velocity       : this.latchPoint.getVelocity(),
+      friction       : 0.925,
+      springStrength : 280,
+      to             : this.latchPoint.get(),
+      restSpeed      : false
     }).start(this.latchPoint)
   }
 
   render () {
-    // const { x, y } = this.stickyPoint
-    const { x, y } = this.state
     return (
       <NavLink
         exact={this.props.exact}
@@ -113,25 +143,24 @@ class StickyNavLink extends Component {
         className="link"
         activeClassName="active"
       >
-        <NavLinkTarget
-          className="nav-link-target"
-          onMouseEnter={this.latch}
-          onMouseLeave={this.unlatch}
-        />
-        <NavLinkInner x={x} y={y}>
-          {this.props.children}
-        </NavLinkInner>
+        <span ref={this.target}>
+          <NavLinkInner ref={this.test} x={0} y={0}>
+            {this.props.children}
+          </NavLinkInner>
+        </span>
       </NavLink>
     )
   }
 }
 
 StickyNavLink.propTypes = {
-  to       : PropTypes.string.isRequired,
-  exact    : PropTypes.bool.isRequired,
-  // startSticky : PropTypes.func.isRequired,
-  // stopSticky  : PropTypes.func.isRequired,
-  children : PropTypes.node.isRequired
+  to          : PropTypes.string.isRequired,
+  exact       : PropTypes.bool.isRequired,
+  index       : PropTypes.number.isRequired,
+  makeSticky  : PropTypes.func.isRequired,
+  breakSticky : PropTypes.func.isRequired,
+  sticky      : PropTypes.number.isRequired,
+  children    : PropTypes.node.isRequired
 }
 
 export default StickyNavLink

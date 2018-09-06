@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux'
-/**
- * import reducers from routes
- * ex.
- * import homeReducer from ''./@app/home/duck
- */
+import appReducer from '../app/duck'
 
 const rootReducer = combineReducers({
-  // home : homeReducer
+  app: appReducer
 })
 
 export default rootReducer

@@ -12,6 +12,14 @@ import { circle, triangle } from './CursorUtils'
 import PropTypes from 'prop-types'
 import './Cursor.scss'
 
+/**
+ * TODO: Disable mouse down transition when canDrag off
+ * TODO: Add constrain motion when app is sticky
+ * TODO: Page transition
+ * TODO: Migrate utility functions out of class and test them
+ * TODO: Migrate globals to config
+ */
+
 const DOWN_RADIUS = 15
 const DOWN_TRIANGLE_OFFSET = 5
 const TRIANGLE_SIZE = 3

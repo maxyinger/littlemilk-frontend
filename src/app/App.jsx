@@ -16,7 +16,7 @@ import FourOhFour from './common/FourOhFour'
  * * App Components
  */
 import CursorComponent from './cursor/CursorComponent'
-import NavComponent from './nav/NavComponent'
+import NavContainer from './nav/NavContainer'
 
 function App ({ store }) {
   return (
@@ -38,7 +38,7 @@ function App ({ store }) {
               )}
             />
           </div>
-          <NavComponent />
+          <NavContainer />
           <CursorComponent />
         </div>
       </Router>
