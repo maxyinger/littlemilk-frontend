@@ -5,12 +5,12 @@ import createStore from './store/createStore'
 import './index.scss'
 
 /**
- * * Store Initialization
+ * *Store Initialization
  */
 const store = createStore(window.__INITIAL_STATE__)
 
 /**
- * * Render Setup
+ * *Render Setup
  */
 const MOUNT_NODE = document.getElementById('root')
 
@@ -19,7 +19,7 @@ let render = () => {
 }
 
 /**
- * * Development Tools
+ * *Development Tools
  */
 if (module.hot) {
   const renderApp = render
@@ -48,6 +48,6 @@ if (module.hot) {
 }
 
 /**
- * * Let's have some fun
+ * *Let's have some fun
  */
 if (!__TEST__) render()

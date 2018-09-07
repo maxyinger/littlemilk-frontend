@@ -2,24 +2,23 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { value, pointer, transform, physics, listen } from 'popmotion'
+import { value, pointer, transform, listen } from 'popmotion'
+import physics from '../common/physics'
+import transforms from '../../utils/transforms'
+import config from './Nav.config'
 const { linearSpring, conditional } = transform
 
 /**
  * TODO: Target range to viewport instead of pixel unit
  * TODO: Add history.push or <Redirect /> routing on mouse down in range
  * TODO: Migrate utility functions out of class and test them
- * TODO: Migrate globals to config
+ * //TODO: Migrate globals to config
  */
 
 const NavLinkInner = styled.span`
   position: relative;
   display: inline-block;
 `
-
-const STICKY_NAV_SPRING_STRENGTH = 0.2
-const ENTER_DIST = 100
-const EXIT_DIST = 400
 
 class StickyNavLink extends Component {
   constructor (props) {
@@ -28,17 +27,21 @@ class StickyNavLink extends Component {
   }
 
   componentDidMount () {
-    /** Getters|Setters */
+    /**
+     *  Getters|Setters
+     */
     this.latchPoint = value({ x: 0, y: 0 }, v => {
-      this.targetSetter(v)
+      this.setter(v)
     })
-    /** Set position subscribers read from */
+    /**
+     * Set position subscribers read from
+     */
     this.targetPoint = this.size()
     /**
-     * * Bind event listeners only if not active StickyNavLink
-     * */
+     * Bind event listeners
+     */
     this.subscribers = [
-      (this.physics = this.startSinkPhysics()),
+      (this.physics = physics.nav(this.latchPoint)),
       (this.emitter = this.startEmmiter()),
       (this.sinkHole = this.startSinkHole()),
       (this.resize = this.startResize())
@@ -49,15 +52,8 @@ class StickyNavLink extends Component {
     this.subscribers.forEach(subscription => subscription.stop())
   }
 
-  targetSetter = ({ x, y }) => {
+  setter = ({ x, y }) => {
     this.target.current.firstElementChild.style.transform = `translate3d(${x}px, ${y}px, 0px)`
-  }
-
-  mappedPointer = () => {
-    return pointer().pipe(v => ({
-      x : v.x - this.targetPoint.x,
-      y : v.y - this.targetPoint.y
-    }))
   }
 
   size = () => {
@@ -72,6 +68,13 @@ class StickyNavLink extends Component {
     }
   }
 
+  mappedPointer = () => {
+    return pointer().pipe(v => ({
+      x : v.x - this.targetPoint.x,
+      y : v.y - this.targetPoint.y
+    }))
+  }
+
   startResize = () => {
     return listen(window, 'resize').start(
       () => (this.targetPoint = this.size())
@@ -80,19 +83,19 @@ class StickyNavLink extends Component {
 
   startEmmiter = () => {
     return this.mappedPointer()
-      .pipe(this.dist)
+      .pipe(transforms.dist)
       .start(distFromTarget => {
         /** Cant be sticky if active */
         const parent = this.target.current.parentElement
         if (parent.classList.contains('active')) return
         if (
-          distFromTarget < ENTER_DIST &&
+          distFromTarget < config.enterDist &&
           this.props.index !== this.props.sticky
         ) {
           this.props.makeSticky(this.props.index, this.targetPoint)
         }
         if (
-          distFromTarget > EXIT_DIST &&
+          distFromTarget > config.exitDist &&
           this.props.sticky === this.props.index
         ) {
           this.props.breakSticky()
@@ -106,8 +109,8 @@ class StickyNavLink extends Component {
         conditional(
           () => this.props.index === this.props.sticky,
           v => ({
-            x : linearSpring(STICKY_NAV_SPRING_STRENGTH, 0)(v.x),
-            y : linearSpring(STICKY_NAV_SPRING_STRENGTH, 0)(v.y)
+            x : linearSpring(config.springStrength, 0)(v.x),
+            y : linearSpring(config.springStrength, 0)(v.y)
           })
         ),
         conditional(
@@ -118,21 +121,6 @@ class StickyNavLink extends Component {
       .start(v => {
         this.physics.setSpringTarget(v)
       })
-  }
-
-  dist = ({ x, y }) => {
-    const abs = { x: Math.abs(x), y: Math.abs(y) }
-    return Math.sqrt(abs.x * abs.x + abs.y * abs.y)
-  }
-
-  startSinkPhysics = () => {
-    return physics({
-      velocity       : this.latchPoint.getVelocity(),
-      friction       : 0.925,
-      springStrength : 280,
-      to             : this.latchPoint.get(),
-      restSpeed      : false
-    }).start(this.latchPoint)
   }
 
   render () {
