@@ -1,6 +1,6 @@
 import types from './types'
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   sticky      : -1,
   stickyPoint : {
     x : null,
@@ -25,8 +25,12 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case types.BREAK_STICKY: {
       return {
         ...state,
-        sticky  : -1,
-        canDrag : true
+        sticky      : -1,
+        canDrag     : true,
+        stickyPoint : {
+          x : null,
+          y : null
+        }
       }
     }
 
