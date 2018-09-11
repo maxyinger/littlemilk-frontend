@@ -22,7 +22,7 @@ function App ({ store }) {
   return (
     <Provider store={store}>
       <Router>
-        <div className="app">
+        <React.Fragment>
           <div className="routes">
             <Route
               render={({ location }) => (
@@ -40,7 +40,7 @@ function App ({ store }) {
           </div>
           <NavContainer />
           <CursorComponent />
-        </div>
+        </React.Fragment>
       </Router>
     </Provider>
   )

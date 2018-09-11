@@ -40,7 +40,7 @@ class CursorComponent extends Component {
      */
     this.subscribers = [
       (this.animationLoop = everyFrame().start(() => this.cursor(context))),
-      (this.physics = physics.cursor(this.position)),
+      (this.physics = physics(this.position)),
       (this.pointer = this.startTracking()),
       (this.resize = listen(window, 'resize').start(() => this.size(context))),
       (this.mouseDown = listen(document, 'mousedown').start(() =>

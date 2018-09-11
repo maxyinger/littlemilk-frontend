@@ -1,5 +1,5 @@
 import React from 'react'
-import StickyNavLink from './StickyNavLink'
+import StickyNavLink from './StickyNavLinkComponent'
 import PropTypes from 'prop-types'
 import './Nav.scss'
 
