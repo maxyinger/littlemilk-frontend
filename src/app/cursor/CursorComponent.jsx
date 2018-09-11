@@ -24,7 +24,10 @@ class CursorComponent extends Component {
     /**
      * Attach getters|setters
      */
-    this.position = value({ x: event.clientX, y: event.clientY })
+    this.position = value({
+      x : (window.innerWidth / 7) * 6,
+      y : (window.innerHeight / 7) * 5 + config.default.radius * 2
+    })
     this.stroke = value({ start: 0, end: 100 })
     this.radius = value(config.default.radius)
     this.upDownOffset = value(config.default.arrowOffset)
@@ -43,13 +46,17 @@ class CursorComponent extends Component {
       (this.physics = physics(this.position)),
       (this.pointer = this.startTracking()),
       (this.resize = listen(window, 'resize').start(() => this.size(context))),
-      (this.mouseDown = listen(document, 'mousedown').start(() =>
-        this.isDraggingTween()
-      )),
+      (this.mouseDown = listen(document, 'mousedown').start(() => {
+        if (this.props.canDrag) {
+          this.isDraggingTween()
+        }
+      })),
       (this.mouseUp = listen(document, 'mouseup').start(() =>
         this.isNotDraggingTween()
       ))
     ]
+
+    listen(window, 'mousemove').start(e => console.log(e.target))
   }
 
   componentWillUnmount () {
@@ -91,9 +98,7 @@ class CursorComponent extends Component {
   }
 
   startTracking = () => {
-    return pointer(this.position.get()).start(v =>
-      this.physics.setSpringTarget(v)
-    )
+    return pointer().start(v => this.physics.setSpringTarget(v))
   }
 
   size = context => {
@@ -146,11 +151,12 @@ class CursorComponent extends Component {
   }
 }
 
-// CursorComponent.propTypes = {
-//   canDrag: PropTypes.bool.isRequired
-// }
 CursorComponent.propTypes = {
-  canDrag: PropTypes.bool.isRequired
+  canDrag     : PropTypes.bool.isRequired,
+  stickyPoint : PropTypes.shape({
+    x : PropTypes.number,
+    y : PropTypes.number
+  }).isRequired
 }
 
 export default CursorComponent

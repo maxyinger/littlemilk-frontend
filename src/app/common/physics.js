@@ -22,26 +22,3 @@ const physics = (
   }).start(rx)
 
 export default physics
-
-// const nav = value =>
-//   physics({
-//     velocity       : value.getVelocity(),
-//     friction       : 0.925,
-//     springStrength : 280,
-//     to             : value.get(),
-//     restSpeed      : false
-//   }).start(value)
-
-// const cursor = value =>
-//   physics({
-//     velocity       : value.getVelocity(),
-//     friction       : 0.85,
-//     springStrength : 150,
-//     to             : value.get(),
-//     restSpeed      : false
-//   }).start(value)
-
-// export default {
-//   cursor,
-//   nav
-// }

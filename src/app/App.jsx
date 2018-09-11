@@ -15,7 +15,7 @@ import FourOhFour from './common/FourOhFour'
 /**
  * * App Components
  */
-import CursorComponent from './cursor/CursorComponent'
+import CursorContainer from './cursor/CursorContainer'
 import NavContainer from './nav/NavContainer'
 
 function App ({ store }) {
@@ -39,7 +39,7 @@ function App ({ store }) {
             />
           </div>
           <NavContainer />
-          <CursorComponent />
+          <CursorContainer />
         </React.Fragment>
       </Router>
     </Provider>

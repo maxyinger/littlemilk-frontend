@@ -29,6 +29,18 @@ const NavComponent = ({ makeSticky, breakSticky, sticky }) => (
         contact
       </StickyNavLink>
     </div>
+    <div className="nav-link-wrap">
+      <StickyNavLink
+        exact={false}
+        to="/skjdnfkjsdn"
+        index={2}
+        makeSticky={makeSticky}
+        breakSticky={breakSticky}
+        sticky={sticky}
+      >
+        info
+      </StickyNavLink>
+    </div>
   </nav>
 )
 

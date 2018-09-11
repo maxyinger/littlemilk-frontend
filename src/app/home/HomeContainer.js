@@ -3,7 +3,7 @@ import React from 'react'
 function HomeContainer () {
   return (
     <div className="page">
-      <h1>Home component</h1>
+      <a href="http://www.google.com">Home component</a>
     </div>
   )
 }

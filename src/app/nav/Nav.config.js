@@ -6,13 +6,13 @@ export default {
    */
   springStrength : 0.2,
   /**
-   * Percentage of viewport within which navLink becomes sticky
+   * Pixel distance within which navLink becomes sticky
    * [0-100]
    */
-  enterDist      : 100,
+  enterDist      : 70,
   /**
    * Percentage of viewport in which navLink breaks sticky tie
    * [0-100]
    */
-  exitDist       : 400
+  exitDist       : 13
 }
