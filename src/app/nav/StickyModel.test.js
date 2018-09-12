@@ -8,7 +8,7 @@ import {
   makeEmitter,
   makeSticky,
   transformXY
-} from './StickyNavLinkModel'
+} from './StickyModel'
 
 describe('transformXY', () => {
   it('should set node.style.transform to translate3d(50px, 50px, 0px)', () => {

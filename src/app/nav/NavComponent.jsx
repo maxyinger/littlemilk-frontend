@@ -1,12 +1,12 @@
 import React from 'react'
-import StickyNavLink from './StickyNavLinkComponent'
+import StickyComponent from './StickyComponent'
 import PropTypes from 'prop-types'
 import './Nav.scss'
 
 const NavComponent = ({ makeSticky, breakSticky, sticky }) => (
   <nav className="nav">
     <div className="nav-link-wrap">
-      <StickyNavLink
+      <StickyComponent
         exact={true}
         to="/"
         index={0}
@@ -15,10 +15,10 @@ const NavComponent = ({ makeSticky, breakSticky, sticky }) => (
         sticky={sticky}
       >
         home
-      </StickyNavLink>
+      </StickyComponent>
     </div>
     <div className="nav-link-wrap">
-      <StickyNavLink
+      <StickyComponent
         exact={false}
         to="/contact"
         index={1}
@@ -27,10 +27,10 @@ const NavComponent = ({ makeSticky, breakSticky, sticky }) => (
         sticky={sticky}
       >
         contact
-      </StickyNavLink>
+      </StickyComponent>
     </div>
     <div className="nav-link-wrap">
-      <StickyNavLink
+      <StickyComponent
         exact={false}
         to="/skjdnfkjsdn"
         index={2}
@@ -39,7 +39,7 @@ const NavComponent = ({ makeSticky, breakSticky, sticky }) => (
         sticky={sticky}
       >
         info
-      </StickyNavLink>
+      </StickyComponent>
     </div>
   </nav>
 )

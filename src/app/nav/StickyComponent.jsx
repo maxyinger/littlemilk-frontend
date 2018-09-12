@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { value, pointer, listen } from 'popmotion'
-import { makeEmitter, makeSticky } from './StickyNavLinkModel'
+import { makeEmitter, makeSticky } from './StickyModel'
 import physics from '../common/physics'
 import { stopActions } from '../../utils/actionHelpers'
 import config from './Nav.config'
@@ -17,7 +17,7 @@ const NavLinkInner = styled.span`
   display: inline-block;
 `
 
-class StickyNavLink extends Component {
+class StickyComponent extends Component {
   constructor (props) {
     super(props)
     this.target = React.createRef()
@@ -49,7 +49,9 @@ class StickyNavLink extends Component {
 
   // setter :: point -> style
   positionSetter = ({ x, y }) => {
-    this.target.current.firstElementChild.style.transform = `translate3d(${x}px, ${y}px, 0px)`
+    if (this.target.current) {
+      this.target.current.firstElementChild.style.transform = `translate3d(${x}px, ${y}px, 0px)`
+    }
   }
 
   // updatePointerListeners :: bool -> _
@@ -68,12 +70,16 @@ class StickyNavLink extends Component {
 
   // Emitter :: action -> actionInstance
   Emitter = pointer => {
+    let clientRect = {}
+    if (this.target.current) {
+      clientRect = this.target.current.getBoundingClientRect()
+    }
     const emitter = makeEmitter(
       config.enterDist,
       (config.exitDist / 100) * window.innerWidth,
       this.props.index,
       this.props.sticky,
-      this.target.current.getBoundingClientRect()
+      clientRect
     )
     return pointer.pipe(emitter).start(v => {
       switch (v) {
@@ -106,6 +112,7 @@ class StickyNavLink extends Component {
   }
 
   render () {
+    // console.log(this.props.index, 'rerendered')
     return (
       <NavLink
         exact={this.props.exact}
@@ -121,14 +128,17 @@ class StickyNavLink extends Component {
   }
 }
 
-StickyNavLink.propTypes = {
+StickyComponent.propTypes = {
+  /** props for NavLink */
   to          : PropTypes.string.isRequired,
   exact       : PropTypes.bool.isRequired,
   index       : PropTypes.number.isRequired,
+  /** props from store */
   makeSticky  : PropTypes.func.isRequired,
   breakSticky : PropTypes.func.isRequired,
   sticky      : PropTypes.number.isRequired,
+  /** who doesn't love children */
   children    : PropTypes.node.isRequired
 }
 
-export default StickyNavLink
+export default StickyComponent

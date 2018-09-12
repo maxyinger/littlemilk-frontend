@@ -55,8 +55,6 @@ class CursorComponent extends Component {
         this.isNotDraggingTween()
       ))
     ]
-
-    listen(window, 'mousemove').start(e => console.log(e.target))
   }
 
   componentWillUnmount () {

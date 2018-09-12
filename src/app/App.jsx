@@ -7,7 +7,7 @@ import './App.scss'
 
 /**
  * * Routes
- * */
+ */
 import Home from './home'
 import Contact from './contact'
 import FourOhFour from './common/FourOhFour'
