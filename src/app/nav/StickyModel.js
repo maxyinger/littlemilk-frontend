@@ -1,10 +1,16 @@
 import { calc, transform } from 'popmotion'
 const { pipe, transformMap, linearSpring } = transform
 
+// makeBoundingBoxCenter :: boundingBox -> point
+export const boundingBoxCenter = boundingBox => ({
+  x : boundingBox.left + boundingBox.width / 2,
+  y : boundingBox.top + boundingBox.height / 2
+})
+
 // makeMapCursorVector :: boundingBox -> fn(point -> point)
-export const makeMapCursorVector = targetBoundingBox => cursor => ({
-  x : cursor.x - (targetBoundingBox.left + targetBoundingBox.width / 2),
-  y : cursor.y - (targetBoundingBox.top + targetBoundingBox.height / 2)
+export const makeMapCursorVector = targetCenter => cursor => ({
+  x : cursor.x - targetCenter.x,
+  y : cursor.y - targetCenter.y
 })
 
 // distFromOrigin :: point -> number
@@ -27,9 +33,9 @@ export const makeMapIsSticky = (isFirstEnter, isFirstExit) =>
   })
 
 // makeEmitter :: number, number, number, number -> emitter::fn(point -> string)
-export const makeEmitter = (enter, exit, index, sticky, targetBoundingBox) =>
+export const makeEmitter = (enter, exit, index, sticky, targetCenter) =>
   pipe(
-    makeMapCursorVector(targetBoundingBox),
+    makeMapCursorVector(targetCenter),
     distFromOrigin,
     makeMapIsSticky(
       makeIsFirstEnter(enter, index, sticky),
@@ -37,16 +43,12 @@ export const makeEmitter = (enter, exit, index, sticky, targetBoundingBox) =>
     )
   )
 
-// makeSticky :: boundingBox, number -> fn(point -> point)
-export const makeSticky = (targetBoundingBox, springStrength) =>
+// makeSticky :: point, number -> fn(point -> point)
+export const makeSticky = (targetCenter, springStrength) =>
   pipe(
-    makeMapCursorVector(targetBoundingBox),
+    makeMapCursorVector(targetCenter),
     transformMap({
       x : linearSpring(springStrength, 0),
       y : linearSpring(springStrength, 0)
     })
   )
-
-// transformXY node, point -> styledNode
-export const transformXY = (node, { x, y }) =>
-  (node.style.transform = `translate3d(${x}px, ${y}px, 0px)`)

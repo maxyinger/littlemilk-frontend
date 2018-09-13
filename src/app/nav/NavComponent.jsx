@@ -1,53 +1,24 @@
 import React from 'react'
-import StickyComponent from './StickyComponent'
-import PropTypes from 'prop-types'
+import StickyContainer from './StickyContainer'
 import './Nav.scss'
 
-const NavComponent = ({ makeSticky, breakSticky, sticky }) => (
+const NavComponent = () => (
   <nav className="nav">
     <div className="nav-link-wrap">
-      <StickyComponent
-        exact={true}
-        to="/"
-        index={0}
-        makeSticky={makeSticky}
-        breakSticky={breakSticky}
-        sticky={sticky}
-      >
+      <StickyContainer exact to="/" index={0}>
         home
-      </StickyComponent>
+      </StickyContainer>
     </div>
     <div className="nav-link-wrap">
-      <StickyComponent
-        exact={false}
-        to="/contact"
-        index={1}
-        makeSticky={makeSticky}
-        breakSticky={breakSticky}
-        sticky={sticky}
-      >
+      <StickyContainer to="/contact" index={1}>
         contact
-      </StickyComponent>
+      </StickyContainer>
     </div>
     <div className="nav-link-wrap">
-      <StickyComponent
-        exact={false}
-        to="/skjdnfkjsdn"
-        index={2}
-        makeSticky={makeSticky}
-        breakSticky={breakSticky}
-        sticky={sticky}
-      >
+      <StickyContainer to="/skjdnfkjsdn" index={2}>
         info
-      </StickyComponent>
+      </StickyContainer>
     </div>
   </nav>
 )
-
-NavComponent.propTypes = {
-  makeSticky  : PropTypes.func.isRequired,
-  breakSticky : PropTypes.func.isRequired,
-  sticky      : PropTypes.number.isRequired
-}
-
 export default NavComponent

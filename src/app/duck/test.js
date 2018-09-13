@@ -21,4 +21,30 @@ describe('App Reducer', () => {
       INITIAL_STATE
     )
   })
+
+  it('can trigger a transition', () => {
+    expect(appReducer(undefined, appActions.startTransition())).toEqual({
+      ...INITIAL_STATE,
+      isTransitioning: true
+    })
+  })
+
+  it('can trigger an endTransition after transitioning', () => {
+    const transitioningState = appReducer(
+      undefined,
+      appActions.startTransition()
+    )
+    expect(appReducer(transitioningState, appActions.endTransition())).toEqual({
+      ...INITIAL_STATE,
+      isTransitioning: false
+    })
+  })
+
+  it('after transitioning it resets to the initial state', () => {
+    let testState = appReducer(undefined, appActions.makeSticky(4, {}))
+    testState = appReducer(testState, appActions.startTransition())
+    expect(appReducer(testState, appActions.endTransition())).toEqual(
+      INITIAL_STATE
+    )
+  })
 })

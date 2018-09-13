@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
-import { value, tween, pointer, everyFrame, listen, easing } from 'popmotion'
+import {
+  value,
+  tween,
+  pointer,
+  everyFrame,
+  listen,
+  easing,
+  transform
+} from 'popmotion'
 import { circle, triangle } from './Cursor.utils'
 import config from './Cursor.config'
 import physics from '../common/physics'
+import CursorStyles from './CursorStyles'
+import { makeTween, makeSticky } from './CursorModel'
+import { stopActions, stopAction } from '../../utils/actionHelpers'
 import PropTypes from 'prop-types'
 import './Cursor.scss'
 
@@ -22,81 +33,73 @@ class CursorComponent extends Component {
 
   componentDidMount () {
     /**
-     * Attach getters|setters
+     * Values
      */
     this.position = value({
       x : (window.innerWidth / 7) * 6,
       y : (window.innerHeight / 7) * 5 + config.default.radius * 2
     })
-    this.stroke = value({ start: 0, end: 100 })
-    this.radius = value(config.default.radius)
-    this.upDownOffset = value(config.default.arrowOffset)
-    this.upDownOpacity = value(0)
-    this.rgb = value(config.default.rgb)
+    this.styles = value(CursorStyles.normal)
+
     /**
-     * Set Canvas
+     * Prepare Canvas
      */
     const context = this.canvas.current.getContext('2d')
     this.size(context)
+
     /**
-     * Attach event listeners
+     * Set Actions
      */
-    this.subscribers = [
-      (this.animationLoop = everyFrame().start(() => this.cursor(context))),
-      (this.physics = physics(this.position)),
-      (this.pointer = this.startTracking()),
-      (this.resize = listen(window, 'resize').start(() => this.size(context))),
-      (this.mouseDown = listen(document, 'mousedown').start(() => {
-        if (this.props.canDrag) {
-          this.isDraggingTween()
-        }
-      })),
-      (this.mouseUp = listen(document, 'mouseup').start(() =>
-        this.isNotDraggingTween()
-      ))
-    ]
+    this.actions = {
+      /** Draws Values to canvas */
+      animationLoop : everyFrame().start(() => this.cursor(context)),
+      /** Animate Values */
+      physics       : physics(this.position),
+      /** Client Listeners */
+      resize        : listen(window, 'resize').start(() => this.size(context)),
+      pointer       : {},
+      mouseDown     : listen(document, 'mousedown').start(this.handleMouseDown),
+      mouseUp       : listen(document, 'mouseup').start(this.handleMouseUp)
+    }
+    this.setPointerListener(false)
   }
 
   componentWillUnmount () {
-    /** Detach event listeners */
-    this.subscribers.forEach(subscription => subscription.stop())
+    stopActions(this.actions)
   }
 
-  isDraggingTween = () => {
-    return tween({
-      from: [
-        this.radius.get(),
-        this.upDownOffset.get(),
-        this.upDownOpacity.get()
-      ],
-      to   : [config.drag.radius, config.drag.arrowOffset, 1],
-      ease : easing.backOut
-    }).start(v => {
-      this.radius.update(v[0])
-      this.upDownOffset.update(v[1])
-      this.upDownOpacity.update(v[2])
-    })
+  componentDidUpdate () {
+    const { x, y } = this.props.stickyPoint
+    const isSticky = x !== null || y !== null
+    this.setPointerListener(isSticky)
+    if (isSticky) {
+      makeTween(this.styles.get(), CursorStyles.sticky).start(this.styles)
+    } else {
+      makeTween(this.styles.get(), CursorStyles.normal).start(this.styles)
+    }
   }
 
-  isNotDraggingTween = () => {
-    tween({
-      from: [
-        this.radius.get(),
-        this.upDownOffset.get(),
-        this.upDownOpacity.get()
-      ],
-      to       : [config.default.radius, config.default.arrowOffset, 0],
-      ease     : easing.circOut,
-      duration : 500
-    }).start(v => {
-      this.radius.update(v[0])
-      this.upDownOffset.update(v[1])
-      this.upDownOpacity.update(v[2])
-    })
+  setPointerListener = isSticky => {
+    stopAction(this.actions.pointer)
+    let pointerListener = pointer()
+    if (isSticky) {
+      pointerListener = pointer().pipe(
+        makeSticky(this.props.stickyPoint, config.stickySpringStrength)
+      )
+    }
+    this.actions.pointer = pointerListener.start(
+      this.actions.physics.setSpringTarget
+    )
   }
 
-  startTracking = () => {
-    return pointer().start(v => this.physics.setSpringTarget(v))
+  handleMouseDown = () => {
+    if (this.props.canDrag) {
+      makeTween(this.styles.get(), CursorStyles.drag).start(this.styles)
+    }
+  }
+
+  handleMouseUp = () => {
+    makeTween(this.styles.get(), CursorStyles.normal).start(this.styles)
   }
 
   size = context => {
@@ -114,31 +117,39 @@ class CursorComponent extends Component {
     context.clearRect(0, 0, 2 * window.innerWidth, 2 * window.innerHeight)
     /** Draw circle */
     circle(context, {
-      x      : this.position.get().x,
-      y      : this.position.get().y,
-      r      : this.radius.get(),
-      rgb    : this.rgb.get(),
-      stroke : this.stroke.get()
+      x           : this.position.get().x,
+      y           : this.position.get().y,
+      r           : this.styles.get().radius,
+      // rgb         : this.styles.get().rgb,
+      rgb         : { r: 0, g: 0, b: 0 },
+      strokeStart : this.styles.get().strokeStart,
+      strokeEnd   : this.styles.get().strokeEnd
     })
     /** Draw up triangle */
     const yUpPos =
-      this.position.get().y - this.radius.get() - this.upDownOffset.get()
+      this.position.get().y -
+      this.styles.get().radius -
+      this.styles.get().arrowOffset
     triangle(context, {
       x        : this.position.get().x,
       y        : yUpPos,
-      rgb      : this.rgb.get(),
-      opacity  : this.upDownOpacity.get(),
+      // rgb      : this.styles.get().rgb,
+      rgb      : { r: 0, g: 0, b: 0 },
+      opacity  : this.styles.get().arrowOpacity,
       size     : config.static.arrowSize,
       rotation : 0
     })
     /** Draw down triangle */
     const yDownPos =
-      this.position.get().y + this.radius.get() + this.upDownOffset.get()
+      this.position.get().y +
+      this.styles.get().radius +
+      this.styles.get().arrowOffset
     triangle(context, {
       x        : this.position.get().x,
       y        : yDownPos,
-      rgb      : this.rgb.get(),
-      opacity  : this.upDownOpacity.get(),
+      // rgb      : this.styles.get().rgb,
+      rgb      : { r: 0, g: 0, b: 0 },
+      opacity  : this.styles.get().arrowOpacity,
       size     : config.static.arrowSize,
       rotation : 180
     })

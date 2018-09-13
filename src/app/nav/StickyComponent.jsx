@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { value, pointer, listen } from 'popmotion'
-import { makeEmitter, makeSticky } from './StickyModel'
+import { makeEmitter, makeSticky, boundingBoxCenter } from './StickyModel'
 import physics from '../common/physics'
 import { stopActions } from '../../utils/actionHelpers'
 import config from './Nav.config'
@@ -15,6 +15,8 @@ import config from './Nav.config'
 const NavLinkInner = styled.span`
   position: relative;
   display: inline-block;
+  backface-visibility: hidden;
+  transform: translate3d(0px, 0px, 0px);
 `
 
 class StickyComponent extends Component {
@@ -70,16 +72,17 @@ class StickyComponent extends Component {
 
   // Emitter :: action -> actionInstance
   Emitter = pointer => {
-    let clientRect = {}
+    let targetCenter = {}
     if (this.target.current) {
-      clientRect = this.target.current.getBoundingClientRect()
+      const clientRect = this.target.current.getBoundingClientRect()
+      targetCenter = boundingBoxCenter(clientRect)
     }
     const emitter = makeEmitter(
       config.enterDist,
       (config.exitDist / 100) * window.innerWidth,
       this.props.index,
       this.props.sticky,
-      clientRect
+      targetCenter
     )
     return pointer.pipe(emitter).start(v => {
       switch (v) {
@@ -88,11 +91,7 @@ class StickyComponent extends Component {
           const target = this.target.current
           if (target.parentElement.classList.contains('active')) return
           /** otherwise emit */
-          const rect = target.getBoundingClientRect()
-          return this.props.makeSticky(this.props.index, {
-            x : rect.left + rect.width / 2,
-            y : rect.top + rect.height / 2
-          })
+          return this.props.makeSticky(this.props.index, targetCenter)
         }
 
         case 'BREAK_STICKY': {
@@ -105,7 +104,7 @@ class StickyComponent extends Component {
   // Sticky :: action -> actionInstance
   Sticky = pointer => {
     const sticky = makeSticky(
-      this.target.current.getBoundingClientRect(),
+      boundingBoxCenter(this.target.current.getBoundingClientRect()),
       config.springStrength
     )
     return pointer.pipe(sticky).start(this.actions.physics.setSpringTarget)
@@ -130,15 +129,17 @@ class StickyComponent extends Component {
 
 StickyComponent.propTypes = {
   /** props for NavLink */
-  to          : PropTypes.string.isRequired,
-  exact       : PropTypes.bool.isRequired,
-  index       : PropTypes.number.isRequired,
+  to              : PropTypes.string.isRequired,
+  exact           : PropTypes.bool,
+  index           : PropTypes.number.isRequired,
   /** props from store */
-  makeSticky  : PropTypes.func.isRequired,
-  breakSticky : PropTypes.func.isRequired,
-  sticky      : PropTypes.number.isRequired,
+  makeSticky      : PropTypes.func.isRequired,
+  breakSticky     : PropTypes.func.isRequired,
+  sticky          : PropTypes.number.isRequired,
+  startTransition : PropTypes.func.isRequired,
+  isTransitioning : PropTypes.bool.isRequired,
   /** who doesn't love children */
-  children    : PropTypes.node.isRequired
+  children        : PropTypes.node.isRequired
 }
 
 export default StickyComponent

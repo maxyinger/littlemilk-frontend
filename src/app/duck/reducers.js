@@ -34,6 +34,17 @@ const appReducer = (state = INITIAL_STATE, action) => {
       }
     }
 
+    case types.START_TRANSITION: {
+      return {
+        ...state,
+        isTransitioning: true
+      }
+    }
+
+    case types.END_TRANSITION: {
+      return INITIAL_STATE
+    }
+
     default:
       return state
   }

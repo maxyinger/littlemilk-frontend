@@ -4,14 +4,14 @@ import transforms from '../../utils/transforms'
  * @param {CanvasRenderingContext2D} ctx
  * @param {Object} config
  */
-export const circle = (ctx, { x, y, r, rgb, stroke }) => {
+export const circle = (ctx, { x, y, r, rgb, strokeStart, strokeEnd }) => {
   /**
    * Convert Input
    */
-  stroke.start %= 101
-  stroke.end %= 101
-  const start = Math.min(stroke.start, stroke.end)
-  const end = Math.max(stroke.start, stroke.end)
+  strokeStart -= 25
+  strokeEnd -= 25
+  const start = Math.min(strokeStart, strokeEnd)
+  const end = Math.max(strokeStart, strokeEnd)
   /**
    * Reset style buffer
    */

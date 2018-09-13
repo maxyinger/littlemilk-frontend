@@ -15,7 +15,7 @@ state: {
     }
     canDrag: {
       // allows page to tell cursor it can go into drag mode //
-      // true = if mousedown <o>//
+      // true = if mousedown <o>// 
       bool
     }
     noCursor: {

@@ -15,7 +15,17 @@ const breakSticky = () => ({
   type: types.BREAK_STICKY
 })
 
+const startTransition = () => ({
+  type: types.START_TRANSITION
+})
+
+const endTransition = () => ({
+  type: types.END_TRANSITION
+})
+
 export default {
   makeSticky,
-  breakSticky
+  breakSticky,
+  startTransition,
+  endTransition
 }

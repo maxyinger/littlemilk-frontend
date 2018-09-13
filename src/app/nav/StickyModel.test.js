@@ -5,30 +5,15 @@ import {
   makeIsFirstEnter,
   makeIsFirstExit,
   makeMapIsSticky,
+  boundingBoxCenter,
   makeEmitter,
-  makeSticky,
-  transformXY
+  makeSticky
 } from './StickyModel'
 
-describe('transformXY', () => {
-  it('should set node.style.transform to translate3d(50px, 50px, 0px)', () => {
-    const node = {
-      style: {
-        transform: undefined
-      }
-    }
-    const point = { x: 50, y: 50 }
-    transformXY(node, point)
-    expect(node.style.transform).toEqual('translate3d(50px, 50px, 0px)')
-  })
-})
-
 describe('makeSticky', () => {
-  const targetBoundingBox = {
-    left   : 0,
-    top    : 0,
-    height : 100,
-    width  : 100
+  const targetCenter = {
+    x : 50,
+    y : 50
   }
   const springStrength = 0.6
   const result = {
@@ -37,7 +22,7 @@ describe('makeSticky', () => {
   }
   it(`should return the point ${result}`, () => {
     expect(
-      makeSticky(targetBoundingBox, springStrength)({ x: 200, y: 200 })
+      makeSticky(targetCenter, springStrength)({ x: 200, y: 200 })
     ).toEqual(result)
   })
 })
@@ -47,34 +32,43 @@ describe('makeEmitter', () => {
   const exit = 100
   const index = 1
   const sticky = -1
-  const targetBoundingBox = {
-    left   : 0,
-    top    : 0,
-    height : 100,
-    width  : 100
+  const targetCenter = {
+    x : 50,
+    y : 50
   }
-  const emitter = makeEmitter(enter, exit, index, sticky, targetBoundingBox)
-  it('should return a function', () =>
+  const emitter = makeEmitter(enter, exit, index, sticky, targetCenter)
+  it('returns a function', () =>
     expect(emitter instanceof Function).toEqual(true))
 
-  it('should return undefined if not invoked', () =>
+  it('returns undefined if not invoked', () =>
     expect(emitter({ x: 1000, y: 1000 })).toEqual(undefined))
 
-  it('should return MAKE_STICKY when isFirstEnter -> true', () =>
+  it('returns MAKE_STICKY when isFirstEnter -> true', () =>
     expect(emitter({ x: 5, y: 5 })).toEqual('MAKE_STICKY'))
+})
+
+describe('boundingBoxCenter', () => {
+  it('returns {x: 50, y: 50} from top:0, left: 0, height: 100, width: 100 box', () => {
+    const boundingBox = {
+      top    : 0,
+      left   : 0,
+      height : 100,
+      width  : 100
+    }
+    const result = { x: 50, y: 50 }
+    expect(boundingBoxCenter(boundingBox)).toEqual(result)
+  })
 })
 
 describe('makeMapCursorVector', () => {
   it('should return a mapped point from 2 points', () => {
     const cursor = { x: 200, y: 200 }
-    const targetBoundingBox = {
-      left   : 0,
-      top    : 0,
-      height : 100,
-      width  : 100
+    const targetCenter = {
+      x : 50,
+      y : 50
     }
     const result = { x: 150, y: 150 }
-    expect(makeMapCursorVector(targetBoundingBox)(cursor)).toEqual(result)
+    expect(makeMapCursorVector(targetCenter)(cursor)).toEqual(result)
   })
 })
 

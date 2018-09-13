@@ -1,8 +1,13 @@
 import { physics as popPhysics } from 'popmotion'
 
+// const config = {
+//   friction : 0.85,
+//   strength : 150
+// }
+
 const config = {
-  friction : 0.85,
-  strength : 150
+  friction : 0.925,
+  strength : 280
 }
 
 // physics :: value, config::optional -> actionInstance

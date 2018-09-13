@@ -1,5 +1,5 @@
 // stopAction :: action -> _
-const stopAction = action => {
+export const stopAction = action => {
   if (Object.prototype.hasOwnProperty.call(action, 'stop')) {
     action.stop()
   }
