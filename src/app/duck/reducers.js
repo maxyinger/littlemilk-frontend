@@ -6,8 +6,9 @@ export const INITIAL_STATE = {
     x : null,
     y : null
   },
-  canDrag         : true,
-  isTransitioning : false
+  canDrag             : true,
+  isTransitioning     : false,
+  transitionCompleted : false
 }
 
 const appReducer = (state = INITIAL_STATE, action) => {
@@ -37,12 +38,22 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case types.START_TRANSITION: {
       return {
         ...state,
-        isTransitioning: true
+        isTransitioning     : true,
+        transitionCompleted : false,
+        sticky              : -1,
+        stickyPoint         : {
+          x : null,
+          y : null
+        },
+        canDrag: false
       }
     }
 
     case types.END_TRANSITION: {
-      return INITIAL_STATE
+      return {
+        ...INITIAL_STATE,
+        transitionCompleted: true
+      }
     }
 
     default:

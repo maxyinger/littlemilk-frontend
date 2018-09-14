@@ -23,9 +23,25 @@ describe('App Reducer', () => {
   })
 
   it('can trigger a transition', () => {
-    expect(appReducer(undefined, appActions.startTransition())).toEqual({
+    const { isTransitioning } = appReducer(
+      undefined,
+      appActions.startTransition()
+    )
+    expect(isTransitioning).toEqual(true)
+  })
+
+  it('makes sure isTransitioning is the only active app state', () => {
+    let testState = appReducer(undefined, appActions.makeSticky(4, {}))
+    expect(appReducer(testState, appActions.startTransition())).toEqual({
       ...INITIAL_STATE,
-      isTransitioning: true
+      isTransitioning     : true,
+      transitionCompleted : false,
+      sticky              : -1,
+      stickyPoint         : {
+        x : null,
+        y : null
+      },
+      canDrag: false
     })
   })
 
@@ -36,15 +52,17 @@ describe('App Reducer', () => {
     )
     expect(appReducer(transitioningState, appActions.endTransition())).toEqual({
       ...INITIAL_STATE,
-      isTransitioning: false
+      isTransitioning     : false,
+      transitionCompleted : true
     })
   })
 
-  it('after transitioning it resets to the initial state', () => {
+  it('works after multiple actions it resets to the initial state', () => {
     let testState = appReducer(undefined, appActions.makeSticky(4, {}))
     testState = appReducer(testState, appActions.startTransition())
-    expect(appReducer(testState, appActions.endTransition())).toEqual(
-      INITIAL_STATE
-    )
+    expect(appReducer(testState, appActions.endTransition())).toEqual({
+      ...INITIAL_STATE,
+      transitionCompleted: true
+    })
   })
 })

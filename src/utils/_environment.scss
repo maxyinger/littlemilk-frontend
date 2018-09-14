@@ -1,0 +1,27 @@
+/**
+ * *Environment
+ * base html environment after resets
+ */
+
+$logCabin: #1c1c1a;
+$pampas: #eeebe6;
+$white: #fff;
+
+html,
+._px {
+  background-color: $logCabin;
+  font-family: "neue-haas-unica", sans-serif;
+  font-weight: 500;
+  font-size: responsive 14px 18px;
+  font-range: 670px 2560px;
+}
+
+a {
+  text-decoration: none;
+  color: $logCabin;
+  opacity: 0.4;
+}
+
+a.active {
+  opacity: 1;
+}

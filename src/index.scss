@@ -13,6 +13,9 @@
 
 /* Foundation: Normalise, resets, base styles & typography */
 @import "../node_modules/normalize-scss/sass/normalize";
-// @import "./lib/reset";
-// @import "./lib/environment";
+@import "./utils/reset";
+@import "./utils/environment";
 // @import "./lib/typography";
+
+/* Components */
+@import "./app/App";

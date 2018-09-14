@@ -15,8 +15,8 @@ export const circle = (ctx, { x, y, r, rgb, strokeStart, strokeEnd }) => {
   /**
    * Reset style buffer
    */
-  ctx.lineWidth = 1
-  ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.6)`
+  ctx.lineWidth = 1.5
+  ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .6)`
   ctx.fillStyle = 'rgba(0,0,0,0)'
   ctx.beginPath()
   /**

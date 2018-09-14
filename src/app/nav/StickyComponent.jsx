@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { value, pointer, listen } from 'popmotion'
@@ -36,7 +36,8 @@ class StickyComponent extends Component {
       resize: listen(window, 'resize').start(() =>
         this.setPointerListeners(this.props.sticky === this.props.index)
       ),
-      pointerListeners: []
+      pointerListeners : [],
+      mouseClick       : listen(window, 'click').start(this.handleMouseClick)
     }
     this.setPointerListeners(this.props.sticky === this.props.index)
   }
@@ -47,6 +48,22 @@ class StickyComponent extends Component {
 
   componentWillUnmount () {
     stopActions(this.actions)
+  }
+
+  // handleMouseClick :: _ => _
+  handleMouseClick = () => {
+    /**
+     * if this is sticky signal transition to app and redirect page change
+     */
+    if (this.props.sticky === this.props.index) {
+      // Set animations in motion
+      // stopActions(this.actions.pointerListeners)
+      // setTimeout(() => this.actions.physics.setSpringTarget({ x: 0, y: 0 }))
+      // this.props.breakSticky()
+      // Signal app treansition is occurring and transition state
+      this.props.startTransition()
+      this.props.history.push(this.props.to)
+    }
   }
 
   // setter :: point -> style
@@ -61,7 +78,7 @@ class StickyComponent extends Component {
     stopActions(this.actions.pointerListeners)
     this.actions.pointerListeners = [this.Emitter(pointer())]
     // this.actions.physics.setSpringTarget({ x: 0, y: 0 })
-    if (isSticky) {
+    if (isSticky && !this.props.isTransitioning) {
       this.actions.pointerListeners.push(this.Sticky(pointer()))
     } else {
       /** must place at end of execution queue because popmotion uses a
@@ -138,8 +155,12 @@ StickyComponent.propTypes = {
   sticky          : PropTypes.number.isRequired,
   startTransition : PropTypes.func.isRequired,
   isTransitioning : PropTypes.bool.isRequired,
+  /** redirect required props from RR4 */
+  history         : PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
   /** who doesn't love children */
-  children        : PropTypes.node.isRequired
+  children: PropTypes.node.isRequired
 }
 
-export default StickyComponent
+export default withRouter(StickyComponent)

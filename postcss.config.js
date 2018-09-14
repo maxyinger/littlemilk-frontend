@@ -9,7 +9,7 @@ module.exports = {
       viewportHeight    : 751,
       unitPrecision     : 3,
       viewportUnit      : 'vw',
-      selectorBlackList : ['novw'],
+      selectorBlackList : ['_px'],
       minPixelValue     : 1,
       mediaQuery        : false
     }),

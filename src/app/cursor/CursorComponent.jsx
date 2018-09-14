@@ -121,10 +121,11 @@ class CursorComponent extends Component {
       y           : this.position.get().y,
       r           : this.styles.get().radius,
       // rgb         : this.styles.get().rgb,
-      rgb         : { r: 0, g: 0, b: 0 },
+      rgb         : { r: 51, g: 51, b: 49 },
       strokeStart : this.styles.get().strokeStart,
       strokeEnd   : this.styles.get().strokeEnd
     })
+
     /** Draw up triangle */
     const yUpPos =
       this.position.get().y -
@@ -134,11 +135,12 @@ class CursorComponent extends Component {
       x        : this.position.get().x,
       y        : yUpPos,
       // rgb      : this.styles.get().rgb,
-      rgb      : { r: 0, g: 0, b: 0 },
+      rgb      : { r: 51, g: 51, b: 49 },
       opacity  : this.styles.get().arrowOpacity,
       size     : config.static.arrowSize,
       rotation : 0
     })
+
     /** Draw down triangle */
     const yDownPos =
       this.position.get().y +
@@ -148,7 +150,7 @@ class CursorComponent extends Component {
       x        : this.position.get().x,
       y        : yDownPos,
       // rgb      : this.styles.get().rgb,
-      rgb      : { r: 0, g: 0, b: 0 },
+      rgb      : { r: 51, g: 51, b: 49 },
       opacity  : this.styles.get().arrowOpacity,
       size     : config.static.arrowSize,
       rotation : 180
