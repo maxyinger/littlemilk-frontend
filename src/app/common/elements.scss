@@ -1,0 +1,28 @@
+/** Settings */
+@import "./colors";
+@import "./type";
+
+html,
+._px {
+  background-color: $color--black;
+  font-family: $font-family--copy;
+  font-weight: $font-weight--medium;
+  font-size: 14px;
+}
+
+header {
+  z-index: 2;
+}
+
+main {
+  z-index: 0;
+}
+
+h1 {
+  font-family: $font-family--header;
+  font-size: 200px;
+}
+
+a {
+  text-decoration: none;
+}

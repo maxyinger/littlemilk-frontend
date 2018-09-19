@@ -23,9 +23,19 @@ const endTransition = () => ({
   type: types.END_TRANSITION
 })
 
+const makeThemeDark = () => ({
+  type: types.MAKE_THEME_DARK
+})
+
+const makeThemeLight = () => ({
+  type: types.MAKE_TEHME_LIGHT
+})
+
 export default {
   makeSticky,
   breakSticky,
   startTransition,
-  endTransition
+  endTransition,
+  makeThemeDark,
+  makeThemeLight
 }

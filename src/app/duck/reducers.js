@@ -8,7 +8,8 @@ export const INITIAL_STATE = {
   },
   canDrag             : true,
   isTransitioning     : false,
-  transitionCompleted : false
+  transitionCompleted : false,
+  theme               : 'light'
 }
 
 const appReducer = (state = INITIAL_STATE, action) => {
@@ -41,18 +42,28 @@ const appReducer = (state = INITIAL_STATE, action) => {
         isTransitioning     : true,
         transitionCompleted : false,
         sticky              : -1,
-        stickyPoint         : {
-          x : null,
-          y : null
-        },
-        canDrag: false
+        canDrag             : false
       }
     }
 
     case types.END_TRANSITION: {
       return {
-        ...INITIAL_STATE,
+        ...state,
         transitionCompleted: true
+      }
+    }
+
+    case types.MAKE_THEME_DARK: {
+      return {
+        ...state,
+        theme: 'dark'
+      }
+    }
+
+    case types.MAKE_THEME_LIGHT: {
+      return {
+        ...state,
+        theme: 'light'
       }
     }
 

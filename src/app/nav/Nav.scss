@@ -1,6 +1,6 @@
-/**
- *  Nav
- */
+/** Settings */
+@import "../common/colors";
+@import "../common/type";
 
 .nav {
   position: fixed;
@@ -14,6 +14,8 @@
 
 .nav-link-wrap {
   position: absolute;
+  display: inline-block;
+  z-index: 1;
 
   &:nth-of-type(1) {
     left: calc(100vw / 14);
@@ -31,7 +33,38 @@
   }
 }
 
-.nav-link-inner {
-  position: relative;
+.theme--light .logo {
+  color: $color--black;
+  -webkit-text-stroke-color: $color--black;
+}
+
+.theme--dark .logo {
+  color: $color--white;
+  -webkit-text-stroke-color: $color--white;
+}
+
+.logo,
+_px {
+  position: absolute;
   z-index: 1;
+  left: calc(100vw / 14);
+  bottom: calc(100vh / 7);
+  font-family: $font-family--header;
+  font-size: 40px;
+  line-height: 34px;
+  -webkit-text-stroke-width: 1px;
+  transition: color 0.5s, -webkit-text-stroke-color 0.5s;
+
+  &:hover {
+    color: transparent;
+  }
+}
+
+.nav-link-wrap .link {
+  opacity: 0.4;
+  font-weight: $font-weight--bold;
+}
+
+.nav-link-wrap .active {
+  opacity: 1;
 }

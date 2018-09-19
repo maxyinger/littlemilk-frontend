@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 import StickyComponent from './StickyComponent'
-
 import { appActions } from '../duck'
 
 const mapStateToProps = (state, props) => {

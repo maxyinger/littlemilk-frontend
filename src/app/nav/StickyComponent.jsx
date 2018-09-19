@@ -128,7 +128,6 @@ class StickyComponent extends Component {
   }
 
   render () {
-    // console.log(this.props.index, 'rerendered')
     return (
       <NavLink
         exact={this.props.exact}
@@ -137,7 +136,7 @@ class StickyComponent extends Component {
         activeClassName="active"
       >
         <span ref={this.target}>
-          <NavLinkInner ref={this.test}>{this.props.children}</NavLinkInner>
+          <NavLinkInner>{this.props.children}</NavLinkInner>
         </span>
       </NavLink>
     )

@@ -5,8 +5,8 @@ module.exports = {
     require('lost'),
     require('postcss-responsive-type'),
     pxtoviewport({
-      viewportWidth     : 1440,
-      viewportHeight    : 751,
+      viewportWidth     : 2560,
+      viewportHeight    : 1258,
       unitPrecision     : 3,
       viewportUnit      : 'vw',
       selectorBlackList : ['_px'],

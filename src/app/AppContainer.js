@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import NavComponent from './NavComponent'
+import AppComponent from './AppComponent'
 
 const mapStateToProps = state => {
   const { theme } = state.app
@@ -10,9 +10,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = () => ({})
 
-const NavContainer = connect(
+const AppContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavComponent)
+)(AppComponent)
 
-export default NavContainer
+export default AppContainer

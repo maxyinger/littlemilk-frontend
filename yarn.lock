@@ -2952,6 +2952,13 @@ file-entry-cache@^2.0.0:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
 
+file-loader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-2.0.0.tgz#39749c82f020b9e85901dcff98e8004e6401cfde"
+  dependencies:
+    loader-utils "^1.0.2"
+    schema-utils "^1.0.0"
+
 filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
@@ -6161,6 +6168,12 @@ react-loadable@^5.5.0:
   resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-5.5.0.tgz#582251679d3da86c32aae2c8e689c59f1196d8c4"
   dependencies:
     prop-types "^15.5.0"
+
+react-pose-text@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/react-pose-text/-/react-pose-text-3.1.0.tgz#625471d503a56773715dc6ad79a5f7ef86f2a0ec"
+  dependencies:
+    hey-listen "^1.0.5"
 
 react-pose@^3.1.0:
   version "3.1.0"
