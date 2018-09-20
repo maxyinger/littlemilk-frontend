@@ -8,11 +8,11 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = () => ({})
-
 const NavContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  null,
+  null,
+  { pure: false }
 )(NavComponent)
 
 export default NavContainer

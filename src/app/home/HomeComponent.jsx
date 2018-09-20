@@ -1,27 +1,27 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import posed from 'react-pose'
+// import posed from 'react-pose'
 
-class HomeComponent extends React.Component {
-  x = 'this thing'
+class HomeComponent extends Component {
+  componentDidMount () {
+    this.props.makeThemeDark()
+  }
+
   render () {
-    return <div>home</div>
+    return (
+      <div className="h">
+        {/* <hWebGL /> */}
+        {/* <indexer /> */}
+        <div className="h-article-wrap">
+          <article />
+        </div>
+      </div>
+    )
   }
 }
 
-// const HomeComponent = ({ makeThemeLight, endTransition }) => (
-//   <div className="h">
-//     {/* <hWebGL /> */}
-//     {/* <indexer /> */}
-//     <div className="h-article-wrap">
-//       <article />
-//     </div>
-//   </div>
-// )
-
 HomeComponent.propTypes = {
-  makeThemeLight : PropTypes.func.isRequired,
-  endTransition  : PropTypes.func.isRequired
+  makeThemeDark: PropTypes.func.isRequired
 }
 
 export default HomeComponent

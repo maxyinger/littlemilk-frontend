@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import posed, { PoseGroup } from 'react-pose'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import styled from 'styled-components'
+import config from './App.config.js'
 
 /**
  * * Routes
@@ -17,17 +19,56 @@ import CursorContainer from './cursor/CursorContainer'
 import NavContainer from './nav/NavContainer'
 import { tween } from 'popmotion'
 
-const RoutesContainer = posed.div({})
+const RoutesContainer = posed.div({
+  enter: {
+    opacity: 1
+  },
+  exit: {
+    opacity: 0
+  }
+})
 
-const AppComponent = ({ theme }) => (
+const backgroundProps = {
+  themeLight: {
+    backgroundColor : config.colors.offWhite,
+    transition      : props =>
+      tween({
+        ...props,
+        duration: config.pageTransitionTime
+      })
+  },
+  themeDark: {
+    backgroundColor : config.colors.black,
+    transition      : props =>
+      tween({
+        ...props,
+        duration: config.pageTransitionTime
+      })
+  }
+}
+
+const Background = styled(posed.div(backgroundProps))`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+`
+
+const AppComponent = ({ theme, endTransition }) => (
   <Router>
     <div className={theme === 'light' ? 'theme--light' : 'theme--dark'}>
+      <Background pose={theme === 'light' ? 'themeLight' : 'themeDark'} />
       <NavContainer />
       <main className="routes">
         <Route
           render={({ location }) => (
             <PoseGroup>
-              <RoutesContainer key={location.key}>
+              <RoutesContainer
+                onPoseComplete={() => endTransition()}
+                key={location.key}
+              >
                 <Switch location={location}>
                   <Route path="/" exact component={Home} />
                   <Route path="/contact" component={Contact} />
@@ -44,7 +85,8 @@ const AppComponent = ({ theme }) => (
 )
 
 AppComponent.propTypes = {
-  theme: PropTypes.string.isRequired
+  theme         : PropTypes.string.isRequired,
+  endTransition : PropTypes.func.isRequired
 }
 
 export default AppComponent

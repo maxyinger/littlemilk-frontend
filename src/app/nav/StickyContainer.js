@@ -16,15 +16,10 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = dispatch => {
-  const makeSticky = (index, point) => {
+  const makeSticky = (index, point) =>
     dispatch(appActions.makeSticky(index, point))
-  }
-  const breakSticky = () => {
-    dispatch(appActions.breakSticky())
-  }
-  const startTransition = () => {
-    dispatch(appActions.startTransition())
-  }
+  const breakSticky = () => dispatch(appActions.breakSticky())
+  const startTransition = () => dispatch(appActions.startTransition())
 
   return {
     makeSticky,

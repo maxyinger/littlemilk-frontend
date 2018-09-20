@@ -28,7 +28,7 @@ const makeThemeDark = () => ({
 })
 
 const makeThemeLight = () => ({
-  type: types.MAKE_TEHME_LIGHT
+  type: types.MAKE_THEME_LIGHT
 })
 
 export default {

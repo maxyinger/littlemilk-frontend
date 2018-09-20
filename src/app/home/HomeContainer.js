@@ -1,13 +1,17 @@
-import React from 'react'
+import { connect } from 'react-redux'
+import HomeComponent from './HomeComponent'
+import { appActions } from '../duck'
 
-function HomeContainer () {
-  return (
-    <div className="page">
-      <a href="http://www.google.com">
-        <h1>Home component</h1>
-      </a>
-    </div>
-  )
+const mapDispatchToProps = dispatch => {
+  const makeThemeDark = () => dispatch(appActions.makeThemeDark())
+  return {
+    makeThemeDark
+  }
 }
+
+const HomeContainer = connect(
+  null,
+  mapDispatchToProps
+)(HomeComponent)
 
 export default HomeContainer
