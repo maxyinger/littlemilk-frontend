@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 class HomeComponent extends Component {
   componentDidMount () {
-    this.props.makeThemeDark()
+    this.props.makeThemeLight()
   }
 
   render () {
@@ -14,6 +14,7 @@ class HomeComponent extends Component {
         {/* <indexer /> */}
         <div className="h-article-wrap">
           <article />
+          <h1>Home!</h1>
         </div>
       </div>
     )
@@ -21,7 +22,7 @@ class HomeComponent extends Component {
 }
 
 HomeComponent.propTypes = {
-  makeThemeDark: PropTypes.func.isRequired
+  makeThemeLight: PropTypes.func.isRequired
 }
 
 export default HomeComponent

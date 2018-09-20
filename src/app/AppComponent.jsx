@@ -10,6 +10,7 @@ import config from './App.config.js'
  */
 import Home from './home'
 import Contact from './contact'
+import About from './about'
 import FourOhFour from './common/FourOhFour'
 
 /**
@@ -21,10 +22,18 @@ import { tween } from 'popmotion'
 
 const RoutesContainer = posed.div({
   enter: {
-    opacity: 1
+    transition: props =>
+      tween({
+        ...props,
+        duration: config.pageTransitionTime
+      })
   },
   exit: {
-    opacity: 0
+    transition: props =>
+      tween({
+        ...props,
+        duration: config.pageTransitionTime
+      })
   }
 })
 
@@ -64,15 +73,16 @@ const AppComponent = ({ theme, endTransition }) => (
       <main className="routes">
         <Route
           render={({ location }) => (
-            <PoseGroup>
+            <PoseGroup flipMove={false}>
               <RoutesContainer
-                onPoseComplete={() => endTransition()}
+                onPoseComplete={endTransition}
                 key={location.key}
               >
                 <Switch location={location}>
-                  <Route path="/" exact component={Home} />
-                  <Route path="/contact" component={Contact} />
-                  <Route component={FourOhFour} />
+                  <Route path="/" exact component={Home} key="home" />
+                  <Route path="/contact" component={Contact} key="contact" />
+                  <Route path="/info" component={About} key="about" />
+                  <Route component={FourOhFour} key="fourOhFour" />
                 </Switch>
               </RoutesContainer>
             </PoseGroup>

@@ -41,7 +41,7 @@ const NavComponent = ({ theme }) => (
           </StickyContainer>
         </li>
         <li className="nav-link-wrap">
-          <StickyContainer to="/skjdnfkjsdn" index={2}>
+          <StickyContainer to="/info" index={2}>
             <SplitText
               className="nav-link-inner"
               charPoses={charPoses}

@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
-import ContactComponent from './ContactComponent'
+import AboutComponent from './AboutComponent'
 import { appActions } from '../duck'
 
 const mapDispatchToProps = dispatch => ({
   makeThemeDark: () => dispatch(appActions.makeThemeDark())
 })
 
-const ContactContainer = connect(
+const AboutContainer = connect(
   null,
   mapDispatchToProps
-)(ContactComponent)
+)(AboutComponent)
 
-export default ContactContainer
+export default AboutContainer
