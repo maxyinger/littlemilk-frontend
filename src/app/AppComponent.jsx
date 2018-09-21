@@ -22,7 +22,8 @@ import { tween } from 'popmotion'
 
 const RoutesContainer = posed.div({
   enter: {
-    transition: props =>
+    beforeChildren : true,
+    transition     : props =>
       tween({
         ...props,
         duration: config.pageTransitionTime

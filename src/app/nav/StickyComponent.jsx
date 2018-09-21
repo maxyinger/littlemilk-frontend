@@ -78,7 +78,7 @@ class StickyComponent extends Component {
     stopActions(this.actions.pointerListeners)
     this.actions.pointerListeners = [this.Emitter(pointer())]
     // this.actions.physics.setSpringTarget({ x: 0, y: 0 })
-    if (isSticky && !this.props.isTransitioning) {
+    if (isSticky && !this.props.transitionStarted) {
       this.actions.pointerListeners.push(this.Sticky(pointer()))
     } else {
       /** must place at end of execution queue because popmotion uses a
@@ -145,17 +145,17 @@ class StickyComponent extends Component {
 
 StickyComponent.propTypes = {
   /** props for NavLink */
-  to              : PropTypes.string.isRequired,
-  exact           : PropTypes.bool,
-  index           : PropTypes.number.isRequired,
+  to                : PropTypes.string.isRequired,
+  exact             : PropTypes.bool,
+  index             : PropTypes.number.isRequired,
   /** props from store */
-  makeSticky      : PropTypes.func.isRequired,
-  breakSticky     : PropTypes.func.isRequired,
-  sticky          : PropTypes.number.isRequired,
-  startTransition : PropTypes.func.isRequired,
-  isTransitioning : PropTypes.bool.isRequired,
+  makeSticky        : PropTypes.func.isRequired,
+  breakSticky       : PropTypes.func.isRequired,
+  sticky            : PropTypes.number.isRequired,
+  startTransition   : PropTypes.func.isRequired,
+  transitionStarted : PropTypes.bool.isRequired,
   /** redirect required props from RR4 */
-  history         : PropTypes.shape({
+  history           : PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
   /** who doesn't love children */

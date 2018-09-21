@@ -1,8 +1,5 @@
 import types from './types'
 
-/**
- * * Action Creators
- */
 const makeSticky = (index, point) => ({
   type    : types.MAKE_STICKY,
   payload : {

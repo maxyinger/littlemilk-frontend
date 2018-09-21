@@ -1,19 +1,13 @@
 import React, { Component } from 'react'
-import {
-  value,
-  tween,
-  pointer,
-  everyFrame,
-  listen,
-  easing,
-  transform
-} from 'popmotion'
+import { value, tween, pointer, everyFrame, listen, easing } from 'popmotion'
 import { circle, triangle } from './Cursor.utils'
 import config from './Cursor.config'
 import physics from '../common/physics'
 import CursorStyles from './CursorStyles'
-import { makeTween, makeSticky } from './CursorModel'
-import { stopActions, stopAction } from '../../utils/actionHelpers'
+import { makeSticky, themeToColor } from './CursorModel'
+import { stopActions } from '../../utils/actionHelpers'
+import types from './duck/types'
+import AppConfig from '../App.config'
 import PropTypes from 'prop-types'
 import './Cursor.scss'
 
@@ -32,75 +26,233 @@ class CursorComponent extends Component {
   }
 
   componentDidMount () {
-    /**
-     * Values
-     */
-    this.position = value({
-      x : (window.innerWidth / 7) * 6,
-      y : (window.innerHeight / 7) * 5 + config.default.radius * 2
-    })
-    this.styles = value(CursorStyles.normal)
+    // INITIAL_VALUES
+    this.values = {
+      // position values
+      position : {},
+      // appearance values
+      styles   : value({
+        ...CursorStyles.normal,
+        ...CursorStyles.initial
+      }),
+      color                  : themeToColor(this.props.theme),
+      positionTransitioned   : false,
+      appearanceTransitioned : false
+    }
 
-    /**
-     * Prepare Canvas
-     */
+    // Prepare the canvas
     const context = this.canvas.current.getContext('2d')
     this.size(context)
 
-    /**
-     * Set Actions
-     */
+    // INITIAL_ACTIONS
     this.actions = {
-      /** Draws Values to canvas */
-      animationLoop : everyFrame().start(() => this.cursor(context)),
-      /** Animate Values */
-      physics       : physics(this.position),
-      /** Client Listeners */
-      resize        : listen(window, 'resize').start(() => this.size(context)),
-      pointer       : {},
-      mouseDown     : listen(document, 'mousedown').start(this.handleMouseDown),
-      mouseUp       : listen(document, 'mouseup').start(this.handleMouseUp)
+      constant: {
+        animationLoop : everyFrame().start(() => this.cursor(context)),
+        resize        : listen(window, 'resize').start(() => this.size(context))
+      },
+      position: {
+        animater : {}, // tween or physics
+        pointer  : {} // if the animater is physics, this supplies the target
+      },
+      appearance: {
+        tween     : {}, // Current Tween for styles
+        mouseDown : {}, // Only needed for DEFAULT state
+        mouseUp   : {} // Only needed for DEFAULT state
+      }
     }
-    this.setPointerListener(false)
+
+    this.positionActionsReducer(this.props.actionsState.position)
+    this.appearanceActionsReducer(this.props.actionsState.appearance)
+  }
+
+  componentDidUpdate (prevProps) {
+    // checks to update only relevant actions
+    const { appearance, position } = this.props.actionsState
+    if (position !== prevProps.actionsState.position) {
+      this.positionActionsReducer(position)
+    }
+    if (appearance !== prevProps.actionsState.appearance) {
+      this.appearanceActionsReducer(appearance)
+    }
   }
 
   componentWillUnmount () {
+    stopActions(this.values)
     stopActions(this.actions)
   }
 
-  componentDidUpdate () {
-    const { x, y } = this.props.stickyPoint
-    const isSticky = x !== null || y !== null
-    this.setPointerListener(isSticky)
-    if (isSticky) {
-      makeTween(this.styles.get(), CursorStyles.sticky).start(this.styles)
+  // positionActionsReducer :: string -> _
+  positionActionsReducer = type => {
+    if (this.values.positionTransitioned) {
+      switch (type) {
+        case types.TRANSITIONING: {
+          this.positionActionsTransitioning()
+          return
+        }
+        case types.STICKY: {
+          this.positionActionsSticky()
+          return
+        }
+        default: {
+          this.positionActionsDefault()
+        }
+      }
     } else {
-      makeTween(this.styles.get(), CursorStyles.normal).start(this.styles)
+      this.positionActionsInit()
     }
   }
 
-  setPointerListener = isSticky => {
-    stopAction(this.actions.pointer)
-    let pointerListener = pointer()
-    if (isSticky) {
-      pointerListener = pointer().pipe(
-        makeSticky(this.props.stickyPoint, config.stickySpringStrength)
-      )
-    }
-    this.actions.pointer = pointerListener.start(
-      this.actions.physics.setSpringTarget
+  // positionActionsInit :: _ -> _
+  positionActionsInit = () => {
+    // stop any active actions
+    stopActions(this.values.position)
+    stopActions(this.actions.position)
+    // reset values
+    this.values.position = value({
+      x : (window.innerWidth / 7) * 6,
+      y : (window.innerHeight / 7) * 5 + config.default.radius * 2
+    })
+    // flag that its loaded so reducer can behave like default
+    this.values.positionTransitioned = true
+    this.positionActionsReducer(this.props.actionsState.position)
+  }
+
+  // positionActionsDefault :: _ -> _
+  positionActionsDefault = () => {
+    // stop any active actions
+    stopActions(this.actions.position)
+    // set actions
+    this.actions.position.animater = physics(this.values.position)
+    this.actions.position.pointer = pointer().start(
+      this.actions.position.animater.setSpringTarget
     )
   }
 
-  handleMouseDown = () => {
-    if (this.props.canDrag) {
-      makeTween(this.styles.get(), CursorStyles.drag).start(this.styles)
+  // positionActionsSticky :: _ -> _
+  positionActionsSticky = () => {
+    // stop any active actions
+    stopActions(this.actions.position)
+    // set actions
+    this.actions.position.animater = physics(this.values.position, {
+      // TODO: move these variables into config.sticky.physics
+      friction       : 0.925,
+      springStrength : 280
+    })
+    this.actions.position.pointer = pointer()
+      .pipe(makeSticky(this.props.stickyPoint, config.stickySpringStrength))
+      .start(this.actions.position.animater.setSpringTarget)
+  }
+
+  // positionActionsTransitioning :: _ -> _
+  positionActionsTransitioning = () => {
+    // stop any active actions
+    stopActions(this.actions.position)
+    // set actions
+    this.actions.animater = tween({
+      duration : AppConfig.pageTransitionTime,
+      to       : this.props.stickyPoint,
+      ease     : easing.circOut
+    }).start({
+      update   : this.values.position,
+      complete : () => this.setState({ positionTransitioned: false })
+    })
+  }
+
+  // appearanceActionsReducer :: string -> _
+  appearanceActionsReducer = type => {
+    if (this.values.appearanceTransitioned) {
+      switch (type) {
+        case types.TRANSITIONING: {
+          this.appearanceActionsTransitioning()
+          return
+        }
+        case types.STICKY: {
+          this.appearanceActionsSticky()
+          return
+        }
+        case types.NO_CURSOR: {
+          this.appearanceActionsNoCursor()
+          return
+        }
+        default: {
+          this.appearanceActionsDefault()
+        }
+      }
+    } else {
+      this.appearanceActionsInit()
     }
   }
 
-  handleMouseUp = () => {
-    makeTween(this.styles.get(), CursorStyles.normal).start(this.styles)
+  // appearanceActionsInit :: _-> _
+  appearanceActionsInit = () => {
+    // stop any active actions
+    stopActions(this.actions.appearance)
+    // set values
+    this.values.color = themeToColor(this.props.theme)
+    // animate from load
+    this.actions.appearance.tween = tween({
+      to       : CursorStyles.normal,
+      duration : AppConfig.pageTransitionTime,
+      ease     : easing.circOut
+    }).start({
+      update   : this.values.styles,
+      complete : () => {
+        this.values.appearanceTransitioned = true
+        this.appearanceActionsReducer(this.props.actionsState.appearance)
+      }
+    })
   }
+
+  // appearanceActionsDefault :: _ -> _
+  appearanceActionsDefault = () => {
+    // stop any active actions
+    stopActions(this.actions.appearance)
+    // animate to default appearance
+    this.actions.appearance.tween = tween({
+      to: CursorStyles.normal
+    }).start(this.values.styles)
+    // set mouseDown mouse Up actions
+    this.actions.mouseDown = listen(document, 'mouseDown').start(() => {
+      if (this.props.canDrag) {
+        this.actions.appearance.tween = tween({
+          to: {
+            ...CursorStyles.normal,
+            ...CursorStyles.drag
+          },
+          ease: easing.backOut
+        }).start(this.values.styles)
+      }
+    })
+    this.actions.mouseUp = listen(document, 'mouseUp').start(() => {
+      if (this.props.canDrag) {
+        this.actions.appearance.tween = tween({
+          to   : CursorStyles.normal,
+          ease : easing.backOut
+        }).start(this.values.styles)
+      }
+    })
+  }
+
+  // appearanceActionsSticky :: _ -> _
+  appearanceActionsSticky = () => {
+    // stop any active actions
+    stopActions(this.actions.appearance)
+    // animate to default appearance
+    this.actions.appearance.tween = tween({
+      to: {
+        ...CursorStyles.normal,
+        ...CursorStyles.sticky
+      },
+      duration : 800,
+      ease     : easing.circOut
+    }).start(this.values.styles)
+  }
+
+  // appearanceActionsNoCursor :: _ -> _
+  appearanceActionsNoCursor = () => {}
+
+  // appearanceActionsTransitioning :: _ -> _
+  appearanceActionsTransitioning = () => {}
 
   size = context => {
     /**
@@ -115,43 +267,39 @@ class CursorComponent extends Component {
 
   cursor = context => {
     context.clearRect(0, 0, 2 * window.innerWidth, 2 * window.innerHeight)
-    /** Draw circle */
+    // Get Styles & Position
+    const {
+      radius,
+      strokeStart,
+      strokeEnd,
+      arrowOffset,
+      arrowOpacity
+    } = this.values.styles.get()
+    const { x, y } = this.values.position.get()
+    // Draw Circle
     circle(context, {
-      x           : this.position.get().x,
-      y           : this.position.get().y,
-      r           : this.styles.get().radius,
-      // rgb         : this.styles.get().rgb,
-      rgb         : { r: 51, g: 51, b: 49 },
-      strokeStart : this.styles.get().strokeStart,
-      strokeEnd   : this.styles.get().strokeEnd
+      x           : x,
+      y           : y,
+      r           : radius,
+      rgb         : this.values.color,
+      strokeStart : strokeStart,
+      strokeEnd   : strokeEnd
     })
-
-    /** Draw up triangle */
-    const yUpPos =
-      this.position.get().y -
-      this.styles.get().radius -
-      this.styles.get().arrowOffset
+    // Draw Up Triangle
     triangle(context, {
-      x        : this.position.get().x,
-      y        : yUpPos,
-      // rgb      : this.styles.get().rgb,
-      rgb      : { r: 51, g: 51, b: 49 },
-      opacity  : this.styles.get().arrowOpacity,
+      x        : x,
+      y        : y - radius - arrowOffset,
+      rgb      : this.values.color,
+      opacity  : arrowOpacity,
       size     : config.static.arrowSize,
       rotation : 0
     })
-
-    /** Draw down triangle */
-    const yDownPos =
-      this.position.get().y +
-      this.styles.get().radius +
-      this.styles.get().arrowOffset
+    // Draw Down Triangle
     triangle(context, {
-      x        : this.position.get().x,
-      y        : yDownPos,
-      // rgb      : this.styles.get().rgb,
-      rgb      : { r: 51, g: 51, b: 49 },
-      opacity  : this.styles.get().arrowOpacity,
+      x        : x,
+      y        : y + radius + arrowOffset,
+      rgb      : this.values.color,
+      opacity  : arrowOpacity,
       size     : config.static.arrowSize,
       rotation : 180
     })
@@ -163,11 +311,16 @@ class CursorComponent extends Component {
 }
 
 CursorComponent.propTypes = {
-  canDrag     : PropTypes.bool.isRequired,
-  stickyPoint : PropTypes.shape({
+  actionsState: PropTypes.shape({
+    position   : PropTypes.string.isRequired,
+    appearance : PropTypes.string.isRequired
+  }).isRequired,
+  stickyPoint: PropTypes.shape({
     x : PropTypes.number,
     y : PropTypes.number
-  }).isRequired
+  }).isRequired,
+  canDrag : PropTypes.bool.isRequired,
+  theme   : PropTypes.string.isRequired
 }
 
 export default CursorComponent

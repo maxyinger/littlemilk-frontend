@@ -2,10 +2,14 @@ const normal = {
   strokeStart  : 0,
   strokeEnd    : 100,
   radius       : 30,
-  opacity      : 0,
-  // rgb          : { r: 0, g: 0, b: 0 },
+  opacity      : 1,
   arrowOffset  : 30,
   arrowOpacity : 0
+}
+
+const initial = {
+  strokeStart : 0,
+  strokeEnd   : 0
 }
 
 const link = {
@@ -28,6 +32,7 @@ const loading = {
 }
 
 export default {
+  initial,
   normal,
   link,
   drag,

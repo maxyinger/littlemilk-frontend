@@ -3,11 +3,11 @@ import StickyComponent from './StickyComponent'
 import { appActions } from '../duck'
 
 const mapStateToProps = (state, props) => {
-  const { sticky, isTransitioning } = state.app
+  const { sticky, transtitionStarted } = state.app
   const { to, exact, index, children } = props
   return {
     sticky,
-    isTransitioning,
+    transtitionStarted,
     to,
     exact,
     index,

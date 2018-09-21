@@ -6,10 +6,10 @@ export const INITIAL_STATE = {
     x : null,
     y : null
   },
-  canDrag             : true,
-  isTransitioning     : false,
-  transitionCompleted : false,
-  theme               : 'light'
+  canDrag           : true,
+  pageTransitioning : false,
+  noCursor          : false,
+  theme             : 'light'
 }
 
 const appReducer = (state = INITIAL_STATE, action) => {
@@ -39,17 +39,20 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case types.START_TRANSITION: {
       return {
         ...state,
-        isTransitioning     : true,
-        transitionCompleted : false,
-        sticky              : -1,
-        canDrag             : false
+        pageTransitioning : true,
+        sticky            : -1,
+        canDrag           : false
       }
     }
 
     case types.END_TRANSITION: {
       return {
         ...state,
-        transitionCompleted: true
+        pageTransitioning : false,
+        stickyPoint       : {
+          x : null,
+          y : null
+        }
       }
     }
 

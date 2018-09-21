@@ -25,3 +25,7 @@ export const makeSticky = (targetCenter, springStrength) =>
       y : linearSpring(springStrength, targetCenter.y)
     })
   )
+
+// themeToColor :: string -> {}
+export const themeToColor = theme =>
+  theme === 'light' ? { r: 51, g: 51, b: 49 } : { r: 255, g: 255, b: 255 }
