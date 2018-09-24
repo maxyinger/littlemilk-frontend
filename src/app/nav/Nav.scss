@@ -53,16 +53,19 @@ _px {
   font-size: 40px;
   line-height: 34px;
   -webkit-text-stroke-width: 1px;
-  transition: color 0.5s, -webkit-text-stroke-color 0.5s;
+  transition: color 0.6s, -webkit-text-stroke-color 0.6s;
 
   &:hover {
     color: transparent;
   }
 }
 
-.nav-link-wrap .link {
-  opacity: 0.4;
+.nav-link-wrap .link,
+_px {
+  opacity: 0.2;
   font-weight: $font-weight--bold;
+  font-size: responsive 14px 17px;
+  font-range: 670px 2560px;
 }
 
 .nav-link-wrap .active {

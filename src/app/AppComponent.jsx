@@ -8,9 +8,9 @@ import config from './App.config.js'
 /**
  * * Routes
  */
-import Home from './home'
-import Contact from './contact'
-import About from './about'
+import Home from './home/HomeContainer'
+import Contact from './contact/ContactContainer'
+import About from './about/AboutContainer'
 import FourOhFour from './common/FourOhFour'
 
 /**
@@ -18,42 +18,31 @@ import FourOhFour from './common/FourOhFour'
  */
 import CursorContainer from './cursor/CursorContainer'
 import NavContainer from './nav/NavContainer'
-import { tween } from 'popmotion'
 
 const RoutesContainer = posed.div({
+  mount: {
+    progress: 0
+  },
   enter: {
-    beforeChildren : true,
-    transition     : props =>
-      tween({
-        ...props,
-        duration: config.pageTransitionTime
-      })
+    progress   : 1,
+    delay      : config.pageTransitionTime,
+    transition : { duration: config.pageTransitionTime }
   },
   exit: {
-    transition: props =>
-      tween({
-        ...props,
-        duration: config.pageTransitionTime
-      })
+    progress   : 2,
+    transition : { duration: config.pageTransitionTime }
   }
 })
 
 const backgroundProps = {
   themeLight: {
     backgroundColor : config.colors.offWhite,
-    transition      : props =>
-      tween({
-        ...props,
-        duration: config.pageTransitionTime
-      })
+    delay           : config.pageTransitionTime,
+    transition      : { duration: config.pageTransitionTime }
   },
   themeDark: {
     backgroundColor : config.colors.black,
-    transition      : props =>
-      tween({
-        ...props,
-        duration: config.pageTransitionTime
-      })
+    transition      : { duration: config.pageTransitionTime }
   }
 }
 
@@ -66,17 +55,43 @@ const Background = styled(posed.div(backgroundProps))`
   z-index: -1;
 `
 
-const AppComponent = ({ theme, endTransition }) => (
+const AppComponent = ({
+  theme,
+  startExitTransition,
+  startEnterTransition,
+  endTransition,
+  toggleCursor,
+  noCursor
+}) => (
   <Router>
-    <div className={theme === 'light' ? 'theme--light' : 'theme--dark'}>
+    <div
+      onMouseMove={({ target }) => {
+        if (target.classList.contains('no-cursor') && !noCursor) toggleCursor()
+        if (!target.classList.contains('no-cursor') && noCursor) toggleCursor()
+      }}
+      className={`app ${theme === 'light' ? 'theme--light' : 'theme--dark'}`}
+    >
       <Background pose={theme === 'light' ? 'themeLight' : 'themeDark'} />
       <NavContainer />
       <main className="routes">
         <Route
           render={({ location }) => (
-            <PoseGroup flipMove={false}>
+            <PoseGroup flipMove={false} preEnterPose="mount">
               <RoutesContainer
-                onPoseComplete={endTransition}
+                onValueChange={{
+                  progress: v => {
+                    /**
+                     * First re-render from prop change causing
+                     * onValue change to fire once per frame even
+                     * though value doesn't change. Added extra
+                     * precautions to make sure it only fires once
+                     */
+                    // console.log(`enterTransition ${enterTransition}, v: ${v}`)
+                    if (v === 0) startExitTransition()
+                    if (v === 1) endTransition()
+                    if (v === 2) startEnterTransition()
+                  }
+                }}
                 key={location.key}
               >
                 <Switch location={location}>
@@ -96,8 +111,12 @@ const AppComponent = ({ theme, endTransition }) => (
 )
 
 AppComponent.propTypes = {
-  theme         : PropTypes.string.isRequired,
-  endTransition : PropTypes.func.isRequired
+  theme                : PropTypes.string.isRequired,
+  startExitTransition  : PropTypes.func.isRequired,
+  startEnterTransition : PropTypes.func.isRequired,
+  endTransition        : PropTypes.func.isRequired,
+  toggleCursor         : PropTypes.func.isRequired,
+  noCursor             : PropTypes.bool.isRequired
 }
 
 export default AppComponent

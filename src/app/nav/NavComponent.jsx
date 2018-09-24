@@ -25,7 +25,7 @@ const NavComponent = ({ theme }) => (
               charPoses={charPoses}
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
-              home
+              Home
             </SplitText>
           </StickyContainer>
         </li>
@@ -36,7 +36,7 @@ const NavComponent = ({ theme }) => (
               charPoses={charPoses}
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
-              contact
+              Contact
             </SplitText>
           </StickyContainer>
         </li>
@@ -47,7 +47,7 @@ const NavComponent = ({ theme }) => (
               charPoses={charPoses}
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
-              info
+              Info
             </SplitText>
           </StickyContainer>
         </li>

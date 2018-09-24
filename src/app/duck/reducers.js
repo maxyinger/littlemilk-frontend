@@ -8,6 +8,8 @@ export const INITIAL_STATE = {
   },
   canDrag           : true,
   pageTransitioning : false,
+  enterTransition   : false,
+  exitTransition    : false,
   noCursor          : false,
   theme             : 'light'
 }
@@ -45,10 +47,28 @@ const appReducer = (state = INITIAL_STATE, action) => {
       }
     }
 
+    case types.START_EXIT_TRANSITION: {
+      return {
+        ...state,
+        exitTransition  : true,
+        enterTransition : false
+      }
+    }
+
+    case types.START_ENTER_TRANSITION: {
+      return {
+        ...state,
+        exitTransition  : false,
+        enterTransition : true
+      }
+    }
+
     case types.END_TRANSITION: {
       return {
         ...state,
         pageTransitioning : false,
+        exitTransition    : false,
+        enterTransition   : false,
         stickyPoint       : {
           x : null,
           y : null
@@ -67,6 +87,14 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         theme: 'light'
+      }
+    }
+
+    case types.TOGGLE_CURSOR: {
+      const { noCursor } = state
+      return {
+        ...state,
+        noCursor: !noCursor
       }
     }
 

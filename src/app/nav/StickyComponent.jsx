@@ -61,7 +61,7 @@ class StickyComponent extends Component {
       // setTimeout(() => this.actions.physics.setSpringTarget({ x: 0, y: 0 }))
       // this.props.breakSticky()
       // Signal app treansition is occurring and transition state
-      this.props.startTransition()
+      // this.props.startTransition()
       this.props.history.push(this.props.to)
     }
   }
@@ -152,7 +152,6 @@ StickyComponent.propTypes = {
   makeSticky        : PropTypes.func.isRequired,
   breakSticky       : PropTypes.func.isRequired,
   sticky            : PropTypes.number.isRequired,
-  startTransition   : PropTypes.func.isRequired,
   transitionStarted : PropTypes.bool.isRequired,
   /** redirect required props from RR4 */
   history           : PropTypes.shape({

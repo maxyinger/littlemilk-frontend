@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
-import { value, tween, pointer, everyFrame, listen, easing } from 'popmotion'
-import { circle, triangle } from './Cursor.utils'
+import {
+  value,
+  tween,
+  pointer,
+  everyFrame,
+  listen,
+  easing,
+  physics
+} from 'popmotion'
+import { circle, triangle } from './CursorUtils'
 import config from './Cursor.config'
-import physics from '../common/physics'
+// import physics from '../common/physics'
 import CursorStyles from './CursorStyles'
 import { makeSticky, themeToColor } from './CursorModel'
 import { stopActions } from '../../utils/actionHelpers'
@@ -29,15 +37,16 @@ class CursorComponent extends Component {
     // INITIAL_VALUES
     this.values = {
       // position values
-      position : {},
+      position: value({
+        x : (window.innerWidth / 7) * 6,
+        y : (window.innerHeight / 7) * 5 + config.default.radius * 2
+      }),
       // appearance values
-      styles   : value({
+      styles: value({
         ...CursorStyles.normal,
         ...CursorStyles.initial
       }),
-      color                  : themeToColor(this.props.theme),
-      positionTransitioned   : false,
-      appearanceTransitioned : false
+      color: themeToColor(this.props.theme)
     }
 
     // Prepare the canvas
@@ -48,11 +57,19 @@ class CursorComponent extends Component {
     this.actions = {
       constant: {
         animationLoop : everyFrame().start(() => this.cursor(context)),
-        resize        : listen(window, 'resize').start(() => this.size(context))
+        resize        : listen(window, 'resize').start(() => this.size(context)),
+        physics       : physics({
+          from           : this.values.position.get(),
+          to             : this.values.position.get(),
+          friction       : 0.85,
+          springStrength : 150,
+          restSpeed      : false
+        }).start(this.values.position)
       },
       position: {
-        animater : {}, // tween or physics
-        pointer  : {} // if the animater is physics, this supplies the target
+        tween   : {},
+        physics : {},
+        pointer : {} // if the animater is physics, this supplies the target
       },
       appearance: {
         tween     : {}, // Current Tween for styles
@@ -61,18 +78,30 @@ class CursorComponent extends Component {
       }
     }
 
-    this.positionActionsReducer(this.props.actionsState.position)
+    // this.actionsInit()
+    this.values.position.update({
+      x : (window.innerWidth / 7) * 6,
+      y : (window.innerHeight / 7) * 5 + config.default.radius * 2
+    })
     this.appearanceActionsReducer(this.props.actionsState.appearance)
+    this.positionActionsReducer(this.props.actionsState.position)
   }
 
   componentDidUpdate (prevProps) {
-    // checks to update only relevant actions
+    // Checks to update only relevant actions.
     const { appearance, position } = this.props.actionsState
+    if (appearance !== prevProps.actionsState.appearance) {
+      this.appearanceActionsReducer(appearance)
+    }
     if (position !== prevProps.actionsState.position) {
       this.positionActionsReducer(position)
     }
-    if (appearance !== prevProps.actionsState.appearance) {
-      this.appearanceActionsReducer(appearance)
+    if (this.props.theme !== prevProps.theme) {
+      tween({
+        from     : this.values.color,
+        to       : themeToColor(this.props.theme),
+        duration : AppConfig.pageTransitionTime * 2
+      }).start(v => (this.values.color = v))
     }
   }
 
@@ -83,149 +112,145 @@ class CursorComponent extends Component {
 
   // positionActionsReducer :: string -> _
   positionActionsReducer = type => {
-    if (this.values.positionTransitioned) {
-      switch (type) {
-        case types.TRANSITIONING: {
-          this.positionActionsTransitioning()
-          return
-        }
-        case types.STICKY: {
-          this.positionActionsSticky()
-          return
-        }
-        default: {
-          this.positionActionsDefault()
-        }
+    switch (type) {
+      case types.EXIT_TRANSITION: {
+        this.positionActionsExitTransition()
+        return
       }
-    } else {
-      this.positionActionsInit()
+      case types.ENTER_TRANSITION: {
+        this.positionActionsEnterTransition()
+        return
+      }
+      case types.STICKY: {
+        this.positionActionsSticky()
+        return
+      }
+      default: {
+        this.positionActionsDefault()
+      }
     }
-  }
-
-  // positionActionsInit :: _ -> _
-  positionActionsInit = () => {
-    // stop any active actions
-    stopActions(this.values.position)
-    stopActions(this.actions.position)
-    // reset values
-    this.values.position = value({
-      x : (window.innerWidth / 7) * 6,
-      y : (window.innerHeight / 7) * 5 + config.default.radius * 2
-    })
-    // flag that its loaded so reducer can behave like default
-    this.values.positionTransitioned = true
-    this.positionActionsReducer(this.props.actionsState.position)
   }
 
   // positionActionsDefault :: _ -> _
   positionActionsDefault = () => {
-    // stop any active actions
+    // Stop running actions.
     stopActions(this.actions.position)
-    // set actions
-    this.actions.position.animater = physics(this.values.position)
+    // Start default actions.
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      friction       : 0.85,
+      springStrength : 150,
+      restSpeed      : false
+    }).start(this.values.position)
     this.actions.position.pointer = pointer().start(
-      this.actions.position.animater.setSpringTarget
+      this.actions.position.physics.setSpringTarget
     )
   }
 
   // positionActionsSticky :: _ -> _
   positionActionsSticky = () => {
-    // stop any active actions
+    // Stop running actions.
     stopActions(this.actions.position)
-    // set actions
-    this.actions.position.animater = physics(this.values.position, {
-      // TODO: move these variables into config.sticky.physics
+    // Start sticky actions.
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
       friction       : 0.925,
-      springStrength : 280
-    })
+      springStrength : 280,
+      restSpeed      : false
+    }).start(this.values.position)
     this.actions.position.pointer = pointer()
       .pipe(makeSticky(this.props.stickyPoint, config.stickySpringStrength))
-      .start(this.actions.position.animater.setSpringTarget)
+      .start(this.actions.position.physics.setSpringTarget)
   }
 
-  // positionActionsTransitioning :: _ -> _
-  positionActionsTransitioning = () => {
-    // stop any active actions
+  // positionActionsExitTransition :: _ -> _
+  positionActionsExitTransition = () => {
+    // Stop running actions.
     stopActions(this.actions.position)
-    // set actions
-    this.actions.animater = tween({
-      duration : AppConfig.pageTransitionTime,
-      to       : this.props.stickyPoint,
-      ease     : easing.circOut
-    }).start({
-      update   : this.values.position,
-      complete : () => this.setState({ positionTransitioned: false })
+    // Start sticky actions.
+    // this.actions.position.tween = tween({
+    //   from     : this.values.position.get(),
+    //   to       : this.props.stickyPoint,
+    //   duration : 200,
+    //   ease     : easing.backOut
+    // }).start(this.values.position)
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      friction       : 0.8,
+      springStrength : 100,
+      restSpeed      : false
+    }).start(this.values.position)
+    this.actions.position.physics.setSpringTarget(this.props.stickyPoint)
+  }
+
+  // positionActionsEnterTransition :: () _ -> _
+  positionActionsEnterTransition = () => {
+    // Stop running actions.
+    stopActions(this.actions.position)
+    // no position actions on start, just reset relevant vars
+    this.values.position.update({
+      x : (window.innerWidth / 7) * 6,
+      y : (window.innerHeight / 7) * 5 + config.default.radius * 2
     })
   }
 
   // appearanceActionsReducer :: string -> _
   appearanceActionsReducer = type => {
-    if (this.values.appearanceTransitioned) {
-      switch (type) {
-        case types.TRANSITIONING: {
-          this.appearanceActionsTransitioning()
-          return
-        }
-        case types.STICKY: {
-          this.appearanceActionsSticky()
-          return
-        }
-        case types.NO_CURSOR: {
-          this.appearanceActionsNoCursor()
-          return
-        }
-        default: {
-          this.appearanceActionsDefault()
-        }
+    switch (type) {
+      case types.EXIT_TRANSITION: {
+        this.appearanceActionsExitTransition()
+        return
       }
-    } else {
-      this.appearanceActionsInit()
+      case types.ENTER_TRANSITION: {
+        this.appearanceActionsEnterTransition()
+        return
+      }
+      case types.STICKY: {
+        this.appearanceActionsSticky()
+        return
+      }
+      case types.NO_CURSOR: {
+        this.appearanceActionsNoCursor()
+        return
+      }
+      default: {
+        this.appearanceActionsDefault()
+      }
     }
-  }
-
-  // appearanceActionsInit :: _-> _
-  appearanceActionsInit = () => {
-    // stop any active actions
-    stopActions(this.actions.appearance)
-    // set values
-    this.values.color = themeToColor(this.props.theme)
-    // animate from load
-    this.actions.appearance.tween = tween({
-      to       : CursorStyles.normal,
-      duration : AppConfig.pageTransitionTime,
-      ease     : easing.circOut
-    }).start({
-      update   : this.values.styles,
-      complete : () => {
-        this.values.appearanceTransitioned = true
-        this.appearanceActionsReducer(this.props.actionsState.appearance)
-      }
-    })
   }
 
   // appearanceActionsDefault :: _ -> _
   appearanceActionsDefault = () => {
-    // stop any active actions
+    // Stop current actions.
     stopActions(this.actions.appearance)
-    // animate to default appearance
+
+    // Apply default appearance tween.
     this.actions.appearance.tween = tween({
-      to: CursorStyles.normal
+      from : this.values.styles.get(),
+      to   : CursorStyles.normal
     }).start(this.values.styles)
-    // set mouseDown mouse Up actions
-    this.actions.mouseDown = listen(document, 'mouseDown').start(() => {
-      if (this.props.canDrag) {
-        this.actions.appearance.tween = tween({
-          to: {
-            ...CursorStyles.normal,
-            ...CursorStyles.drag
-          },
-          ease: easing.backOut
-        }).start(this.values.styles)
+
+    // Allow mouseDown default appearance tweens.
+    this.actions.appearance.mouseDown = listen(document, 'mousedown').start(
+      () => {
+        if (this.props.canDrag) {
+          this.actions.appearance.tween = tween({
+            from : this.values.styles.get(),
+            to   : {
+              ...CursorStyles.normal,
+              ...CursorStyles.drag
+            },
+            ease: easing.backOut
+          }).start(this.values.styles)
+        }
       }
-    })
-    this.actions.mouseUp = listen(document, 'mouseUp').start(() => {
+    )
+
+    // Allow mouseUp default appearance tweens.
+    this.actions.appearance.mouseUp = listen(document, 'mouseup').start(() => {
       if (this.props.canDrag) {
         this.actions.appearance.tween = tween({
+          from : this.values.styles.get(),
           to   : CursorStyles.normal,
           ease : easing.backOut
         }).start(this.values.styles)
@@ -235,24 +260,72 @@ class CursorComponent extends Component {
 
   // appearanceActionsSticky :: _ -> _
   appearanceActionsSticky = () => {
-    // stop any active actions
+    // Stop current actions.
     stopActions(this.actions.appearance)
-    // animate to default appearance
+    // Apply sticky actions.
+    const currStyles = this.values.styles.get()
     this.actions.appearance.tween = tween({
-      to: {
+      from : currStyles,
+      to   : {
         ...CursorStyles.normal,
         ...CursorStyles.sticky
       },
-      duration : 800,
-      ease     : easing.circOut
+      duration : 300,
+      ease     : easing.backOut
     }).start(this.values.styles)
   }
 
   // appearanceActionsNoCursor :: _ -> _
-  appearanceActionsNoCursor = () => {}
+  appearanceActionsNoCursor = () => {
+    // Stop current actions.
+    stopActions(this.actions.appearance)
+    // Apply transitioning actions.
+    const currStyles = this.values.styles.get()
+    this.actions.appearance.tween = tween({
+      from : currStyles,
+      to   : {
+        ...currStyles,
+        ...CursorStyles.noCursor
+      }
+    }).start(this.values.styles)
+  }
 
-  // appearanceActionsTransitioning :: _ -> _
-  appearanceActionsTransitioning = () => {}
+  // appearanceActionsExitTransition :: _ -> _
+  appearanceActionsExitTransition = () => {
+    // Stop current actions.
+    stopActions(this.actions.appearance)
+    // Apply transitioning actions.
+    const currStyles = this.values.styles.get()
+    this.actions.appearance.tween = tween({
+      from : currStyles,
+      to   : {
+        ...currStyles,
+        ...CursorStyles.transitioning
+      },
+      duration : AppConfig.pageTransitionTime / 2,
+      ease     : easing.createExpoIn(3)
+    }).start(this.values.styles)
+  }
+
+  // appearanceActionsEnterTransition:: _ -> _
+  appearanceActionsEnterTransition = () => {
+    const currStyles = this.values.styles.get()
+    this.actions.appearance.tween = tween({
+      from: {
+        ...currStyles,
+        strokeStart : 0,
+        strokeEnd   : 0,
+        radius      : 0
+      },
+      to: {
+        ...currStyles,
+        radius      : 30,
+        strokeStart : 0,
+        strokeEnd   : 100
+      },
+      duration: AppConfig.pageTransitionTime
+    }).start(this.values.styles)
+  }
 
   size = context => {
     /**

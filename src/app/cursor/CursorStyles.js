@@ -22,12 +22,15 @@ const drag = {
   arrowOpacity : 1,
   arrowOffset  : 5
 }
+const noCursor = {
+  radius: 0
+}
 
 const sticky = {
   radius: 50
 }
 
-const loading = {
+const transitioning = {
   strokeStart: 100
 }
 
@@ -37,5 +40,6 @@ export default {
   link,
   drag,
   sticky,
-  loading
+  transitioning,
+  noCursor
 }

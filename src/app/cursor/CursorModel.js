@@ -28,4 +28,4 @@ export const makeSticky = (targetCenter, springStrength) =>
 
 // themeToColor :: string -> {}
 export const themeToColor = theme =>
-  theme === 'light' ? { r: 51, g: 51, b: 49 } : { r: 255, g: 255, b: 255 }
+  theme === 'light' ? { r: 34, g: 34, b: 32 } : { r: 255, g: 255, b: 255 }

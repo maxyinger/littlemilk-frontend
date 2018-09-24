@@ -12,6 +12,14 @@ const breakSticky = () => ({
   type: types.BREAK_STICKY
 })
 
+const startExitTransition = () => ({
+  type: types.START_EXIT_TRANSITION
+})
+
+const startEnterTransition = () => ({
+  type: types.START_ENTER_TRANSITION
+})
+
 const startTransition = () => ({
   type: types.START_TRANSITION
 })
@@ -28,11 +36,18 @@ const makeThemeLight = () => ({
   type: types.MAKE_THEME_LIGHT
 })
 
+const toggleCursor = () => ({
+  type: types.TOGGLE_CURSOR
+})
+
 export default {
   makeSticky,
   breakSticky,
   startTransition,
+  startEnterTransition,
+  startExitTransition,
   endTransition,
   makeThemeDark,
-  makeThemeLight
+  makeThemeLight,
+  toggleCursor
 }

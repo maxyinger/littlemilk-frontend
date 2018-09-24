@@ -3,20 +3,19 @@ import AppComponent from './AppComponent'
 import { appActions } from './duck'
 
 const mapStateToProps = state => {
-  const { theme } = state.app
+  const { theme, noCursor } = state.app
   return {
-    theme
+    theme,
+    noCursor
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  const endTransition = () => {
-    dispatch(appActions.endTransition())
-  }
-  return {
-    endTransition
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  startExitTransition  : () => dispatch(appActions.startExitTransition()),
+  startEnterTransition : () => dispatch(appActions.startEnterTransition()),
+  endTransition        : () => dispatch(appActions.endTransition()),
+  toggleCursor         : () => dispatch(appActions.toggleCursor())
+})
 
 const AppContainer = connect(
   mapStateToProps,

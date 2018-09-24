@@ -1,11 +1,13 @@
 const CURSOR = '[Cursor]'
-const TRANSITIONING = `${CURSOR} Transitioning`
+const EXIT_TRANSITION = `${CURSOR} Exit Transition`
+const ENTER_TRANSITION = `${CURSOR} Enter Transition`
 const STICKY = `${CURSOR} Sticky`
 const NO_CURSOR = `${CURSOR} No Cursor`
 const DEFAULT = `${CURSOR} Default`
 
 export default {
-  TRANSITIONING,
+  EXIT_TRANSITION,
+  ENTER_TRANSITION,
   STICKY,
   NO_CURSOR,
   DEFAULT
