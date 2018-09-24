@@ -61,7 +61,9 @@ const AppComponent = ({
   startEnterTransition,
   endTransition,
   toggleCursor,
-  noCursor
+  noCursor,
+  stickyIndex,
+  isExitTransition
 }) => (
   <Router>
     <div
@@ -69,7 +71,10 @@ const AppComponent = ({
         if (target.classList.contains('no-cursor') && !noCursor) toggleCursor()
         if (!target.classList.contains('no-cursor') && noCursor) toggleCursor()
       }}
-      className={`app ${theme === 'light' ? 'theme--light' : 'theme--dark'}`}
+      className={
+        `app ${theme === 'light' ? 'theme--light ' : 'theme--dark '}` +
+        (stickyIndex >= 0 && !isExitTransition ? 'pointer ' : '')
+      }
     >
       <Background pose={theme === 'light' ? 'themeLight' : 'themeDark'} />
       <NavContainer />
@@ -86,7 +91,6 @@ const AppComponent = ({
                      * though value doesn't change. Added extra
                      * precautions to make sure it only fires once
                      */
-                    // console.log(`enterTransition ${enterTransition}, v: ${v}`)
                     if (v === 0) startExitTransition()
                     if (v === 1) endTransition()
                     if (v === 2) startEnterTransition()
@@ -116,7 +120,9 @@ AppComponent.propTypes = {
   startEnterTransition : PropTypes.func.isRequired,
   endTransition        : PropTypes.func.isRequired,
   toggleCursor         : PropTypes.func.isRequired,
-  noCursor             : PropTypes.bool.isRequired
+  noCursor             : PropTypes.bool.isRequired,
+  stickyIndex          : PropTypes.number.isRequired,
+  isExitTransition     : PropTypes.bool.isRequired
 }
 
 export default AppComponent

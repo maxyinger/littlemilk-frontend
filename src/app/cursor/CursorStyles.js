@@ -27,11 +27,19 @@ const noCursor = {
 }
 
 const sticky = {
-  radius: 50
+  radius  : 50,
+  opacity : 0.2
 }
 
-const transitioning = {
-  strokeStart: 100
+const exitTransition = {
+  strokeEnd : 0,
+  opacity   : 0
+}
+
+const enterTransition = {
+  strokeEnd : 100,
+  radius    : 30,
+  opacity   : 1
 }
 
 export default {
@@ -40,6 +48,7 @@ export default {
   link,
   drag,
   sticky,
-  transitioning,
+  exitTransition,
+  enterTransition,
   noCursor
 }

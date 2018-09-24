@@ -4,7 +4,10 @@ import transforms from '../../utils/transforms'
  * @param {CanvasRenderingContext2D} ctx
  * @param {Object} config
  */
-export const circle = (ctx, { x, y, r, rgb, strokeStart, strokeEnd }) => {
+export const circle = (
+  ctx,
+  { x, y, r, rgb, opacity, strokeStart, strokeEnd }
+) => {
   /**
    * Convert Input
    */
@@ -16,7 +19,7 @@ export const circle = (ctx, { x, y, r, rgb, strokeStart, strokeEnd }) => {
    * Reset style buffer
    */
   ctx.lineWidth = 0.5
-  ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`
+  ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`
   ctx.fillStyle = 'rgba(0,0,0,0)'
   ctx.beginPath()
   /**

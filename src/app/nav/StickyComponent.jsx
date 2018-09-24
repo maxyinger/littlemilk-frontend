@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { value, pointer, listen } from 'popmotion'
-import { makeEmitter, makeSticky, boundingBoxCenter } from './StickyModel'
-import physics from '../common/physics'
+import { value, physics, pointer, listen } from 'popmotion'
+import {
+  makeEmitterDefault,
+  makeEmitterSticky,
+  makeSticky,
+  boundingBoxCenter
+} from './StickyModel'
+import types from './duck/types'
 import { stopActions } from '../../utils/actionHelpers'
 import config from './Nav.config'
-
-/**
- * TODO: Add history.push or <Redirect /> routing on mouse down in range
- */
 
 const NavLinkInner = styled.span`
   position: relative;
@@ -26,108 +27,164 @@ class StickyComponent extends Component {
   }
 
   componentDidMount () {
-    this.actions = {
-      /** Controls animation */
-      physics: physics(value({ x: 0, y: 0 }, this.positionSetter), {
-        friction       : 0.925,
-        springStrength : 280
-      }),
-      /** Client listeners */
-      resize: listen(window, 'resize').start(() =>
-        this.setPointerListeners(this.props.sticky === this.props.index)
-      ),
-      pointerListeners : [],
-      mouseClick       : listen(window, 'click').start(this.handleMouseClick)
+    // INITIAL_VALUES
+    this.values = {
+      position: value(
+        { x: 0, y: 0 },
+        ({ x, y }) =>
+          this.target.current
+            ? (this.target.current.firstElementChild.style.transform = `translate3d(${x}px, ${y}px, 0px)`)
+            : { x, y }
+      )
     }
-    this.setPointerListeners(this.props.sticky === this.props.index)
-  }
 
-  componentDidUpdate () {
-    this.setPointerListeners(this.props.sticky === this.props.index)
+    // INITIAL_ACTIONS
+    this.actions = {
+      constant: {
+        resize: listen(window, 'resize').start(() =>
+          this.actionsReducer(this.props.actionsState)
+        )
+      },
+      position: {
+        physics : {},
+        pointer : {},
+        emitter : {},
+        click   : {}
+      }
+    }
+
+    // Initialize actions on mount.
+    this.actionsReducer(this.props.actionsState)
   }
 
   componentWillUnmount () {
+    stopActions(this.values)
     stopActions(this.actions)
   }
 
-  // handleMouseClick :: _ => _
-  handleMouseClick = () => {
-    /**
-     * if this is sticky signal transition to app and redirect page change
-     */
-    if (this.props.sticky === this.props.index) {
-      // Set animations in motion
-      // stopActions(this.actions.pointerListeners)
-      // setTimeout(() => this.actions.physics.setSpringTarget({ x: 0, y: 0 }))
-      // this.props.breakSticky()
-      // Signal app treansition is occurring and transition state
-      // this.props.startTransition()
-      this.props.history.push(this.props.to)
+  componentDidUpdate (prevProps) {
+    // Only mutable actions for this class are this.actions.position.
+    if (this.props.actionsState !== prevProps.actionsState) {
+      this.actionsReducer(this.props.actionsState)
     }
   }
 
-  // setter :: point -> style
-  positionSetter = ({ x, y }) => {
-    if (this.target.current) {
-      this.target.current.firstElementChild.style.transform = `translate3d(${x}px, ${y}px, 0px)`
-    }
-  }
-
-  // updatePointerListeners :: bool -> _
-  setPointerListeners = isSticky => {
-    stopActions(this.actions.pointerListeners)
-    this.actions.pointerListeners = [this.Emitter(pointer())]
-    // this.actions.physics.setSpringTarget({ x: 0, y: 0 })
-    if (isSticky && !this.props.transitionStarted) {
-      this.actions.pointerListeners.push(this.Sticky(pointer()))
-    } else {
-      /** must place at end of execution queue because popmotion uses a
-       * debouncer */
-      setTimeout(() => this.actions.physics.setSpringTarget({ x: 0, y: 0 }))
-    }
-  }
-
-  // Emitter :: action -> actionInstance
-  Emitter = pointer => {
-    let targetCenter = {}
-    if (this.target.current) {
-      const clientRect = this.target.current.getBoundingClientRect()
-      targetCenter = boundingBoxCenter(clientRect)
-    }
-    const emitter = makeEmitter(
-      config.enterDist,
-      (config.exitDist / 100) * window.innerWidth,
-      this.props.index,
-      this.props.sticky,
-      targetCenter
-    )
-    return pointer.pipe(emitter).start(v => {
-      switch (v) {
-        case 'MAKE_STICKY': {
-          /** if active cancel emission */
-          const target = this.target.current
-          if (target.parentElement.classList.contains('active')) return
-          /** otherwise emit */
-          return this.props.makeSticky(this.props.index, targetCenter)
-        }
-
-        case 'BREAK_STICKY': {
-          return this.props.breakSticky()
-        }
+  // actionsReducer :: string -> _
+  actionsReducer = type => {
+    console.log(type)
+    switch (type) {
+      case types.EXIT_TRANSITION: {
+        this.actionsExitTransition()
+        break
       }
-    })
+      case types.ENTER_TRANSITION: {
+        stopActions(this.actions.position)
+        this.props.breakSticky()
+        break
+      }
+      case types.IS_ACTIVE: {
+        stopActions(this.actions.position)
+        break
+      }
+      case types.IS_STICKY: {
+        this.actionsSticky()
+        break
+      }
+      default: {
+        this.actionsDefault()
+      }
+    }
   }
 
-  // Sticky :: action -> actionInstance
-  Sticky = pointer => {
-    const sticky = makeSticky(
-      boundingBoxCenter(this.target.current.getBoundingClientRect()),
-      config.springStrength
+  // actionsDefault :: _ -> _
+  actionsDefault = () => {
+    // Stop running actions.
+    stopActions(this.actions.position)
+
+    // Set physics to return position to origin.
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      to             : { x: 0, y: 0 },
+      friction       : 0.85,
+      springStrength : 250
+    }).start(this.values.position)
+
+    const target = this.target.current
+    if (target) {
+      // Update the emitter.
+      const targetCenter = boundingBoxCenter(target.getBoundingClientRect())
+      this.actions.position.emitter = pointer()
+        .pipe(makeEmitterDefault(targetCenter, config.enterDist))
+        .start(
+          v =>
+            v === types.MAKE_STICKY
+              ? this.props.makeSticky(this.props.index, targetCenter)
+              : undefined
+        )
+    } else {
+      console.log(
+        `Can't compute <sticky index=${this.props.index}/>'s ` +
+          'bounding box for default emitter action'
+      )
+    }
+  }
+
+  // actionsSticky :: _ -> _
+  actionsSticky = () => {
+    // Stop running actions.
+    stopActions(this.actions.position)
+
+    // Set physics to go towards computed constraint motion.
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      friction       : 0.925,
+      springStrength : 280,
+      restSpeed      : false
+    }).start(this.values.position)
+
+    const target = this.target.current
+    if (target) {
+      const targetCenter = boundingBoxCenter(target.getBoundingClientRect())
+      // Compute constraint motion.
+      this.actions.position.pointer = pointer()
+        .pipe(makeSticky(targetCenter, config.springStrength))
+        .start(this.actions.position.physics.setSpringTarget)
+
+      // Update the emitter.
+      this.actions.position.emitter = pointer()
+        .pipe(makeEmitterSticky(targetCenter, config.exitDist))
+        .start(
+          v => (v === types.BREAK_STICKY ? this.props.breakSticky() : undefined)
+        )
+    } else {
+      console.log(
+        `Can't compute <sticky index=${this.props.index}/>'s ` +
+          'bounding box for sticky emitter and pointer actions'
+      )
+    }
+
+    // Add click handler.
+    this.actions.position.click = listen(document, 'click').start(() =>
+      this.props.history.push(this.props.to)
     )
-    return pointer.pipe(sticky).start(this.actions.physics.setSpringTarget)
+  }
+
+  // actionsExitTransition :: _ -> _
+  actionsExitTransition = () => {
+    // Stop running actions.
+    stopActions(this.actions.position)
+
+    // Set physics to return position to origin.
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      to             : { x: 0, y: 0 },
+      friction       : 0.8,
+      springStrength : 100
+    }).start(this.values.position)
   }
 
   render () {
+    const { actionsState } = this.props
     return (
       <NavLink
         exact={this.props.exact}
@@ -135,7 +192,12 @@ class StickyComponent extends Component {
         className="link"
         activeClassName="active"
       >
-        <span ref={this.target}>
+        <span
+          className={
+            'target ' + (actionsState === types.IS_STICKY ? 'isSticky ' : '')
+          }
+          ref={this.target}
+        >
           <NavLinkInner>{this.props.children}</NavLinkInner>
         </span>
       </NavLink>
@@ -145,16 +207,15 @@ class StickyComponent extends Component {
 
 StickyComponent.propTypes = {
   /** props for NavLink */
-  to                : PropTypes.string.isRequired,
-  exact             : PropTypes.bool,
-  index             : PropTypes.number.isRequired,
+  to           : PropTypes.string.isRequired,
+  exact        : PropTypes.bool,
+  index        : PropTypes.number.isRequired,
   /** props from store */
-  makeSticky        : PropTypes.func.isRequired,
-  breakSticky       : PropTypes.func.isRequired,
-  sticky            : PropTypes.number.isRequired,
-  transitionStarted : PropTypes.bool.isRequired,
+  makeSticky   : PropTypes.func.isRequired,
+  breakSticky  : PropTypes.func.isRequired,
+  actionsState : PropTypes.string.isRequired,
   /** redirect required props from RR4 */
-  history           : PropTypes.shape({
+  history      : PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
   /** who doesn't love children */

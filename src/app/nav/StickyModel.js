@@ -1,4 +1,5 @@
 import { calc, transform } from 'popmotion'
+import types from './duck/types'
 const { pipe, transformMap, linearSpring } = transform
 
 // makeBoundingBoxCenter :: boundingBox -> point
@@ -18,29 +19,45 @@ export const distFromOrigin = ({ x, y }) =>
   calc.distance({ x: 0, y: 0 }, { x, y })
 
 // isFirstEnter :: number, number, number -> fn(number -> bool)
-export const makeIsFirstEnter = (condition, index, sticky) => dist =>
-  dist < condition && index !== sticky
+export const makeIsFirstEnter = (enterDist, isSticky) => dist =>
+  dist < enterDist && !isSticky
 
 // isFirstExit :: number, number, number -> fn(number -> bool)
-export const makeIsFirstExit = (condition, index, sticky) => dist =>
-  dist > condition && index === sticky
+export const makeIsFirstExit = (exitDist, isSticky) => dist =>
+  dist > exitDist && isSticky
 
 // mapIsSticky :: fn(number -> bool), fn(number -> bool) -> fn(number -> string)
 export const makeMapIsSticky = (isFirstEnter, isFirstExit) =>
   pipe(v => {
-    if (isFirstEnter(v)) return 'MAKE_STICKY'
-    else if (isFirstExit(v)) return 'BREAK_STICKY'
+    if (isFirstEnter(v)) return types.MAKE_STICKY
+    else if (isFirstExit(v)) return types.BREAK_STICKY
   })
 
 // makeEmitter :: number, number, number, number -> emitter::fn(point -> string)
-export const makeEmitter = (enter, exit, index, sticky, targetCenter) =>
+export const makeEmitter = (enterDist, exitDist, isSticky, targetCenter) =>
   pipe(
     makeMapCursorVector(targetCenter),
     distFromOrigin,
     makeMapIsSticky(
-      makeIsFirstEnter(enter, index, sticky),
-      makeIsFirstExit(exit, index, sticky)
+      makeIsFirstEnter(enterDist, isSticky),
+      makeIsFirstExit(exitDist, isSticky)
     )
+  )
+
+// makeEmitterSticky :: point, number, fn  -> fn(point -> string)
+export const makeEmitterSticky = (targetCenter, exitDist) =>
+  pipe(
+    makeMapCursorVector(targetCenter),
+    distFromOrigin,
+    v => (v > exitDist ? types.BREAK_STICKY : undefined)
+  )
+
+// makeEmitterDefault :: point, number, fn -> fn(point -> string)
+export const makeEmitterDefault = (targetCenter, enterDist) =>
+  pipe(
+    makeMapCursorVector(targetCenter),
+    distFromOrigin,
+    v => (v < enterDist ? types.MAKE_STICKY : undefined)
   )
 
 // makeSticky :: point, number -> fn(point -> point)

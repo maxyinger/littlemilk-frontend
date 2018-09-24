@@ -1,5 +1,5 @@
 export default {
-  stickySpringStrength : 0.28,
+  stickySpringStrength : 0.2,
   static               : {
     /**
      * Size of arrows in

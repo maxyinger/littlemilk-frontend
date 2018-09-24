@@ -1,28 +1,25 @@
 import { createSelector } from 'reselect'
 import types from './types'
 
-const getEnterTransition = state => state.enterTransition
-const getExitTransition = state => state.exitTransition
-const getSticky = state => state.sticky
+const getEnterTransition = state => state.isEnterTransition
+const getExitTransition = state => state.isExitTransition
+const getStickyIndex = state => state.stickyIndex
 const getStickyPoint = state => state.stickyPoint
 const getNoCursor = state => state.noCursor
 
 const getCursorPositionState = createSelector(
-  [getEnterTransition, getExitTransition, getSticky, getStickyPoint],
-  (enterTransition, exitTransition, sticky, stickyPoint) => {
-    // if (exitTransition && stickyPoint.x !== null && stickyPoint.y !== null) {
-    if (exitTransition) {
+  [getEnterTransition, getExitTransition, getStickyIndex, getStickyPoint],
+  (isEnterTransition, isExitTransition, stickyIndex, stickyPoint) => {
+    if (isExitTransition) {
       return types.EXIT_TRANSITION
-    } else if (enterTransition) {
+    } else if (isEnterTransition) {
       return types.ENTER_TRANSITION
     } else if (
-      sticky >= 0 &&
+      stickyIndex >= 0 &&
       stickyPoint.x !== null &&
-      stickyPoint.y !== null &&
-      !exitTransition &&
-      !enterTransition
+      stickyPoint.y !== null
     ) {
-      return types.STICKY
+      return types.IS_STICKY
     } else {
       return types.DEFAULT
     }
@@ -36,8 +33,8 @@ const getCursorAppearanceState = createSelector(
       return types.EXIT_TRANSITION
     } else if (cursorPositionState === types.ENTER_TRANSITION) {
       return types.ENTER_TRANSITION
-    } else if (cursorPositionState === types.STICKY) {
-      return types.STICKY
+    } else if (cursorPositionState === types.IS_STICKY) {
+      return types.IS_STICKY
     } else if (noCursor) {
       return types.NO_CURSOR
     } else {

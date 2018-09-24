@@ -4,13 +4,16 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import SplitText from 'react-pose-text'
 import './Nav.scss'
+import AppConfig from '../App.config'
 
 const charPoses = {
   themeDark: {
-    color: '#ffffff'
+    color      : '#ffffff',
+    transition : { duration: AppConfig.pageTransitionTime * 0.7 }
   },
   themeLight: {
-    color: '#1c1c1a'
+    color      : '#1c1c1a',
+    transition : { duration: AppConfig.pageTransitionTime * 0.7 }
   }
 }
 

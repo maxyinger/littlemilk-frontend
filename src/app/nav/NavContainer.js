@@ -8,6 +8,10 @@ const mapStateToProps = state => {
   }
 }
 
+/**
+ * pure: false needed because of connect
+ * complications with withRouter() and posed()
+ */
 const NavContainer = connect(
   mapStateToProps,
   null,

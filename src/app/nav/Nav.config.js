@@ -4,15 +4,13 @@ export default {
    * the value the stronger of a bind
    * [0-1]
    */
-  springStrength : 0.2,
+  springStrength : 0.25,
   /**
    * Pixel distance within which navLink becomes sticky
-   * [0-100]
    */
   enterDist      : 70,
   /**
-   * Percentage of viewport in which navLink breaks sticky tie
-   * [0-100]
+   * Pixel distance within which navLink becomes un-sticky
    */
-  exitDist       : 13
+  exitDist       : 400
 }

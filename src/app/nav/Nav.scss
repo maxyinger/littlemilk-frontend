@@ -62,12 +62,17 @@ _px {
 
 .nav-link-wrap .link,
 _px {
-  opacity: 0.2;
   font-weight: $font-weight--bold;
   font-size: responsive 14px 17px;
   font-range: 670px 2560px;
 }
 
-.nav-link-wrap .active {
+.target {
+  opacity: 0.2;
+  transition: 0.2s opacity;
+}
+
+.nav-link-wrap .link.active .target,
+.nav-link-wrap .link .target.isSticky {
   opacity: 1;
 }

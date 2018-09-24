@@ -3,10 +3,12 @@ import AppComponent from './AppComponent'
 import { appActions } from './duck'
 
 const mapStateToProps = state => {
-  const { theme, noCursor } = state.app
+  const { theme, noCursor, stickyIndex, isExitTransition } = state.app
   return {
     theme,
-    noCursor
+    noCursor,
+    stickyIndex,
+    isExitTransition
   }
 }
 

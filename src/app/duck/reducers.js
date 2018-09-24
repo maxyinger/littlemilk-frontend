@@ -1,15 +1,15 @@
 import types from './types'
 
 export const INITIAL_STATE = {
-  sticky      : -1,
+  stickyIndex : -1,
+  activeIndex : -1,
   stickyPoint : {
     x : null,
     y : null
   },
   canDrag           : true,
-  pageTransitioning : false,
-  enterTransition   : false,
-  exitTransition    : false,
+  isEnterTransition : false,
+  isExitTransition  : false,
   noCursor          : false,
   theme             : 'light'
 }
@@ -20,7 +20,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
       const { index, point } = action.payload
       return {
         ...state,
-        sticky      : index,
+        stickyIndex : index,
         stickyPoint : point,
         canDrag     : false
       }
@@ -29,7 +29,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case types.BREAK_STICKY: {
       return {
         ...state,
-        sticky      : -1,
+        stickyIndex : -1,
         canDrag     : true,
         stickyPoint : {
           x : null,
@@ -38,37 +38,29 @@ const appReducer = (state = INITIAL_STATE, action) => {
       }
     }
 
-    case types.START_TRANSITION: {
-      return {
-        ...state,
-        pageTransitioning : true,
-        sticky            : -1,
-        canDrag           : false
-      }
-    }
-
     case types.START_EXIT_TRANSITION: {
+      const { stickyIndex } = state
       return {
         ...state,
-        exitTransition  : true,
-        enterTransition : false
+        activeIndex       : stickyIndex,
+        isExitTransition  : true,
+        isEnterTransition : false
       }
     }
 
     case types.START_ENTER_TRANSITION: {
       return {
         ...state,
-        exitTransition  : false,
-        enterTransition : true
+        isExitTransition  : false,
+        isEnterTransition : true
       }
     }
 
     case types.END_TRANSITION: {
       return {
         ...state,
-        pageTransitioning : false,
-        exitTransition    : false,
-        enterTransition   : false,
+        isExitTransition  : false,
+        isEnterTransition : false,
         stickyPoint       : {
           x : null,
           y : null

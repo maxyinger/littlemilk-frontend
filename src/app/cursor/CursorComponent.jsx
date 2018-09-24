@@ -10,7 +10,6 @@ import {
 } from 'popmotion'
 import { circle, triangle } from './CursorUtils'
 import config from './Cursor.config'
-// import physics from '../common/physics'
 import CursorStyles from './CursorStyles'
 import { makeSticky, themeToColor } from './CursorModel'
 import { stopActions } from '../../utils/actionHelpers'
@@ -18,14 +17,6 @@ import types from './duck/types'
 import AppConfig from '../App.config'
 import PropTypes from 'prop-types'
 import './Cursor.scss'
-
-/**
- * TODO: Disable mouse down transition when canDrag off
- * TODO: Add constrain motion when app is sticky
- * TODO: Page transition
- * //TODO: Migrate utility functions out of class and test them
- * //TODO: Migrate globals to config
- */
 
 class CursorComponent extends Component {
   constructor (props) {
@@ -78,7 +69,7 @@ class CursorComponent extends Component {
       }
     }
 
-    // this.actionsInit()
+    // Initialize actions on mount.
     this.values.position.update({
       x : (window.innerWidth / 7) * 6,
       y : (window.innerHeight / 7) * 5 + config.default.radius * 2
@@ -121,7 +112,7 @@ class CursorComponent extends Component {
         this.positionActionsEnterTransition()
         return
       }
-      case types.STICKY: {
+      case types.IS_STICKY: {
         this.positionActionsSticky()
         return
       }
@@ -135,6 +126,7 @@ class CursorComponent extends Component {
   positionActionsDefault = () => {
     // Stop running actions.
     stopActions(this.actions.position)
+
     // Start default actions.
     this.actions.position.physics = physics({
       from           : this.values.position.get(),
@@ -151,6 +143,7 @@ class CursorComponent extends Component {
   positionActionsSticky = () => {
     // Stop running actions.
     stopActions(this.actions.position)
+
     // Start sticky actions.
     this.actions.position.physics = physics({
       from           : this.values.position.get(),
@@ -167,26 +160,21 @@ class CursorComponent extends Component {
   positionActionsExitTransition = () => {
     // Stop running actions.
     stopActions(this.actions.position)
+
     // Start sticky actions.
-    // this.actions.position.tween = tween({
-    //   from     : this.values.position.get(),
-    //   to       : this.props.stickyPoint,
-    //   duration : 200,
-    //   ease     : easing.backOut
-    // }).start(this.values.position)
     this.actions.position.physics = physics({
       from           : this.values.position.get(),
+      to             : this.props.stickyPoint,
       friction       : 0.8,
-      springStrength : 100,
-      restSpeed      : false
+      springStrength : 100
     }).start(this.values.position)
-    this.actions.position.physics.setSpringTarget(this.props.stickyPoint)
   }
 
   // positionActionsEnterTransition :: () _ -> _
   positionActionsEnterTransition = () => {
     // Stop running actions.
     stopActions(this.actions.position)
+
     // no position actions on start, just reset relevant vars
     this.values.position.update({
       x : (window.innerWidth / 7) * 6,
@@ -205,7 +193,7 @@ class CursorComponent extends Component {
         this.appearanceActionsEnterTransition()
         return
       }
-      case types.STICKY: {
+      case types.IS_STICKY: {
         this.appearanceActionsSticky()
         return
       }
@@ -300,10 +288,10 @@ class CursorComponent extends Component {
       from : currStyles,
       to   : {
         ...currStyles,
-        ...CursorStyles.transitioning
+        ...CursorStyles.exitTransition
       },
-      duration : AppConfig.pageTransitionTime / 2,
-      ease     : easing.createExpoIn(3)
+      duration: AppConfig.pageTransitionTime - 200
+      // ease     : easing.createExpoIn(3)
     }).start(this.values.styles)
   }
 
@@ -315,13 +303,12 @@ class CursorComponent extends Component {
         ...currStyles,
         strokeStart : 0,
         strokeEnd   : 0,
+        opacity     : 1,
         radius      : 0
       },
       to: {
         ...currStyles,
-        radius      : 30,
-        strokeStart : 0,
-        strokeEnd   : 100
+        ...CursorStyles.enterTransition
       },
       duration: AppConfig.pageTransitionTime
     }).start(this.values.styles)
@@ -343,6 +330,7 @@ class CursorComponent extends Component {
     // Get Styles & Position
     const {
       radius,
+      opacity,
       strokeStart,
       strokeEnd,
       arrowOffset,
@@ -355,6 +343,7 @@ class CursorComponent extends Component {
       y           : y,
       r           : radius,
       rgb         : this.values.color,
+      opacity     : opacity,
       strokeStart : strokeStart,
       strokeEnd   : strokeEnd
     })

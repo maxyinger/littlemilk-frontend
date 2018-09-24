@@ -1,13 +1,12 @@
 import { connect } from 'react-redux'
 import StickyComponent from './StickyComponent'
 import { appActions } from '../duck'
+import selectors from './duck/selectors'
 
 const mapStateToProps = (state, props) => {
-  const { sticky, transtitionStarted } = state.app
   const { to, exact, index, children } = props
   return {
-    sticky,
-    transtitionStarted,
+    actionsState: selectors.getStickyActionsState(state.app, props),
     to,
     exact,
     index,
@@ -19,12 +18,10 @@ const mapDispatchToProps = dispatch => {
   const makeSticky = (index, point) =>
     dispatch(appActions.makeSticky(index, point))
   const breakSticky = () => dispatch(appActions.breakSticky())
-  const startTransition = () => dispatch(appActions.startTransition())
 
   return {
     makeSticky,
-    breakSticky,
-    startTransition
+    breakSticky
   }
 }
 
