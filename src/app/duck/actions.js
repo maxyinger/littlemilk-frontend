@@ -40,6 +40,14 @@ const toggleCursor = () => ({
   type: types.TOGGLE_CURSOR
 })
 
+const startDragging = () => ({
+  type: types.START_DRAGGING
+})
+
+const endDragging = () => ({
+  type: types.END_DRAGGING
+})
+
 export default {
   makeSticky,
   breakSticky,
@@ -49,5 +57,7 @@ export default {
   endTransition,
   makeThemeDark,
   makeThemeLight,
-  toggleCursor
+  toggleCursor,
+  startDragging,
+  endDragging
 }

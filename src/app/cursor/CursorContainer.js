@@ -8,7 +8,6 @@ const mapStateToProps = state => ({
     appearance : selectors.getCursorAppearanceState(state.app)
   },
   stickyPoint : state.app.stickyPoint,
-  canDrag     : state.app.canDrag,
   theme       : state.app.theme
 })
 

@@ -8,6 +8,8 @@ const END_TRANSITION = `${APP} End Transition`
 const MAKE_THEME_DARK = `${APP} Make Theme Dark`
 const MAKE_THEME_LIGHT = `${APP} Make Theme Light`
 const TOGGLE_CURSOR = `${APP} Toggle Cursor`
+const START_DRAGGING = `${APP} Start Dragging`
+const END_DRAGGING = `${APP} End Dragging`
 
 export default {
   MAKE_STICKY,
@@ -18,5 +20,7 @@ export default {
   END_TRANSITION,
   MAKE_THEME_DARK,
   MAKE_THEME_LIGHT,
-  TOGGLE_CURSOR
+  TOGGLE_CURSOR,
+  START_DRAGGING,
+  END_DRAGGING
 }

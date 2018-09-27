@@ -7,7 +7,7 @@ export const INITIAL_STATE = {
     x : null,
     y : null
   },
-  canDrag           : true,
+  isDragging        : false,
   isEnterTransition : false,
   isExitTransition  : false,
   noCursor          : false,
@@ -21,8 +21,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         stickyIndex : index,
-        stickyPoint : point,
-        canDrag     : false
+        stickyPoint : point
       }
     }
 
@@ -30,7 +29,6 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         stickyIndex : -1,
-        canDrag     : true,
         stickyPoint : {
           x : null,
           y : null
@@ -87,6 +85,20 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         noCursor: !noCursor
+      }
+    }
+
+    case types.START_DRAGGING: {
+      return {
+        ...state,
+        isDragging: true
+      }
+    }
+
+    case types.END_DRAGGING: {
+      return {
+        ...state,
+        isDragging: false
       }
     }
 

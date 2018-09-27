@@ -10,12 +10,12 @@ const Surp = posed.h1({
     color      : '#ff0000',
     blook      : () => 1,
     delay      : 2000,
-    transition : { duration: 2000 }
+    transition : { duration: 1000 }
   },
   exit: {
     color      : '#0000ff',
     blook      : () => 0,
-    transition : { duration: 2000 }
+    transition : { duration: 1000 }
   }
 })
 

@@ -6,7 +6,7 @@ import transforms from '../../utils/transforms'
  */
 export const circle = (
   ctx,
-  { x, y, r, rgb, opacity, strokeStart, strokeEnd }
+  { x, y, r, rgb, lineWidth, opacity, strokeStart, strokeEnd }
 ) => {
   /**
    * Convert Input
@@ -18,7 +18,7 @@ export const circle = (
   /**
    * Reset style buffer
    */
-  ctx.lineWidth = 0.5
+  ctx.lineWidth = lineWidth
   ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`
   ctx.fillStyle = 'rgba(0,0,0,0)'
   ctx.beginPath()

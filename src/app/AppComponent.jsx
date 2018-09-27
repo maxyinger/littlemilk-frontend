@@ -19,7 +19,7 @@ import FourOhFour from './common/FourOhFour'
 import CursorContainer from './cursor/CursorContainer'
 import NavContainer from './nav/NavContainer'
 
-const RoutesContainer = posed.div({
+const TransitionController = posed.div({
   mount: {
     progress: 0
   },
@@ -82,14 +82,14 @@ const AppComponent = ({
         <Route
           render={({ location }) => (
             <PoseGroup flipMove={false} preEnterPose="mount">
-              <RoutesContainer
+              <TransitionController
                 onValueChange={{
                   progress: v => {
                     /**
                      * First re-render from prop change causing
                      * onValue change to fire once per frame even
-                     * though value doesn't change. Added extra
-                     * precautions to make sure it only fires once
+                     * though value doesn't change. Causing sticky
+                     * to not work on first second
                      */
                     if (v === 0) startExitTransition()
                     if (v === 1) endTransition()
@@ -104,7 +104,7 @@ const AppComponent = ({
                   <Route path="/info" component={About} key="about" />
                   <Route component={FourOhFour} key="fourOhFour" />
                 </Switch>
-              </RoutesContainer>
+              </TransitionController>
             </PoseGroup>
           )}
         />

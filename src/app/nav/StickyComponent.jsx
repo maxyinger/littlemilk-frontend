@@ -71,7 +71,6 @@ class StickyComponent extends Component {
 
   // actionsReducer :: string -> _
   actionsReducer = type => {
-    console.log(type)
     switch (type) {
       case types.EXIT_TRANSITION: {
         this.actionsExitTransition()

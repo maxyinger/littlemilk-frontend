@@ -1,59 +1,60 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import posed from 'react-pose'
-import { transform } from 'popmotion'
-
-const Surp = posed.h1({
-  mount: {
-    color: '#00ff00'
-  },
-  enter: {
-    color      : '#ff0000',
-    blook      : () => 1,
-    delay      : 2000,
-    transition : { duration: 2000 }
-  },
-  exit: {
-    color      : '#0000ff',
-    blook      : () => 0,
-    transition : { duration: 2000 }
-  }
-})
+import { listen, value } from 'popmotion'
+import './Home.scss'
 
 class HomeComponent extends Component {
   componentDidMount () {
+    // Update app color
     this.props.makeThemeLight()
+
+    // INITIAL_VALUES
+    this.values = {
+      scrollPercent: value(0, v =>
+        this.setState({
+          scrollPrecent: v
+        })
+      )
+    }
+
+    // INITIAL_ACTIONS
+    this.actions = {
+      constants: {
+        // mousedown -> dipatch isDragging
+        // mouseup -> dispatch !isDragging
+      },
+      position: {
+        pointer: {} // IS_DRAGGING :: {y} -> scrollPercent
+      }
+    }
+    listen(document, 'mousedown touchstart ').start(console.log)
+    listen(document, 'mouseup touchend').start(console.log)
   }
+
+  // actionsReducer :: _ -> _
+  actionsReducer = () => {}
 
   render () {
     return (
-      <div>
-        {/* <hWebGL /> */}
-        {/* <indexer /> */}
-        <div className="h-article-wrap">
+      <div className="h">
+        {/* <HWebGL /> */}
+        {/* <pagination/> */}
+        {/* sections */}
+        {/* <div className="h-article-wrap">
           <article />
           <Surp>Home!</Surp>
-        </div>
+        </div> */}
       </div>
     )
   }
 }
 
-// const HomeComponent = () => (
-//   <div>
-//     {/* <hWebGL /> */}
-//     {/* <indexer /> */}
-//     <div className="h-article-wrap">
-//       <article />
-//       <Emitter onPoseComplete={() => console.log('homeComplete!')}>
-//         Home!
-//       </Emitter>
-//     </div>
-//   </div>
-// )
-
 HomeComponent.propTypes = {
-  makeThemeLight: PropTypes.func.isRequired
+  makeThemeLight : PropTypes.func.isRequired,
+  isSticky       : PropTypes.bool.isRequired,
+  currentSection : PropTypes.number.isRequired,
+  scrollPercent  : PropTypes.number.isRequired
 }
 
 export default HomeComponent

@@ -6,7 +6,8 @@ import {
   everyFrame,
   listen,
   easing,
-  physics
+  physics,
+  delay
 } from 'popmotion'
 import { circle, triangle } from './CursorUtils'
 import config from './Cursor.config'
@@ -176,10 +177,22 @@ class CursorComponent extends Component {
     stopActions(this.actions.position)
 
     // no position actions on start, just reset relevant vars
-    this.values.position.update({
-      x : (window.innerWidth / 7) * 6,
-      y : (window.innerHeight / 7) * 5 + config.default.radius * 2
-    })
+    // this.values.position.update({
+    //   x : (window.innerWidth / 7) * 6,
+    //   y : (window.innerHeight / 7) * 5 + config.default.radius * 2
+    // })
+    this.actions.position.pointer = pointer().start(this.values.position)
+
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      velocity       : this.values.position.getVelocity(),
+      friction       : 0.85,
+      springStrength : 150,
+      restSpeed      : false
+    }).start(this.values.position)
+    this.actions.position.pointer = pointer().start(
+      this.actions.position.physics.setSpringTarget
+    )
   }
 
   // appearanceActionsReducer :: string -> _
@@ -215,7 +228,16 @@ class CursorComponent extends Component {
     // Apply default appearance tween.
     this.actions.appearance.tween = tween({
       from : this.values.styles.get(),
-      to   : CursorStyles.normal
+      to   : CursorStyles.normal,
+      ease : {
+        opacity      : easing.createExpoIn(3),
+        strokeStart  : easing.easeOut,
+        strokeEnd    : easing.easeOut,
+        radius       : easing.easeOut,
+        lineWidth    : easing.easeOut,
+        arrowOffset  : easing.easeOut,
+        arrowOpacity : easing.easeOut
+      }
     }).start(this.values.styles)
 
     // Allow mouseDown default appearance tweens.
@@ -258,8 +280,16 @@ class CursorComponent extends Component {
         ...CursorStyles.normal,
         ...CursorStyles.sticky
       },
-      duration : 300,
-      ease     : easing.backOut
+      duration: 300
+      // ease     : {
+      //   opacity      : easing.reversed(easing.createExpoIn(9)),
+      //   strokeStart  : easing.easeOut,
+      //   strokeEnd    : easing.easeOut,
+      //   radius       : easing.createExpoIn(2),
+      //   lineWidth    : easing.easeOut,
+      //   arrowOffset  : easing.easeOut,
+      //   arrowOpacity : easing.easeOut
+      // }
     }).start(this.values.styles)
   }
 
@@ -291,27 +321,33 @@ class CursorComponent extends Component {
         ...CursorStyles.exitTransition
       },
       duration: AppConfig.pageTransitionTime - 200
-      // ease     : easing.createExpoIn(3)
+      // \\ease     : easing.createExpoIn(3)
     }).start(this.values.styles)
   }
 
   // appearanceActionsEnterTransition:: _ -> _
   appearanceActionsEnterTransition = () => {
     const currStyles = this.values.styles.get()
-    this.actions.appearance.tween = tween({
-      from: {
-        ...currStyles,
-        strokeStart : 0,
-        strokeEnd   : 0,
-        opacity     : 1,
-        radius      : 0
-      },
-      to: {
-        ...currStyles,
-        ...CursorStyles.enterTransition
-      },
-      duration: AppConfig.pageTransitionTime
-    }).start(this.values.styles)
+    delay(300).start({
+      complete: () => {
+        this.actions.appearance.tween = tween({
+          from: {
+            ...currStyles,
+            strokeStart : 0,
+            strokeEnd   : 0,
+            opacity     : 1,
+            radius      : 30,
+            lineWidth   : 0.5
+          },
+          to: {
+            ...currStyles,
+            ...CursorStyles.enterTransition
+          },
+          duration : AppConfig.pageTransitionTime * 2,
+          ease     : easing.anticipate
+        }).start(this.values.styles)
+      }
+    })
   }
 
   size = context => {
@@ -331,6 +367,7 @@ class CursorComponent extends Component {
     const {
       radius,
       opacity,
+      lineWidth,
       strokeStart,
       strokeEnd,
       arrowOffset,
@@ -343,6 +380,7 @@ class CursorComponent extends Component {
       y           : y,
       r           : radius,
       rgb         : this.values.color,
+      lineWidth   : lineWidth,
       opacity     : opacity,
       strokeStart : strokeStart,
       strokeEnd   : strokeEnd
@@ -381,8 +419,7 @@ CursorComponent.propTypes = {
     x : PropTypes.number,
     y : PropTypes.number
   }).isRequired,
-  canDrag : PropTypes.bool.isRequired,
-  theme   : PropTypes.string.isRequired
+  theme: PropTypes.string.isRequired
 }
 
 export default CursorComponent
