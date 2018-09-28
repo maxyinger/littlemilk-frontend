@@ -1,8 +1,9 @@
 import types from './types'
 
 export const INITIAL_STATE = {
-  scrollPercent : 0,
-  projects      : {
+  scrollPercent       : 0,
+  scrollPercentOffset : 0,
+  projects            : {
     byId: {
       incredible: {
         id          : 'incredible',
@@ -76,6 +77,15 @@ const homeReducer = (state = INITIAL_STATE, action) => {
         scrollPercent
       }
     }
+
+    case types.UPDATE_SCROLL_PERCENT_OFFSET: {
+      const { scrollPercentOffset } = action.payload
+      return {
+        ...state,
+        scrollPercentOffset
+      }
+    }
+
     default:
       return state
   }

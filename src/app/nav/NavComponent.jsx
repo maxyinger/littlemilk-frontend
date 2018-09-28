@@ -2,11 +2,11 @@ import React from 'react'
 import StickyContainer from './StickyContainer'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import SplitText from 'react-pose-text'
+import posed from 'react-pose'
 import './Nav.scss'
 import AppConfig from '../App.config'
 
-const charPoses = {
+const NavLinkInner = posed.span({
   themeDark: {
     color      : '#ffffff',
     transition : { duration: AppConfig.pageTransitionTime * 0.7 }
@@ -15,7 +15,7 @@ const charPoses = {
     color      : '#1c1c1a',
     transition : { duration: AppConfig.pageTransitionTime * 0.7 }
   }
-}
+})
 
 const NavComponent = ({ theme }) => (
   <header>
@@ -23,35 +23,32 @@ const NavComponent = ({ theme }) => (
       <ul className="nav-links">
         <li className="nav-link-wrap">
           <StickyContainer exact to="/" index={0}>
-            <SplitText
+            <NavLinkInner
               className="nav-link-inner"
-              charPoses={charPoses}
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
               Home
-            </SplitText>
+            </NavLinkInner>
           </StickyContainer>
         </li>
         <li className="nav-link-wrap">
           <StickyContainer to="/contact" index={1}>
-            <SplitText
+            <NavLinkInner
               className="nav-link-inner"
-              charPoses={charPoses}
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
               Contact
-            </SplitText>
+            </NavLinkInner>
           </StickyContainer>
         </li>
         <li className="nav-link-wrap">
           <StickyContainer to="/info" index={2}>
-            <SplitText
+            <NavLinkInner
               className="nav-link-inner"
-              charPoses={charPoses}
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
               Info
-            </SplitText>
+            </NavLinkInner>
           </StickyContainer>
         </li>
       </ul>

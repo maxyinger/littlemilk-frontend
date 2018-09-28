@@ -26,14 +26,14 @@ class CursorComponent extends Component {
   }
 
   componentDidMount () {
-    // INITIAL_VALUES
+    // Initial values.
     this.values = {
-      // position values
+      // Position values.
       position: value({
         x : (window.innerWidth / 7) * 6,
         y : (window.innerHeight / 7) * 5 + config.default.radius * 2
       }),
-      // appearance values
+      // Appearance values.
       styles: value({
         ...CursorStyles.normal,
         ...CursorStyles.initial
@@ -41,11 +41,11 @@ class CursorComponent extends Component {
       color: themeToColor(this.props.theme)
     }
 
-    // Prepare the canvas
+    // Prepare the canvas.
     const context = this.canvas.current.getContext('2d')
     this.size(context)
 
-    // INITIAL_ACTIONS
+    // Initial actions.
     this.actions = {
       constant: {
         animationLoop : everyFrame().start(() => this.cursor(context)),
@@ -61,12 +61,12 @@ class CursorComponent extends Component {
       position: {
         tween   : {},
         physics : {},
-        pointer : {} // if the animater is physics, this supplies the target
+        pointer : {} // If the animater is physics, this supplies the target.
       },
       appearance: {
-        tween     : {}, // Current Tween for styles
-        mouseDown : {}, // Only needed for DEFAULT state
-        mouseUp   : {} // Only needed for DEFAULT state
+        tween     : {}, // Current Tween for styles.
+        mouseDown : {}, // Only needed for DEFAULT state.
+        mouseUp   : {} // Only needed for DEFAULT state.
       }
     }
 

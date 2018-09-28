@@ -15,6 +15,16 @@ describe('Home Reducer:', () => {
     })
     expect(scrollPercent).toEqual(0.2)
   })
+
+  it('Can update scrollPercentOffset.', () => {
+    const { scrollPercentOffset } = homeReducer(undefined, {
+      type    : homeTypes.UPDATE_SCROLL_PERCENT_OFFSET,
+      payload : {
+        scrollPercentOffset: 0.3
+      }
+    })
+    expect(scrollPercentOffset).toEqual(0.3)
+  })
 })
 
 describe('Home Selectors:', () => {
@@ -23,25 +33,47 @@ describe('Home Selectors:', () => {
     getProjectsWithTags,
     getProjectImageUrls,
     getProjectIndexes,
-    getCurrentProjectIndex
+    getCurrentProjectIndex,
+    createClampScrollPercentOffset,
+    createStepsScrollPercent
   } = homeSelectors
 
   describe('getIsDraggable:', () => {
-    it('Returns true if stickyIndex is less than 0.', () => {
+    it('Returns true if app is not sticky and not transitioning.', () => {
       const state = {
         app: {
-          stickyIndex: -1
+          stickyIndex       : -1,
+          isEnterTransition : false,
+          isExitTransition  : false
         }
       }
       expect(getIsDraggable(state)).toEqual(true)
     })
-    it('Returns true if stickyIndex is greater than or equal to 0.', () => {
-      const state = {
+    it('Returns false if app is sticky or transitioning.', () => {
+      const stateOne = {
         app: {
-          stickyIndex: 2
+          stickyIndex       : -1,
+          isEnterTransition : false,
+          isExitTransition  : true
         }
       }
-      expect(getIsDraggable(state)).toEqual(false)
+      const stateTwo = {
+        app: {
+          stickyIndex       : -1,
+          isEnterTransition : true,
+          isExitTransition  : false
+        }
+      }
+      const stateThree = {
+        app: {
+          stickyIndex       : 0,
+          isEnterTransition : false,
+          isExitTransition  : false
+        }
+      }
+      expect(getIsDraggable(stateOne)).toEqual(false)
+      expect(getIsDraggable(stateTwo)).toEqual(false)
+      expect(getIsDraggable(stateThree)).toEqual(false)
     })
   })
 
@@ -123,22 +155,55 @@ describe('Home Selectors:', () => {
   })
 
   describe('getCurrentProjectIndex:', () => {
-    let state = {
-      home: {
-        scrollPercent : 0,
-        projects      : {
-          byId   : {},
-          allIds : [1, 2, 3]
+    it('Should return the index of the 2nd item, 2, from scrollPercent .34 and 3 projects.', () => {
+      let state = {
+        home: {
+          scrollPercent : 0.34,
+          projects      : {
+            byId   : {},
+            allIds : [1, 2, 3]
+          }
         }
       }
-    }
-    it('Should return the index of the 2nd item, 1, from scrollPercent .4 and 3 projects.', () => {
-      state.home.scrollPercent = 60
       expect(getCurrentProjectIndex(state)).toEqual(2)
     })
-    it('Should return the index of the 1st item, 0, from scrollPercent .23 and 3 projects.', () => {
-      state.home.scrollPercent = 100
-      expect(getCurrentProjectIndex(state)).toEqual(0)
+    it('Should return the index of the 1st item, 1, from scrollPercent .32 and 3 projects.', () => {
+      let state = {
+        home: {
+          scrollPercent : 0.32,
+          projects      : {
+            byId   : {},
+            allIds : [1, 2, 3]
+          }
+        }
+      }
+      expect(getCurrentProjectIndex(state)).toEqual(1)
+    })
+  })
+
+  describe('createClampScrollPercentOffset:', () => {
+    it('Returns a scroll percent within bounds.', () => {
+      const state = {
+        home: {
+          scrollPercent: 0.25
+        }
+      }
+      const clampScrollPercentOffset = createClampScrollPercentOffset(state)
+      expect(clampScrollPercentOffset(0.8)).toEqual(0.75)
+      expect(clampScrollPercentOffset(-0.8)).toEqual(-0.25)
+    })
+  })
+
+  describe('createStepsScrollPercent:', () => {
+    let state = {
+      home: {
+        scrollPercent : 0.75,
+        projects      : { allIds: [0, 1, 2, 3, 4] }
+      }
+    }
+    let stepsScrollPercent = createStepsScrollPercent(state)
+    it('Returns 0.25 with { scrollPercent: 0.75 } and offset of -0.6 and 5 projects, .', () => {
+      expect(stepsScrollPercent(-0.6)).toEqual(0.25)
     })
   })
 })

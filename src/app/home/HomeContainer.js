@@ -4,10 +4,16 @@ import { appActions } from '../duck'
 import { homeActions, homeSelectors } from './duck'
 
 const mapStateToProps = state => ({
-  scrollPercent    : state.home.scrollPercent,
-  isDragging       : state.app.isDragging,
-  isDraggable      : homeSelectors.getIsDraggable(state),
-  projectsWithTags : homeSelectors.getProjectsWithTags(state)
+  scrollPercent            : state.home.scrollPercent,
+  scrollPercentOffset      : state.home.scrollPercentOffset,
+  isDragging               : state.app.isDragging,
+  isDraggable              : homeSelectors.getIsDraggable(state),
+  currentProject           : homeSelectors.getCurrentProjectIndex(state),
+  projectsWithTags         : homeSelectors.getProjectsWithTags(state),
+  projectImageUrls         : homeSelectors.getProjectImageUrls(state),
+  projectIndexes           : homeSelectors.getProjectIndexes(state),
+  clampScrollPercentOffset : homeSelectors.createClampScrollPercentOffset(state),
+  stepsScrollPercent       : homeSelectors.createStepsScrollPercent(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -15,7 +21,9 @@ const mapDispatchToProps = dispatch => ({
   startDragging       : () => dispatch(appActions.startDragging()),
   endDragging         : () => dispatch(appActions.endDragging()),
   updateScrollPercent : scrollPercent =>
-    dispatch(homeActions.updateScrollPercent(scrollPercent))
+    dispatch(homeActions.updateScrollPercent(scrollPercent)),
+  updateScrollPercentOffset: scrollPercentOffset =>
+    dispatch(homeActions.updateScrollPercentOffset(scrollPercentOffset))
 })
 
 const HomeContainer = connect(
