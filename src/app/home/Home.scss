@@ -1,3 +1,7 @@
+/** Settings */
+@import "../common/colors";
+@import "../common/type";
+
 .h {
   position: absolute;
   pointer-events: none;
@@ -5,8 +9,28 @@
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // background-color: tomato;
+}
+
+.h-pagination-wrap {
+  position: absolute;
+  // top: calc(100vh * 5 / 7);
+  // left: calc(100vw / 7);
+  top: 50vh;
+  left: calc(100vw / 14);
+  // top: 100vh;
+  // top: 50vh;
+  // left: 50vw;
+  //transform: translateY(-50%);
+}
+
+.h-pagination,
+_px {
+  font-family: $font-family--header;
+  // font-weight: $font-weight--medium;
+  color: #fff;
+  font-size: 200px;
+  // margin-bottom: 200px;
+  // opacity: 0.1;
+  line-height: 0.7;
+  transform: translateY(-50%);
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { stopActions } from '../../utils/actionHelpers'
 import { listen, pointer } from 'popmotion'
+import PaginationContainer from './PaginationContainer'
 import './Home.scss'
 
 class HomeComponent extends Component {
@@ -21,26 +22,30 @@ class HomeComponent extends Component {
         mouseUp: listen(document, 'mouseup touchend').start(() => {
           const {
             updateScrollPercent,
-            updateScrollPercentOffset,
             scrollPercentOffset,
             stepsScrollPercent,
             endDragging,
             isDragging
           } = this.props
           if (isDragging) {
-            // Update scrollPercent.
             const stepedTotalScroll = stepsScrollPercent(scrollPercentOffset)
             updateScrollPercent(stepedTotalScroll)
-            // Reset vars for next mouseDown.
-            updateScrollPercentOffset(0)
+            /**
+             * Needed for the pointer to correctly map
+             * scrollPercentOffset on isDragging.
+             */
             this.origin = undefined
-            // Notify state dragging stopped.
             return endDragging()
           }
         })
       },
       scroll: undefined
     }
+  }
+
+  componentWillUnmount () {
+    stopActions(this.actions)
+    stopActions(this.values)
   }
 
   componentDidUpdate (prevProps) {
@@ -69,11 +74,11 @@ class HomeComponent extends Component {
           if (newPercentOffset + scrollPercent >= 1) {
             this.origin = y + scrollPercentOffset * window.innerHeight
           } else if (newPercentOffset + scrollPercent <= 0) {
-            this.origin = y
+            this.origin = y + scrollPercentOffset * window.innerHeight
           }
 
-          // Prepare before dispatching to Store
-          const mappedPercent = newPercentOffset * (100 / 85)
+          // Prepare before dispatching to store.
+          const mappedPercent = newPercentOffset * (100 / 20)
           const clampedPercent = clampScrollPercentOffset(mappedPercent)
           updateScrollPercentOffset(clampedPercent)
           console.log(`
@@ -86,19 +91,11 @@ class HomeComponent extends Component {
   }
 
   render () {
-    const { scrollPercent, currentProject, scrollPercentOffset } = this.props
     return (
       <div className="h">
-        {/* <HWebGL /> */}
-        {/* <pagination/> */}
-        {/* sections */}
-        {/* <div className="h-article-wrap">
-          <article />
-          <Surp>Home!</Surp>
-        </div> */}
-        <h1>
-          {scrollPercent + scrollPercentOffset} : {currentProject}
-        </h1>
+        <div className="h-pagination-wrap">
+          <PaginationContainer />
+        </div>
       </div>
     )
   }

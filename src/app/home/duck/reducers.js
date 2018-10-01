@@ -74,7 +74,8 @@ const homeReducer = (state = INITIAL_STATE, action) => {
       const { scrollPercent } = action.payload
       return {
         ...state,
-        scrollPercent
+        scrollPercent,
+        scrollPercentOffset: 0
       }
     }
 

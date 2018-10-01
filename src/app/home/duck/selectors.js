@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect'
-import { interpolate, steps, pipe, clamp } from 'popmotion/lib/transformers'
+import { transform } from 'popmotion'
+
+const { interpolate, steps, pipe, clamp } = transform
 
 const getStickyIndex = ({ app }) => app.stickyIndex
 const getIsEnterTransition = ({ app }) => app.isEnterTransition
@@ -9,18 +11,6 @@ const getNumProjects = ({ home }) => home.projects.allIds.length
 const getTags = ({ home }) => home.tags
 const getScrollPercent = ({ home }) => home.scrollPercent
 const getScrollPercentOffset = ({ home }) => home.scrollPercentOffset
-
-const stepProgress = (steps, progress) => {
-  const segment = 1 / (steps - 1)
-  const subsegment = 1 / (2 * (steps - 1))
-  const percentProgressOfTarget = Math.min(progress, 1)
-  const subsegmentProgressOfTarget = percentProgressOfTarget / subsegment
-  const segmentProgressOfTarget = Math.floor(
-    (subsegmentProgressOfTarget + 1) / 2
-  )
-
-  return segmentProgressOfTarget * segment
-}
 
 const createClampScrollPercentOffset = createSelector(
   [getScrollPercent],
@@ -32,7 +22,8 @@ const createStepsScrollPercent = createSelector(
   (scrollPercent, numProjects) =>
     pipe(
       v => v + scrollPercent,
-      v => stepProgress(numProjects, v)
+      // v => stepProgress(numProjects, v)
+      steps(numProjects, 0, 1)
     )
 )
 
@@ -60,22 +51,24 @@ const getProjectImageUrls = createSelector([getProjectsWithTags], projects =>
 const getProjectIndexes = createSelector([getProjects], projects =>
   projects.allIds.map((id, i) => {
     const plusOne = i + 1
-    if (plusOne < 10) return `0${plusOne}`
+    if (plusOne < 10) return `.${plusOne}`
     return `${plusOne}`
   })
 )
 
-const createScrollToIndex = createSelector([getNumProjects], numProjects =>
-  pipe(
-    interpolate([0, 1], [1, numProjects]),
-    steps(numProjects, 1, numProjects)
-  )
+const createScrollPercentToIndex = createSelector(
+  [getNumProjects],
+  numProjects =>
+    pipe(
+      interpolate([0, 1], [0, numProjects - 1]),
+      steps(numProjects, 0, numProjects - 1)
+    )
 )
 
 const getCurrentProjectIndex = createSelector(
-  [createScrollToIndex, getScrollPercent, getScrollPercentOffset],
-  (scrollToIndex, scrollPercent, scrollPercentOffset) =>
-    scrollToIndex(scrollPercent + scrollPercentOffset)
+  [createScrollPercentToIndex, getScrollPercent, getScrollPercentOffset],
+  (scrollPercentToIndex, scrollPercent, scrollPercentOffset) =>
+    scrollPercentToIndex(scrollPercent + scrollPercentOffset)
 )
 
 export default {

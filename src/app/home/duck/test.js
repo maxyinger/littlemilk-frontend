@@ -155,11 +155,12 @@ describe('Home Selectors:', () => {
   })
 
   describe('getCurrentProjectIndex:', () => {
-    it('Should return the index of the 2nd item, 2, from scrollPercent .34 and 3 projects.', () => {
+    it('Should return the index of the 2nd item, 2, from scrollPercent .25 and 3 projects.', () => {
       let state = {
         home: {
-          scrollPercent : 0.34,
-          projects      : {
+          scrollPercent       : 0.25,
+          scrollPercentOffset : 0,
+          projects            : {
             byId   : {},
             allIds : [1, 2, 3]
           }
@@ -167,11 +168,12 @@ describe('Home Selectors:', () => {
       }
       expect(getCurrentProjectIndex(state)).toEqual(2)
     })
-    it('Should return the index of the 1st item, 1, from scrollPercent .32 and 3 projects.', () => {
+    it('Should return the index of the 1st item, 1, from scrollPercent .24 and 3 projects.', () => {
       let state = {
         home: {
-          scrollPercent : 0.32,
-          projects      : {
+          scrollPercent       : 0.24,
+          scrollPercentOffset : 0,
+          projects            : {
             byId   : {},
             allIds : [1, 2, 3]
           }

@@ -96,7 +96,7 @@ const AppComponent = ({
                     if (v === 2) startEnterTransition()
                   }
                 }}
-                key={location.key}
+                key={location.pathname}
               >
                 <Switch location={location}>
                   <Route path="/" exact component={Home} key="home" />
