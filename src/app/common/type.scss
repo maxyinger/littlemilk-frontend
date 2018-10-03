@@ -1,4 +1,15 @@
 $font-family--header: "gt-super", serif;
 $font-family--copy: "neue-haas-unica", sans-serif;
+$font-weight--regular: 400;
 $font-weight--medium: 500;
-$font-weight--bold: 700;
+$font-weight--bold: 800;
+
+%font-size--copy--small {
+  font-size: responsive 12px 14px;
+  font-range: 670px 2560px;
+}
+
+%font-size--copy--medium {
+  font-size: responsive 27px 37px;
+  font-range: 670px 2560px;
+}

@@ -32,11 +32,29 @@ describe('Home Selectors:', () => {
     getIsDraggable,
     getProjectsWithTags,
     getProjectImageUrls,
-    getProjectIndexes,
-    getCurrentProjectIndex,
     createClampScrollPercentOffset,
-    createStepsScrollPercent
+    createStepsScrollPercent,
+    createTitleOpacityFromIndex
   } = homeSelectors
+
+  describe('createTitleOpacityFromIndex:', () => {
+    const state = {
+      home: {
+        projects: {
+          allIds: ['1', '2', '3']
+        }
+      }
+    }
+    const opacityFromIndex = createTitleOpacityFromIndex(state)
+    const opacity = opacityFromIndex(1)
+    it('Returns value between [1-0] depending on scrollPercent', () => {
+      expect(opacity(0)).toEqual(0)
+      expect(opacity(0.25)).toEqual(0)
+      expect(opacity(0.5)).toEqual(1)
+      expect(opacity(0.75)).toEqual(0)
+      expect(opacity(1)).toEqual(0)
+    })
+  })
 
   describe('getIsDraggable:', () => {
     it('Returns true if app is not sticky and not transitioning.', () => {
@@ -142,46 +160,34 @@ describe('Home Selectors:', () => {
     })
   })
 
-  describe('getProjectIndexes:', () => {
-    const indexes = getProjectIndexes(state)
-    it('Returns all indexes.', () => {
-      expect(indexes).toHaveLength(2)
-    })
-
-    it('Returns 0 prefixed indexes starting at 01.', () => {
-      expect(indexes[0]).toEqual('01')
-      expect(indexes[1]).toEqual('02')
-    })
-  })
-
-  describe('getCurrentProjectIndex:', () => {
-    it('Should return the index of the 2nd item, 2, from scrollPercent .25 and 3 projects.', () => {
-      let state = {
-        home: {
-          scrollPercent       : 0.25,
-          scrollPercentOffset : 0,
-          projects            : {
-            byId   : {},
-            allIds : [1, 2, 3]
-          }
-        }
-      }
-      expect(getCurrentProjectIndex(state)).toEqual(2)
-    })
-    it('Should return the index of the 1st item, 1, from scrollPercent .24 and 3 projects.', () => {
-      let state = {
-        home: {
-          scrollPercent       : 0.24,
-          scrollPercentOffset : 0,
-          projects            : {
-            byId   : {},
-            allIds : [1, 2, 3]
-          }
-        }
-      }
-      expect(getCurrentProjectIndex(state)).toEqual(1)
-    })
-  })
+  // describe('getCurrentProjectIndex:', () => {
+  //   it('Should return the index of the 2nd item, 2, from scrollPercent .25 and 3 projects.', () => {
+  //     let state = {
+  //       home: {
+  //         scrollPercent       : 0.25,
+  //         scrollPercentOffset : 0,
+  //         projects            : {
+  //           byId   : {},
+  //           allIds : [1, 2, 3]
+  //         }
+  //       }
+  //     }
+  //     expect(getCurrentProjectIndex(state)).toEqual(2)
+  //   })
+  //   it('Should return the index of the 1st item, 1, from scrollPercent .24 and 3 projects.', () => {
+  //     let state = {
+  //       home: {
+  //         scrollPercent       : 0.24,
+  //         scrollPercentOffset : 0,
+  //         projects            : {
+  //           byId   : {},
+  //           allIds : [1, 2, 3]
+  //         }
+  //       }
+  //     }
+  //     expect(getCurrentProjectIndex(state)).toEqual(1)
+  //   })
+  // })
 
   describe('createClampScrollPercentOffset:', () => {
     it('Returns a scroll percent within bounds.', () => {

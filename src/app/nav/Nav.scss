@@ -18,18 +18,18 @@
   z-index: 1;
 
   &:nth-of-type(1) {
-    left: calc(100vw / 14);
-    top: calc(100vh / 7);
+    left: calc(100vw / 28);
+    top: calc(100vw / 28);
   }
 
   &:nth-of-type(2) {
-    right: calc(100vw / 14);
-    top: calc(100vh / 7);
+    right: calc(100vw / 28);
+    top: calc(100vw / 28);
   }
 
   &:nth-of-type(3) {
-    right: calc(100vw / 14);
-    bottom: calc(100vh / 7);
+    right: calc(100vw / 28);
+    bottom: calc(100vw / 28);
   }
 }
 
@@ -47,8 +47,8 @@
 _px {
   position: absolute;
   z-index: 1;
-  left: calc(100vw / 14);
-  bottom: calc(100vh / 7);
+  left: calc(100vw / 28);
+  bottom: calc(100vw / 28);
   font-family: $font-family--header;
   font-size: 40px;
   line-height: 34px;
@@ -62,13 +62,12 @@ _px {
 
 .nav-link-wrap .link,
 _px {
-  font-weight: $font-weight--bold;
-  font-size: responsive 14px 17px;
+  font-size: responsive 14px 18.5px;
   font-range: 670px 2560px;
 }
 
 .target {
-  opacity: 0.2;
+  opacity: 0.5;
   transition: 0.2s opacity;
 }
 

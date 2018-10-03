@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { stopActions } from '../../utils/actionHelpers'
 import { listen, pointer } from 'popmotion'
-import PaginationContainer from './PaginationContainer'
+import RollerContainer from './RollerContainer'
 import './Home.scss'
 
 class HomeComponent extends Component {
@@ -59,6 +59,9 @@ class HomeComponent extends Component {
     stopActions(this.actions.scroll)
     if (isDragging) {
       this.actions.scroll = pointer().start(({ y }) => {
+        /**
+         * TODO: make this use constraint morion instead.
+         */
         const {
           scrollPercent,
           scrollPercentOffset,
@@ -78,13 +81,13 @@ class HomeComponent extends Component {
           }
 
           // Prepare before dispatching to store.
-          const mappedPercent = newPercentOffset * (100 / 20)
+          const mappedPercent = newPercentOffset * (100 / 50)
           const clampedPercent = clampScrollPercentOffset(mappedPercent)
           updateScrollPercentOffset(clampedPercent)
-          console.log(`
-            ScrollPercent: ${this.props.scrollPercent},
-            ScrollPercentOffset: ${this.props.scrollPercentOffset}
-          `)
+          // console.log(`
+          //   ScrollPercent: ${this.props.scrollPercent},
+          //   ScrollPercentOffset: ${this.props.scrollPercentOffset}
+          // `)
         }
       })
     }
@@ -93,8 +96,8 @@ class HomeComponent extends Component {
   render () {
     return (
       <div className="h">
-        <div className="h-pagination-wrap">
-          <PaginationContainer />
+        <div className="h-roller-wrap">
+          <RollerContainer />
         </div>
       </div>
     )
@@ -110,7 +113,6 @@ HomeComponent.propTypes = {
   currentProject            : PropTypes.number.isRequired,
   projectsWithTags          : PropTypes.arrayOf(PropTypes.object).isRequired,
   projectImageUrls          : PropTypes.arrayOf(PropTypes.string).isRequired,
-  projectIndexes            : PropTypes.arrayOf(PropTypes.string).isRequired,
   /** State derived functions */
   clampScrollPercentOffset  : PropTypes.func.isRequired,
   stepsScrollPercent        : PropTypes.func.isRequired,

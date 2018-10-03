@@ -27,7 +27,7 @@ const NavComponent = ({ theme }) => (
               className="nav-link-inner"
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
-              Home
+              Work
             </NavLinkInner>
           </StickyContainer>
         </li>

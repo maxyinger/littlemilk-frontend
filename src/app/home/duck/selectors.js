@@ -48,13 +48,42 @@ const getProjectImageUrls = createSelector([getProjectsWithTags], projects =>
   projects.map(project => project.imageUrl)
 )
 
-const getProjectIndexes = createSelector([getProjects], projects =>
+const getRollerProjects = createSelector([getProjects], projects =>
   projects.allIds.map((id, i) => {
     const plusOne = i + 1
-    if (plusOne < 10) return `.${plusOne}`
-    return `${plusOne}`
+    let indexName = `0${plusOne}.`
+    if (plusOne < 10) indexName = `00${plusOne}.`
+    return {
+      indexName,
+      title: projects.byId[id].title
+    }
   })
 )
+
+const createTitleOpacityFromIndex = createSelector(
+  [getNumProjects],
+  numProjects => index =>
+    pipe(
+      interpolate([0, 1], [0, numProjects - 1]),
+      v => index - v,
+      v => v * 2,
+      v => Math.abs(v),
+      v => v * v,
+      v => 1 - v,
+      clamp(0, 1)
+    )
+)
+
+const createRollerScrollToTransform = createSelector(
+  [getNumProjects],
+  numProjects =>
+    pipe(
+      interpolate([0, 1], [0, numProjects - 1]),
+      v => v * -100
+    )
+)
+
+// const getTitleOpacityFromIndex =
 
 const createScrollPercentToIndex = createSelector(
   [getNumProjects],
@@ -75,7 +104,9 @@ export default {
   getIsDraggable,
   getProjectsWithTags,
   getProjectImageUrls,
-  getProjectIndexes,
+  getRollerProjects,
+  createRollerScrollToTransform,
+  createTitleOpacityFromIndex,
   getCurrentProjectIndex,
   createClampScrollPercentOffset,
   createStepsScrollPercent

@@ -11,7 +11,6 @@ const mapStateToProps = state => ({
   currentProject           : homeSelectors.getCurrentProjectIndex(state),
   projectsWithTags         : homeSelectors.getProjectsWithTags(state),
   projectImageUrls         : homeSelectors.getProjectImageUrls(state),
-  projectIndexes           : homeSelectors.getProjectIndexes(state),
   clampScrollPercentOffset : homeSelectors.createClampScrollPercentOffset(state),
   stepsScrollPercent       : homeSelectors.createStepsScrollPercent(state)
 })
