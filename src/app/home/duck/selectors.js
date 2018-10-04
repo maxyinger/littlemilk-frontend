@@ -68,22 +68,17 @@ const createTitleOpacityFromIndex = createSelector(
       v => index - v,
       v => v * 2,
       v => Math.abs(v),
-      v => v * v,
-      v => 1 - v,
+      v => v - 1,
       clamp(0, 1)
     )
 )
 
-const createRollerScrollToTransform = createSelector(
-  [getNumProjects],
-  numProjects =>
-    pipe(
-      interpolate([0, 1], [0, numProjects - 1]),
-      v => v * -100
-    )
+const createScrollToTransform = createSelector([getNumProjects], numProjects =>
+  pipe(
+    interpolate([0, 1], [0, numProjects - 1]),
+    v => v * -100
+  )
 )
-
-// const getTitleOpacityFromIndex =
 
 const createScrollPercentToIndex = createSelector(
   [getNumProjects],
@@ -105,7 +100,7 @@ export default {
   getProjectsWithTags,
   getProjectImageUrls,
   getRollerProjects,
-  createRollerScrollToTransform,
+  createScrollToTransform,
   createTitleOpacityFromIndex,
   getCurrentProjectIndex,
   createClampScrollPercentOffset,

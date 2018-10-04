@@ -1,28 +1,26 @@
 import { connect } from 'react-redux'
+import SectionsComponent from './SectionsComponent'
 import { homeSelectors } from './duck'
-import RollerComponent from './RollerComponent'
 
 const mapStateToProps = state => {
   const { scrollPercent, scrollPercentOffset } = state.home
   const {
-    getRollerProjects,
+    getProjectsWithTags,
     getCurrentProjectIndex,
-    createScrollToTransform,
-    createTitleOpacityFromIndex
+    createScrollToTransform
   } = homeSelectors
   return {
     isDragging          : state.app.isDragging,
     scrollPercent       : scrollPercent + scrollPercentOffset,
-    projects            : getRollerProjects(state),
+    projects            : getProjectsWithTags(state),
     currentProjectIndex : getCurrentProjectIndex(state),
-    scrollToTransform   : createScrollToTransform(state),
-    titleIndexToOpacity : createTitleOpacityFromIndex(state)
+    scrollToTransform   : createScrollToTransform(state)
   }
 }
 
-const RollerContainer = connect(
+const SectionsContainer = connect(
   mapStateToProps,
   null
-)(RollerComponent)
+)(SectionsComponent)
 
-export default RollerContainer
+export default SectionsContainer

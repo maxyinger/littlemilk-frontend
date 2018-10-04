@@ -13,6 +13,10 @@ import types from './duck/types'
 import { stopActions } from '../../utils/actionHelpers'
 import config from './Nav.config'
 
+/**
+ * TODO: add dragging as an actions state.
+ */
+
 const NavLinkInner = styled.span`
   position: relative;
   display: inline-block;

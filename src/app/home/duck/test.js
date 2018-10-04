@@ -48,11 +48,11 @@ describe('Home Selectors:', () => {
     const opacityFromIndex = createTitleOpacityFromIndex(state)
     const opacity = opacityFromIndex(1)
     it('Returns value between [1-0] depending on scrollPercent', () => {
-      expect(opacity(0)).toEqual(0)
+      expect(opacity(0)).toEqual(1)
       expect(opacity(0.25)).toEqual(0)
-      expect(opacity(0.5)).toEqual(1)
+      expect(opacity(0.5)).toEqual(0)
       expect(opacity(0.75)).toEqual(0)
-      expect(opacity(1)).toEqual(0)
+      expect(opacity(1)).toEqual(1)
     })
   })
 

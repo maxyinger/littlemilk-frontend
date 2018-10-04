@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { stopActions } from '../../utils/actionHelpers'
 import { listen, pointer } from 'popmotion'
 import RollerContainer from './RollerContainer'
+import SectionsContainer from './SectionsContainer'
 import './Home.scss'
 
 class HomeComponent extends Component {
@@ -98,6 +99,9 @@ class HomeComponent extends Component {
       <div className="h">
         <div className="h-roller-wrap">
           <RollerContainer />
+        </div>
+        <div className="h-sections-wrap">
+          <SectionsContainer />
         </div>
       </div>
     )

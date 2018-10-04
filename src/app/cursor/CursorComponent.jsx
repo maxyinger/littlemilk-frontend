@@ -19,6 +19,10 @@ import AppConfig from '../App.config'
 import PropTypes from 'prop-types'
 import './Cursor.scss'
 
+/**
+ * TODO: add dragging as an actions state.
+ */
+
 class CursorComponent extends Component {
   constructor (props) {
     super(props)

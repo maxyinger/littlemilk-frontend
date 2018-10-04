@@ -6,47 +6,62 @@ export const INITIAL_STATE = {
   projects            : {
     byId: {
       incredible: {
-        id          : 'incredible',
-        title       : 'Incredible',
-        year        : 2018,
-        imageUrl    : 'image.png',
-        description :
+        id            : 'incredible',
+        title         : 'Incredible',
+        client        : 'Incredible Foods',
+        year          : 2018,
+        collaborators : ['Cognak'],
+        roles         : ['Full stack development, Interaction design'],
+        imageUrl      : 'image.png',
+        description   :
           'Here is a small description for this project. I hope you like it!',
         tags: [1]
       },
       hollis: {
-        id          : 'hollis',
-        title       : 'Hollis',
-        year        : 2018,
-        imageUrl    : 'image.png',
-        description :
+        id            : 'hollis',
+        title         : 'Hollis',
+        client        : 'Hollis Autobody',
+        year          : 2017,
+        collaborators : ['Facta Studio', 'Initial Design Group'],
+        roles         : ['Front end development, Interaction design'],
+        imageUrl      : 'image.png',
+        description   :
           'Here is a small description for this project. I hope you like it!',
         tags: [2]
       },
       voltiv: {
-        id          : 'voltiv',
-        title       : 'Voltiv',
-        year        : 2018,
-        imageUrl    : 'image.png',
-        description :
+        id            : 'voltiv',
+        title         : 'Voltiv',
+        client        : 'Voltiv Sound',
+        year          : 2018,
+        collaborators : [],
+        roles         : ['Full stack development, Interaction design'],
+        imageUrl      : 'image.png',
+        description   :
           'Here is a small description for this project. I hope you like it!',
         tags: [1, 2]
       },
       cognak: {
-        id          : 'cogank',
-        title       : 'Cognak',
-        year        : 2018,
-        imageUrl    : 'image.png',
-        description :
-          'Here is a small description for this project. I hope you like it!',
+        id            : 'cogank',
+        title         : 'Cognak',
+        client        : 'Cognak',
+        year          : 2016,
+        collaborators : ['Cognak'],
+        roles         : ['Full stack development, Interaction design'],
+        imageUrl      : 'image.png',
+        description   :
+          'Collaborated in 2016 with Cognak to develop a new website showcasing Cognak’s distilled, clean look & feel.',
         tags: [1]
       },
       stoneturn: {
-        id          : 'stoneturn',
-        title       : 'Stoneturn',
-        year        : 2018,
-        imageUrl    : 'image.png',
-        description :
+        id            : 'stoneturn',
+        title         : 'StoneTurn',
+        client        : 'Stoneturn',
+        year          : 2017,
+        collaborators : ['Facta Studio', 'Initial Design Group'],
+        roles         : ['Front end development, Interaction design'],
+        imageUrl      : 'image.png',
+        description   :
           'Here is a small description for this project. I hope you like it!',
         tags: [1, 2]
       }

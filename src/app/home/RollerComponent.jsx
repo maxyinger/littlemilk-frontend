@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import posed from 'react-pose'
-import { transform, physics, value } from 'popmotion'
+import { physics, value } from 'popmotion'
 import { stopActions } from '../../utils/actionHelpers'
-const { pipe, interpolate, steps } = transform
 
 /**
- * TODO: Set pose values to passive, and pass value to them.
+ * TODO: Clean up you filthy animal.
  */
 
 class RollerComponent extends Component {
@@ -21,12 +19,8 @@ class RollerComponent extends Component {
   )
 
   componentDidMount () {
-    const {
-      scrollToTransform,
-      scrollPercent,
-      titleIndexToOpacity,
-      projects
-    } = this.props
+    const { scrollToTransform, scrollPercent } = this.props
+
     // Initial values.
     this.values = {
       transformPercent: value(
@@ -48,7 +42,7 @@ class RollerComponent extends Component {
      */
     this.values.transformPercent.update(scrollPercent)
 
-    // Initial physics.
+    // Initial actions.
     this.actions = {
       physics: physics({
         from           : this.values.transformPercent.get(),
@@ -75,8 +69,6 @@ class RollerComponent extends Component {
       currentProjectIndex
     } = this.props
 
-    // console.log(this.titleOpacity)
-
     return (
       <div className="h-roller">
         {/* needed to set the height through css to
@@ -86,7 +78,18 @@ class RollerComponent extends Component {
           {projects.map((project, i) => (
             <li key={project.indexName} className="h-roller-index">
               <div className="h-roller-index-number">{project.indexName}</div>
-              <div className="h-roller-index-name"> {project.title}</div>
+              <div
+                className="h-roller-index-name"
+                style={
+                  {
+                    // opacity: this.titleOpacity[i](scrollPercent)
+                    // opacity: 0.2
+                  }
+                }
+              >
+                {' '}
+                {project.title}
+              </div>
             </li>
           ))}
         </ul>

@@ -2,6 +2,10 @@
 @import "../common/colors";
 @import "../common/type";
 
+/**
+ * Home
+ */
+
 .h {
   position: absolute;
   pointer-events: none;
@@ -15,8 +19,19 @@
 .h-roller-wrap {
   position: absolute;
   top: calc(100vh * 4 / 7);
+  //bottom: calc(100vh * 3 / 7);
   left: calc(100vw / 7 - 20px);
 }
+
+.h-sections-wrap {
+  position: absolute;
+  top: calc(100vh / 7);
+  left: calc(100vw * 2 / 7);
+}
+
+/** 
+ * Roller
+ */
 
 .h-roller,
 _px {
@@ -48,8 +63,6 @@ _px {
 
 .h-roller-titles-mask {
   overflow: hidden;
-  // border-top: 1px solid rgba(0, 0, 0, 0.12);
-  // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .h-roller-index,
@@ -77,20 +90,93 @@ _px {
 
   &-number,
   &-name {
-    line-height: 2;
-
     @extend %font-size--copy--small;
+
+    line-height: 2.1;
   }
 }
 
 .h-roller-title,
 _px {
   &-name {
+    @extend %font-size--copy--medium;
+
     position: relative;
     line-height: 1.3;
     color: $color--black;
-    background-color: $color--offWhite;
 
-    @extend %font-size--copy--medium;
+    /**
+     * TODO: look into making this clear so page transitions work
+     */
+    background-color: $color--offWhite;
   }
+}
+
+/** 
+ * Sections
+ */
+.h-sections {
+  position: absolute;
+  height: calc(100vh * 5 / 7);
+}
+
+.h-section {
+  position: relative;
+  height: 100%;
+}
+
+.h-meta {
+  position: relative;
+  left: calc(100vw / 14);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.h-meta-col {
+  @extend %font-size--copy--small;
+
+  position: relative;
+  display: inline-block;
+  width: calc(100vw / 7);
+}
+
+.h-meta-rule,
+_px {
+  height: 1px;
+  background-color: $color--black;
+  opacity: 0.4;
+  width: 75%;
+  left: 0;
+}
+
+.h-meta-label {
+  margin-top: calc(100vh / 7 / 8);
+  font-weight: $font-weight--bold;
+  opacity: 0.9;
+}
+
+.h-meta-description {
+  margin-top: calc(100vh / 7 / 16);
+  opacity: 0.8;
+}
+
+.h-title-container {
+  @extend %font-size--header--large;
+
+  font-family: $font-family--header;
+  -webkit-text-stroke-width: 1px;
+  position: absolute;
+  left: 0;
+  bottom: calc(100% * 2 / 5);
+}
+
+.h-description-container {
+  @extend %font-size--copy--medium;
+
+  color: $color--grey;
+  position: absolute;
+  left: calc(100vw / 14);
+  top: calc(100% * 4 / 5);
+  width: calc(100vw * 4.125 / 14);
 }
