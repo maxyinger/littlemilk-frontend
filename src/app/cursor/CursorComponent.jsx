@@ -20,7 +20,8 @@ import PropTypes from 'prop-types'
 import './Cursor.scss'
 
 /**
- * TODO: add dragging as an actions state.
+ * TODO: add dragging as an appearance & position
+ * actions state (increase friction on physics).
  */
 
 class CursorComponent extends Component {

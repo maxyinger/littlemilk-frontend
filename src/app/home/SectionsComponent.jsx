@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 import { value, physics } from 'popmotion'
 import { stopActions } from '../../utils/actionHelpers'
 
+/**
+ * TODO: Add dragging posed els
+ * TODO: Add enter/exit posed els
+ * TODO: Add no cursor hover state for titles
+ */
+
 class SectionsComponent extends Component {
   constructor (props) {
     super(props)

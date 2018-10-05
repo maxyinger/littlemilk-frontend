@@ -20,7 +20,7 @@
   position: absolute;
   top: calc(100vh * 4 / 7);
   //bottom: calc(100vh * 3 / 7);
-  left: calc(100vw / 7 - 20px);
+  left: calc(100vw / 7);
 }
 
 .h-sections-wrap {
@@ -166,6 +166,7 @@ _px {
 
   font-family: $font-family--header;
   -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: $color--black;
   position: absolute;
   left: 0;
   bottom: calc(100% * 2 / 5);

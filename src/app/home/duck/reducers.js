@@ -11,7 +11,7 @@ export const INITIAL_STATE = {
         client        : 'Incredible Foods',
         year          : 2018,
         collaborators : ['Cognak'],
-        roles         : ['Full stack development, Interaction design'],
+        roles         : ['Full stack development', 'Interaction design'],
         imageUrl      : 'image.png',
         description   :
           'Here is a small description for this project. I hope you like it!',
@@ -23,7 +23,7 @@ export const INITIAL_STATE = {
         client        : 'Hollis Autobody',
         year          : 2017,
         collaborators : ['Facta Studio', 'Initial Design Group'],
-        roles         : ['Front end development, Interaction design'],
+        roles         : ['Front end development', 'Interaction design'],
         imageUrl      : 'image.png',
         description   :
           'Here is a small description for this project. I hope you like it!',
@@ -35,7 +35,7 @@ export const INITIAL_STATE = {
         client        : 'Voltiv Sound',
         year          : 2018,
         collaborators : [],
-        roles         : ['Full stack development, Interaction design'],
+        roles         : ['Full stack development', 'Interaction design'],
         imageUrl      : 'image.png',
         description   :
           'Here is a small description for this project. I hope you like it!',
@@ -47,7 +47,7 @@ export const INITIAL_STATE = {
         client        : 'Cognak',
         year          : 2016,
         collaborators : ['Cognak'],
-        roles         : ['Full stack development, Interaction design'],
+        roles         : ['Full stack development', 'Interaction design'],
         imageUrl      : 'image.png',
         description   :
           'Collaborated in 2016 with Cognak to develop a new website showcasing Cognak’s distilled, clean look & feel.',
@@ -59,7 +59,7 @@ export const INITIAL_STATE = {
         client        : 'Stoneturn',
         year          : 2017,
         collaborators : ['Facta Studio', 'Initial Design Group'],
-        roles         : ['Front end development, Interaction design'],
+        roles         : ['Front end development', 'Interaction design'],
         imageUrl      : 'image.png',
         description   :
           'Here is a small description for this project. I hope you like it!',
