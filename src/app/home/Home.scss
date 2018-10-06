@@ -121,7 +121,8 @@ _px {
 }
 
 .h-section {
-  position: relative;
+  position: absolute;
+  top: 0;
   height: 100%;
 }
 
@@ -161,15 +162,22 @@ _px {
   opacity: 0.8;
 }
 
-.h-title-container {
+.h-title-container,
+_px {
+  position: absolute;
+  left: 0;
+  padding: 20px 0 80px 0;
+  bottom: calc(100% * 2 / 5 - 80px);
+  overflow: hidden;
+}
+
+.h-title {
   @extend %font-size--header--large;
 
+  white-space: nowrap;
   font-family: $font-family--header;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: $color--black;
-  position: absolute;
-  left: 0;
-  bottom: calc(100% * 2 / 5);
 }
 
 .h-description-container {
