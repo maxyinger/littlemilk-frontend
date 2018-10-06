@@ -13,37 +13,16 @@ class SplitLines extends Component {
   }
 
   componentDidMount () {
-    // console.log(this.container.current.textContent)
-    if (this.container.current) {
-      // const innerText = this.container.current.textContent
-      // const charArray = innerText.split('')
-      // this.container.current.innerHTML = charArray.reduce(
-      //   (innerHTML, char) => innerHTML + `<span>${char}</span>`
-      // )
-      // const bb = this.container.current.getBoundingClientRect().height
-      // const lh = parseInt(
-      //   window.getComputedStyle(this.container.current).lineHeight,
-      //   10
-      // )
-      // const fs = parseInt(
-      //   window.getComputedStyle(this.container.current).fontSize,
-      //   10
-      // )
-      // console.log(fs)
-      // console.log(bb)
-      // console.log(lh)
-      // console.log(JSON.stringify(this.container.current.innerHTML))
-      // console.log(Math.floor(bb / lh))
-    }
+    this.resize = window.listen
     this.convertTolines()
   }
 
   convertTolines () {
     const container = this.container.current
-    const spaceChar = this.spaceChar.current
-    if (container && spaceChar) {
+    if (container) {
       // Create an array of words and their widths from character nodes.
       const charNodes = Array.from(container.children)
+      let spaceCharWidth = charNodes[0].getBoundingClientRect().width
       const { words } = charNodes.reduce(
         (scope, charNode, i, charNodes) => {
           /**
@@ -51,6 +30,7 @@ class SplitLines extends Component {
            * else add char to currWord.
            */
           if (charNode.textContent === ' ') {
+            spaceCharWidth = charNode.getBoundingClientRect().width
             scope.words.push(scope.currentWord)
             scope.currentWord = {
               width  : 0,
@@ -76,7 +56,6 @@ class SplitLines extends Component {
           }
         }
       )
-      console.log(words)
 
       // Create array of lines who's widths are less than the containers
       const { lines } = words.reduce(
@@ -111,10 +90,12 @@ class SplitLines extends Component {
             string : '',
             width  : 0
           },
-          spaceCharWidth : spaceChar.getBoundingClientRect().width + 5,
+          spaceCharWidth : spaceCharWidth,
           containerWidth : container.getBoundingClientRect().width
         }
       )
+
+      console.log(lines)
 
       // Set state with lines.
       this.setState({ lines })
@@ -123,24 +104,13 @@ class SplitLines extends Component {
 
   render () {
     const { children } = this.props
+    const { lines } = this.state
     return (
-      <React.Fragment>
-        <div
-          style={{
-            position : 'absolute',
-            display  : 'inline-block',
-            opacity  : 0
-          }}
-          ref={this.spaceChar}
-        >
-          {' '}
-        </div>
-        <div ref={this.container} className="lineSplit">
-          {this.state.lines.length > 0
-            ? this.state.lines.map(line => <div key={line}>{line}</div>)
-            : children.split('').map((char, i) => <span key={i}>{char}</span>)}
-        </div>
-      </React.Fragment>
+      <div ref={this.container} className="lineSplit">
+        {lines.length > 0
+          ? lines.map(line => <div key={line}>{line}</div>)
+          : children.split('').map((char, i) => <span key={i}>{char}</span>)}
+      </div>
     )
   }
 }
