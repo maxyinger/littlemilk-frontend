@@ -95,8 +95,6 @@ class SplitLines extends Component {
         }
       )
 
-      console.log(lines)
-
       // Set state with lines.
       this.setState({ lines })
     }

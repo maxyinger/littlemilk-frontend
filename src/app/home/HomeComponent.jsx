@@ -8,9 +8,6 @@ import './Home.scss'
 
 class HomeComponent extends Component {
   componentDidMount () {
-    // Update app color.
-    this.props.makeThemeLight()
-
     // Initial values.
     this.origin = undefined
 

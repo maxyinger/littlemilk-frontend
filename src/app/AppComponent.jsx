@@ -9,7 +9,6 @@ import config from './App.config.js'
  * * Routes
  */
 import Home from './home/HomeContainer'
-import Contact from './contact/ContactContainer'
 import About from './about/AboutContainer'
 import FourOhFour from './common/FourOhFour'
 
@@ -100,7 +99,6 @@ const AppComponent = ({
               >
                 <Switch location={location}>
                   <Route path="/" exact component={Home} key="home" />
-                  <Route path="/contact" component={Contact} key="contact" />
                   <Route path="/info" component={About} key="about" />
                   <Route component={FourOhFour} key="fourOhFour" />
                 </Switch>

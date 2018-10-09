@@ -18,7 +18,7 @@ const NavLinkInner = posed.span({
 })
 
 const NavComponent = ({ theme }) => (
-  <header>
+  <header className="nav-wrap">
     <nav className="nav">
       <ul className="nav-links">
         <li className="nav-link-wrap">
@@ -27,17 +27,7 @@ const NavComponent = ({ theme }) => (
               className="nav-link-inner"
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
-              Work
-            </NavLinkInner>
-          </StickyContainer>
-        </li>
-        <li className="nav-link-wrap">
-          <StickyContainer to="/contact" index={1}>
-            <NavLinkInner
-              className="nav-link-inner"
-              pose={theme === 'light' ? 'themeLight' : 'themeDark'}
-            >
-              Contact
+              work
             </NavLinkInner>
           </StickyContainer>
         </li>
@@ -47,16 +37,14 @@ const NavComponent = ({ theme }) => (
               className="nav-link-inner"
               pose={theme === 'light' ? 'themeLight' : 'themeDark'}
             >
-              Info
+              info
             </NavLinkInner>
           </StickyContainer>
         </li>
       </ul>
     </nav>
     <Link className="logo no-cursor" to="/">
-      little
-      <br />
-      milk.
+      littlemilk.studio
     </Link>
   </header>
 )

@@ -1,5 +1,6 @@
 $font-family--header: "gt-super", serif;
-$font-family--copy: "neue-haas-unica", sans-serif;
+$font-family--copy: "Karla", sans-serif;
+$font-family--nav: "Karla", sans-serif;
 $font-weight--regular: 400;
 $font-weight--medium: 500;
 $font-weight--bold: 800;
@@ -20,4 +21,11 @@ $font-weight--bold: 800;
   font-size: responsive 259px 302px;
   line-height: 0.69;
   font-range: 670px 2560px;
+}
+
+%font-size--header--x-large {
+  // font-size: responsive 259px 102px;
+  font-size: 400px;
+  line-height: 0.69;
+  // font-range: 670px 2560px;
 }

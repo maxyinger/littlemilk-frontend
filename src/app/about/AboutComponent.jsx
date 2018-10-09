@@ -20,9 +20,7 @@ const Surp = posed.h1({
 })
 
 class AboutComponent extends Component {
-  componentDidMount () {
-    this.props.makeThemeDark()
-  }
+  componentDidMount () {}
 
   render () {
     return <Surp>Info!</Surp>

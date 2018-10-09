@@ -1,9 +1,9 @@
 const normal = {
   strokeStart  : 0,
   strokeEnd    : 100,
-  radius       : 30,
+  radius       : 20,
   opacity      : 1,
-  lineWidth    : 0.75,
+  lineWidth    : 1,
   arrowOffset  : 30,
   arrowOpacity : 0
 }
@@ -28,8 +28,9 @@ const noCursor = {
 }
 
 const sticky = {
-  radius  : 70,
-  opacity : 0.2
+  radius    : 50,
+  lineWidth : 0.5
+  // opacity : 0.6
 }
 
 const exitTransition = {

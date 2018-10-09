@@ -46,7 +46,7 @@ class RollerComponent extends Component {
     this.actions = {
       physics: physics({
         from           : this.values.transformPercent.get(),
-        friction       : 0.85,
+        friction       : 0.95,
         springStrength : 150,
         restSpeed      : false
       }).start(this.values.transformPercent)
@@ -62,12 +62,7 @@ class RollerComponent extends Component {
   }
 
   render () {
-    const {
-      scrollPercent,
-      isDragging,
-      projects,
-      currentProjectIndex
-    } = this.props
+    const { projects } = this.props
 
     return (
       <div className="h-roller">
@@ -97,6 +92,7 @@ class RollerComponent extends Component {
           <ul ref={this.titleList} className="h-roller-titles">
             {projects.map((project, i) => (
               <li key={project.title} className="h-roller-title">
+                <div className="h-roller-title-number">{project.indexName}</div>
                 <div
                   className="h-roller-title-name"
                   style={

@@ -11,7 +11,7 @@ export const INITIAL_STATE = {
   isEnterTransition : false,
   isExitTransition  : false,
   noCursor          : false,
-  theme             : 'light'
+  theme             : 'dark'
 }
 
 const appReducer = (state = INITIAL_STATE, action) => {

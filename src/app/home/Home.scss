@@ -13,20 +13,13 @@
   bottom: 0;
   left: 0;
   right: 0;
-  color: $color--black;
+  color: $color--white;
 }
 
 .h-roller-wrap {
   position: absolute;
-  top: calc(100vh * 4 / 7);
-  //bottom: calc(100vh * 3 / 7);
-  left: calc(100vw / 7);
-}
-
-.h-sections-wrap {
-  position: absolute;
-  top: calc(100vh / 7);
-  left: calc(100vw * 2 / 7);
+  top: 50vh;
+  left: calc(100vw / 28);
 }
 
 /** 
@@ -78,13 +71,14 @@ _px {
 .h-roller-index,
 _px {
   &-number {
-    position: absolute;
+    //position: absolute;
     color: $color--grey;
-    transform: translateX(-150%);
+    margin-right: 5px;
+    //transform: translateX(-150%);
   }
 
   &-name {
-    color: $color--black;
+    color: $color--white;
     position: relative;
   }
 
@@ -98,94 +92,85 @@ _px {
 
 .h-roller-title,
 _px {
+  &-number {
+    @extend %font-size--copy--small;
+
+    color: transparent;
+    margin-right: 5px;
+    opacity: 0;
+  }
+
   &-name {
     @extend %font-size--copy--medium;
 
     position: relative;
     line-height: 1.3;
-    color: $color--black;
+    color: $color--white;
 
     /**
      * TODO: look into making this clear so page transitions work
      */
-    background-color: $color--offWhite;
+    background-color: $color--black;
   }
 }
 
 /** 
  * Sections
  */
-.h-sections {
-  position: absolute;
-  height: calc(100vh * 5 / 7);
-}
-
+.h-sections,
 .h-section {
   position: absolute;
   top: 0;
-  height: 100%;
-}
-
-.h-meta {
-  position: relative;
-  left: calc(100vw / 14);
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.h-meta-col {
-  @extend %font-size--copy--small;
-
-  position: relative;
-  display: inline-block;
-  width: calc(100vw / 7);
-}
-
-.h-meta-rule,
-_px {
-  height: 1px;
-  background-color: $color--black;
-  opacity: 0.4;
-  width: 75%;
   left: 0;
+  bottom: 0;
+  right: 0;
+  transform-origin: 50% 50%;
 }
 
-.h-meta-label {
-  margin-top: calc(100vh / 7 / 8);
-  font-weight: $font-weight--bold;
-  opacity: 0.9;
-}
-
-.h-meta-description {
-  margin-top: calc(100vh / 7 / 16);
-  opacity: 0.8;
-}
-
-.h-title-container,
-_px {
+.h-title-wrap,
+.h-data-wrap {
   position: absolute;
   left: 0;
-  padding: 20px 0 80px 0;
-  bottom: calc(100% * 2 / 5 - 80px);
-  overflow: hidden;
+  right: 0;
 }
 
-.h-title {
-  @extend %font-size--header--large;
-
-  white-space: nowrap;
-  font-family: $font-family--header;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: $color--black;
+.h-title-wrap {
+  bottom: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-.h-description-container {
+.h-data-wrap {
+  top: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.h-data {
   @extend %font-size--copy--medium;
 
-  color: $color--grey;
-  position: absolute;
-  left: calc(100vw / 14);
-  top: calc(100% * 4 / 5);
-  width: calc(100vw * 4.125 / 14);
+  margin-top: calc(100vh / 14);
+}
+
+.h-title-mask {
+  position: relative;
+  width: calc(100vw * 5 / 7);
+  overflow: hidden;
+  padding: 100px 0;
+  transform: translateY(100px);
+}
+
+.h-title-stream {
+  @extend %font-size--header--x-large;
+
+  display: block;
+  white-space: nowrap;
+  font-family: $font-family--header;
+  transform: translate3d(-50%, 0, 0);
+}
+
+.h-title-stream {
+  display: inline-block;
 }

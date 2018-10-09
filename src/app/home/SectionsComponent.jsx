@@ -26,73 +26,6 @@ const HSection = posed.div({
   }
 })
 
-const Meta = posed.ul({
-  active: {
-    scale           : 1,
-    staggerChildren : 100,
-    beforeChildren  : true
-  }
-})
-
-const Rule = posed.div({
-  active: {
-    scaleX          : 1,
-    transformOrigin : '0% 50%',
-    transition      : {
-      ease     : easing.reversed(easing.createExpoIn(4)),
-      duration : config.dragUpTime
-    },
-    applyAtStart: {
-      transformOrigin: '0% 50%'
-    },
-    applyAtEnd: {
-      transformOrigin: '100% 50%'
-    }
-  },
-  inActive: {
-    scaleX          : 0,
-    transformOrigin : '100% 50%',
-    transition      : {
-      ease     : easing.reversed(easing.createExpoIn(4)),
-      duration : config.dragDownTime
-    },
-    applyAtStart: {
-      transformOrigin: '100% 50%'
-    }
-  }
-})
-const CharStagger = posed.div({
-  active: {
-    staggerChildren : 15,
-    beforeChildren  : true,
-    scale           : 1
-  }
-})
-
-const titlePoses = {
-  active: {
-    translateY : '0%',
-    scaleY     : 1,
-    scaleX     : 1,
-    transition : {
-      ease     : easing.reversed(easing.createExpoIn(4)),
-      duration : config.dragUpTime
-    },
-    applyAtStart: {
-      translateY : '250%',
-      scaleY     : 1.5,
-      scaleX     : 0.666
-    }
-  },
-  inActive: {
-    translateY : '-150%',
-    transition : {
-      ease     : easing.reversed(easing.createExpoIn(4)),
-      duration : config.dragDownTime
-    }
-  }
-}
-
 class SectionsComponent extends Component {
   constructor (props) {
     super(props)
@@ -152,55 +85,66 @@ class SectionsComponent extends Component {
               !isDragging && currentProjectIndex === i ? 'active' : 'inActive'
             }
           >
-            <Meta className="h-meta">
-              <li className="h-meta-col">
-                <Rule className="h-meta-rule" />
-                <div className="h-meta-label">Client</div>
-                <div className="h-meta-description">{project.client}</div>
-              </li>
-              <li className="h-meta-col">
-                <Rule className="h-meta-rule" />
-                <div className="h-meta-label">Year</div>
-                <div className="h-meta-description">{project.year}</div>
-              </li>
-              <li className="h-meta-col">
-                <Rule className="h-meta-rule" />
-                <div className="h-meta-label">Collaborators</div>
-                <div className="h-meta-description">
-                  <ul>
-                    {project.collaborators.length > 0 ? (
-                      project.collaborators.map(collaborator => (
-                        <li key={collaborator}>{collaborator}</li>
-                      ))
-                    ) : (
-                      <li>NA</li>
-                    )}
-                  </ul>
+            <div className="h-title-wrap">
+              <div className="h-title">
+                <div className="h-title-index">001.</div>
+                <div className="h-title-mask">
+                  <div className="h-title-stream">
+                    <span>COGNAK - </span>
+                    <span>COGNAK - </span>
+                    <span>COGNAK - </span>
+                    <span>COGNAK - </span>
+                    <span>COGNAK - </span>
+                    <span>COGNAK - </span>
+                    <span>COGNAK - </span>
+                    <span>COGNAK - </span>
+                  </div>
                 </div>
-              </li>
-              <li className="h-meta-col">
-                <Rule className="h-meta-rule" />
-                <div className="h-meta-label">Role</div>
-                <div className="h-meta-description">
-                  <ul>
-                    {project.roles.length > 0 ? (
-                      project.roles.map(role => <li key={role}>{role}</li>)
-                    ) : (
-                      <li>NA</li>
-                    )}
-                  </ul>
-                </div>
-              </li>
-            </Meta>
-            <div className="h-title-container">
-              <h1 className="h-title">
-                <CharStagger>
-                  <SplitText charPoses={titlePoses}>{project.title}</SplitText>
-                </CharStagger>
-              </h1>
+              </div>
             </div>
-            <div className="h-description-container">
-              <SplitLines>{project.description}</SplitLines>
+            <div className="h-data-wrap">
+              <div className="h-data">
+                <div className="h-date">
+                  <div className="oh">
+                    <div
+                      style={{
+                        transform: 'translate3d(0, 0%, 0)'
+                      }}
+                    >
+                      July 2018
+                    </div>
+                  </div>
+                </div>
+                <ul className="h-roles">
+                  {project.roles.map(role => (
+                    <li key={role} className="h-role">
+                      <div className="oh">{role}</div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="h-deliverable">
+                  <div className="oh">
+                    <div
+                      style={{
+                        transform: 'translate3d(0, 0%, 0)'
+                      }}
+                    >
+                      Cognak.com
+                    </div>
+                  </div>
+                </div>
+                <div className="h-collaborator">
+                  <div className="oh">
+                    <div
+                      style={{
+                        transform: 'translate3d(0, 0%, 0)'
+                      }}
+                    >
+                      Collaborated with Cognak
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </HSection>
         ))}
