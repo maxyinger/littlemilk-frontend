@@ -175,3 +175,9 @@
 .h-title-stream {
   display: inline-block;
 }
+
+.h-title-index {
+  color: $color--grey;
+
+  @extend %font-size--copy--small;
+}

@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import posed from 'react-pose'
-import SplitText from 'react-pose-text'
-import SplitLines from '../common/SplitLines'
 import { Section, DataLine, Data } from './SectionsPose'
-import { value, physics, easing } from 'popmotion'
+import { value, physics } from 'popmotion'
 import { stopActions } from '../../utils/actionHelpers'
 
 /**

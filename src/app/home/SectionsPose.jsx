@@ -1,6 +1,5 @@
 import posed from 'react-pose'
 import appConfig from '../App.config'
-import { Power4 } from 'gsap/EasePack'
 
 // const Power4 = easing.cubicBezier(0, 0.42, 0, 1)
 
