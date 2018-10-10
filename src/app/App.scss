@@ -2,13 +2,23 @@
 
 /** Imports */
 @font-face {
-  font-family: "gt-super";
+  font-family: "GT-America-Expanded-Black";
   font-style: normal;
-  font-weight: 400;
-  src: url("./assets/GT-Super/GT-Super-Display-Super.woff2") format("woff2"),
-    url("./assets/GT-Super/GT-Super-Display-Super.woff") format("woff"),
-    url("./assets/GT-Super/GT-Super-Display-Super.ttf") format("truetype"),
-    url("./assets/GT-Super/GT-Super-Display-Super.eot")
+  src: url("./assets/GT-America/GT-America-Expanded-Black.woff2")
+    format("woff2"),
+    url("./assets/GT-America/GT-America-Expanded-Black.woff") format("woff"),
+    url("./assets/GT-America/GT-America-Expanded-Black.ttf") format("truetype"),
+    url("./assets/GT-America/GT-America-Expanded-Black.eot")
+    format("embedded-opentype");
+}
+
+@font-face {
+  font-family: "GT-America-Expanded-Thin";
+  font-style: normal;
+  src: url("./assets/GT-America/GT-America-Expanded-Thin.woff2") format("woff2"),
+    url("./assets/GT-America/GT-America-Expanded-Thin.woff") format("woff"),
+    url("./assets/GT-America/GT-America-Expanded-Thin.ttf") format("truetype"),
+    url("./assets/GT-America/GT-America-Expanded-Thin.eot")
     format("embedded-opentype");
 }
 
