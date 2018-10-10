@@ -26,13 +26,13 @@
  * Roller
  */
 
-.h-roller,
-_px {
+.h-roller {
   position: absolute;
   // this sets the height so .h-roller-title-name is always visible
-  @extend %font-size--copy--medium;
+  // @extend %font-size--copy--medium;
+  @extend %font-size--roller-em;
 
-  line-height: 1.3;
+  line-height: 1.8;
   color: transparent;
   transform: translateY(-100%);
 }
@@ -59,8 +59,7 @@ _px {
 }
 
 .h-roller-index,
-.h-roller-title,
-_px {
+.h-roller-title {
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -68,12 +67,11 @@ _px {
   height: 100%;
 }
 
-.h-roller-index,
-_px {
+.h-roller-index {
   &-number {
     //position: absolute;
     color: $color--grey;
-    margin-right: 5px;
+    margin-right: 10px;
     //transform: translateX(-150%);
   }
 
@@ -90,21 +88,23 @@ _px {
   }
 }
 
-.h-roller-title,
-_px {
+.h-roller-title {
   &-number {
     @extend %font-size--copy--small;
 
     color: transparent;
-    margin-right: 5px;
+    margin-right: 10px;
     opacity: 0;
   }
 
   &-name {
-    @extend %font-size--copy--medium;
+    // @extend %font-size--copy--medium;
+    @extend %font-size--roller-em;
 
+    font-family: $font-family--header;
+    text-transform: uppercase;
     position: relative;
-    line-height: 1.3;
+    line-height: 1.5;
     color: $color--white;
 
     /**
@@ -137,7 +137,7 @@ _px {
 .h-title-wrap {
   bottom: 50vh;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: flex-end;
 }
 
@@ -156,7 +156,8 @@ _px {
 
 .h-title-mask {
   position: relative;
-  width: calc(100vw * 5 / 7);
+  width: calc(100vw * 6 / 7);
+  right: 0;
   overflow: hidden;
   padding: 100px 0;
   transform: translateY(100px);
@@ -168,7 +169,7 @@ _px {
   display: block;
   white-space: nowrap;
   font-family: $font-family--header;
-  transform: translate3d(-50%, 0, 0);
+  transform: translate3d(-30%, 0, 0);
 }
 
 .h-title-stream {

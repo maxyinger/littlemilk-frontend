@@ -49,31 +49,24 @@ _px {
   z-index: 1;
   left: calc(100vw / 28);
   bottom: calc(100vw / 28);
-  // font-family: $font-family--header;
-  // font-size: 40px;
-  // line-height: 34px;
-  // -webkit-text-stroke-width: 1px;
-  // transition: color 0.6s, -webkit-text-stroke-color 0.6s;
-
-  // &:hover {
-  //   color: transparent;
-  // }
 }
 
 .nav-link-wrap .link,
 .logo,
 _px {
+  @extend %font-size--nav;
+
   font-family: $font-family--nav;
-  font-size: responsive 14px 18.5px;
-  font-range: 670px 2560px;
 }
 
 .target {
   opacity: 0.5;
+  // color: $color--grey;
   transition: 0.2s opacity;
 }
 
 .nav-link-wrap .link.active .target,
 .nav-link-wrap .link .target.isSticky {
   opacity: 1;
+  // color: $color--white;
 }

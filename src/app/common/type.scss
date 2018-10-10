@@ -1,6 +1,6 @@
 $font-family--header: "GT-America-Expanded-Black", sans-serif;
 $font-family--copy: "GT-America-Expanded-Thin", sans-serif;
-$font-family--nav: "Karla", sans-serif;
+$font-family--nav: "GT-America-Expanded-Thin", sans-serif;
 $font-weight--regular: 400;
 $font-weight--medium: 500;
 $font-weight--bold: 800;
@@ -11,10 +11,22 @@ $font-weight--bold: 800;
   font-range: 670px 2560px;
 }
 
-%font-size--copy--medium {
-  font-size: responsive 27px 37px;
-  line-height: 1.59;
+%font-size--roller-em {
+  font-size: responsive 16px 20px;
+  line-height: 1.15;
   font-range: 670px 2560px;
+}
+
+%font-size--nav {
+  font-size: responsive 14px 18.5px;
+  font-range: 670px 2560px;
+}
+
+%font-size--copy--medium {
+  // font-size: responsive 27px 37px;
+  font-size: 30px;
+  line-height: 1.667;
+  // font-range: 670px 2560px;
 }
 
 %font-size--header--large {
@@ -25,7 +37,7 @@ $font-weight--bold: 800;
 
 %font-size--header--x-large {
   // font-size: responsive 259px 102px;
-  font-size: 400px;
-  line-height: 0.69;
+  font-size: 407px;
+  line-height: 0.78;
   // font-range: 670px 2560px;
 }

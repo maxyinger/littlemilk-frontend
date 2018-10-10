@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import posed from 'react-pose'
 import SplitText from 'react-pose-text'
 import SplitLines from '../common/SplitLines'
+import { Section, DataLine, Data } from './SectionsPose'
 import { value, physics, easing } from 'popmotion'
 import { stopActions } from '../../utils/actionHelpers'
 
@@ -11,20 +12,6 @@ import { stopActions } from '../../utils/actionHelpers'
  * TODO: Add enter/exit posed els
  * TODO: Add no cursor hover state for titles
  */
-
-const config = {
-  dragDownTime : 200,
-  dragUpTime   : 600
-}
-
-const HSection = posed.div({
-  active: {
-    opacity: 1
-  },
-  inActive: {
-    opacity: 0
-  }
-})
 
 class SectionsComponent extends Component {
   constructor (props) {
@@ -78,7 +65,7 @@ class SectionsComponent extends Component {
     return (
       <div className="h-sections" ref={this.sections}>
         {projects.map((project, i) => (
-          <HSection
+          <Section
             key={project.id}
             className="h-section"
             pose={
@@ -103,50 +90,34 @@ class SectionsComponent extends Component {
               </div>
             </div>
             <div className="h-data-wrap">
-              <div className="h-data">
+              <Data className="h-data">
                 <div className="h-date">
                   <div className="oh">
-                    <div
-                      style={{
-                        transform: 'translate3d(0, 0%, 0)'
-                      }}
-                    >
-                      July 2018
-                    </div>
+                    <DataLine>July 2018</DataLine>
                   </div>
                 </div>
                 <ul className="h-roles">
                   {project.roles.map(role => (
                     <li key={role} className="h-role">
-                      <div className="oh">{role}</div>
+                      <div className="oh">
+                        <DataLine>{role}</DataLine>
+                      </div>
                     </li>
                   ))}
                 </ul>
                 <div className="h-deliverable">
                   <div className="oh">
-                    <div
-                      style={{
-                        transform: 'translate3d(0, 0%, 0)'
-                      }}
-                    >
-                      Cognak.com
-                    </div>
+                    <DataLine>Cognak.com</DataLine>
                   </div>
                 </div>
                 <div className="h-collaborator">
                   <div className="oh">
-                    <div
-                      style={{
-                        transform: 'translate3d(0, 0%, 0)'
-                      }}
-                    >
-                      Collaborated with Cognak
-                    </div>
+                    <DataLine>Collaborated with Cognak</DataLine>
                   </div>
                 </div>
-              </div>
+              </Data>
             </div>
-          </HSection>
+          </Section>
         ))}
       </div>
     )
