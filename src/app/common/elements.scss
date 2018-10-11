@@ -31,6 +31,98 @@ b {
   font-weight: $font-weight--bold;
 }
 
+svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
 .oh {
   overflow: hidden;
+}
+
+.link {
+  @extend %font-size--roller-em;
+
+  color: $color--white;
+  font-family: $font-family--header;
+  pointer-events: all;
+  position: relative;
+  display: block;
+  padding: 20px;
+  overflow: visible;
+
+  & > * {
+    pointer-events: none;
+  }
+}
+
+.link-child {
+  display: inline-block;
+  position: relative;
+}
+
+.link-inner {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.arrow {
+  display: inline-block;
+  // position: absolute;
+  height: 15px;
+  width: 15px;
+  margin-left: 30px;
+  font-family: $font-family--copy;
+
+  path {
+    fill: $color--white;
+  }
+}
+
+.link-line,
+.link-line > span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.link-line {
+  bottom: -10px;
+  overflow: hidden;
+
+  > span {
+    border-bottom: 1px solid $color--white;
+  }
+
+  > span:nth-of-type(1) {
+    transform: translateX(-103%);
+    opacity: 0;
+  }
+
+  > span:nth-of-type(2) {
+    transform: translateX(103%);
+    transition: transform 1s cubic-bezier(0.23, 1, 0.33, 1);
+    opacity: 1;
+  }
+}
+
+.link:hover .link-line {
+  > span {
+    transform: translateX(0%);
+  }
+
+  > span:nth-of-type(1) {
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.33, 1);
+    opacity: 1;
+  }
+
+  > span:nth-of-type(2) {
+    opacity: 0;
+  }
 }

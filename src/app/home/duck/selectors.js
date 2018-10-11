@@ -4,6 +4,7 @@ import { transform } from 'popmotion'
 const { interpolate, steps, pipe, clamp } = transform
 
 const getStickyIndex = ({ app }) => app.stickyIndex
+const getNoCursor = ({ app }) => app.noCursor
 const getIsEnterTransition = ({ app }) => app.isEnterTransition
 const getIsExitTransition = ({ app }) => app.isExitTransition
 const getProjects = ({ home }) => home.projects
@@ -28,9 +29,9 @@ const createStepsScrollPercent = createSelector(
 )
 
 const getIsDraggable = createSelector(
-  [getStickyIndex, getIsEnterTransition, getIsExitTransition],
-  (stickyIndex, isEnterTransition, isExitTransition) =>
-    stickyIndex < 0 && !isEnterTransition && !isExitTransition
+  [getStickyIndex, getIsEnterTransition, getIsExitTransition, getNoCursor],
+  (stickyIndex, isEnterTransition, isExitTransition, noCursor) =>
+    stickyIndex < 0 && !isEnterTransition && !isExitTransition && !noCursor
 )
 
 const getTagNamesById = (tags, ids) => ids.map(id => tags.byId[id].name)

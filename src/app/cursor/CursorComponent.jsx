@@ -5,7 +5,6 @@ import {
   pointer,
   everyFrame,
   listen,
-  easing,
   physics,
   delay
 } from 'popmotion'
@@ -17,6 +16,7 @@ import { stopActions } from '../../utils/actionHelpers'
 import types from './duck/types'
 import AppConfig from '../App.config'
 import PropTypes from 'prop-types'
+import Ease from '../common/Ease'
 import './Cursor.scss'
 
 /**
@@ -122,6 +122,10 @@ class CursorComponent extends Component {
         this.positionActionsSticky()
         return
       }
+      case types.IS_DRAGGING: {
+        this.positionActionsDragging()
+        return
+      }
       default: {
         this.positionActionsDefault()
       }
@@ -145,6 +149,23 @@ class CursorComponent extends Component {
     )
   }
 
+  // positionActionsDragging :: _ -> _
+  positionActionsDragging = () => {
+    // Stop actions.
+    stopActions(this.actions.position)
+
+    // Start dragging actions.
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      friction       : 0.99,
+      springStrength : 140,
+      restSpeed      : false
+    }).start(this.values.position)
+    this.actions.position.pointer = pointer().start(
+      this.actions.position.physics.setSpringTarget
+    )
+  }
+
   // positionActionsSticky :: _ -> _
   positionActionsSticky = () => {
     // Stop running actions.
@@ -153,7 +174,7 @@ class CursorComponent extends Component {
     // Start sticky actions.
     this.actions.position.physics = physics({
       from           : this.values.position.get(),
-      friction       : 0.925,
+      friction       : 0.94,
       springStrength : 280,
       restSpeed      : false
     }).start(this.values.position)
@@ -181,11 +202,6 @@ class CursorComponent extends Component {
     // Stop running actions.
     stopActions(this.actions.position)
 
-    // no position actions on start, just reset relevant vars
-    // this.values.position.update({
-    //   x : (window.innerWidth / 7) * 6,
-    //   y : (window.innerHeight / 7) * 5 + config.default.radius * 2
-    // })
     this.actions.position.pointer = pointer().start(this.values.position)
 
     this.actions.position.physics = physics({
@@ -219,6 +235,10 @@ class CursorComponent extends Component {
         this.appearanceActionsNoCursor()
         return
       }
+      case types.IS_DRAGGING: {
+        this.appearanceActionsDragging()
+        return
+      }
       default: {
         this.appearanceActionsDefault()
       }
@@ -232,45 +252,27 @@ class CursorComponent extends Component {
 
     // Apply default appearance tween.
     this.actions.appearance.tween = tween({
-      from : this.values.styles.get(),
-      to   : CursorStyles.normal,
-      ease : {
-        opacity      : easing.createExpoIn(3),
-        strokeStart  : easing.easeOut,
-        strokeEnd    : easing.easeOut,
-        radius       : easing.easeOut,
-        lineWidth    : easing.easeOut,
-        arrowOffset  : easing.easeOut,
-        arrowOpacity : easing.easeOut
-      }
+      from     : this.values.styles.get(),
+      to       : CursorStyles.normal,
+      duration : AppConfig.dragTransitionTime,
+      ease     : Ease['o4']
     }).start(this.values.styles)
+  }
 
-    // Allow mouseDown default appearance tweens.
-    this.actions.appearance.mouseDown = listen(document, 'mousedown').start(
-      () => {
-        if (this.props.canDrag) {
-          this.actions.appearance.tween = tween({
-            from : this.values.styles.get(),
-            to   : {
-              ...CursorStyles.normal,
-              ...CursorStyles.drag
-            },
-            ease: easing.backOut
-          }).start(this.values.styles)
-        }
-      }
-    )
-
-    // Allow mouseUp default appearance tweens.
-    this.actions.appearance.mouseUp = listen(document, 'mouseup').start(() => {
-      if (this.props.canDrag) {
-        this.actions.appearance.tween = tween({
-          from : this.values.styles.get(),
-          to   : CursorStyles.normal,
-          ease : easing.backOut
-        }).start(this.values.styles)
-      }
-    })
+  // appearanceActionsDragging :: _ -> _
+  appearanceActionsDragging = () => {
+    // Stop current actions.
+    stopActions(this.actions.appearance)
+    // Apply dragging actions.
+    this.actions.appearance.tween = tween({
+      from : this.values.styles.get(),
+      to   : {
+        ...CursorStyles.normal,
+        ...CursorStyles.drag
+      },
+      duration : AppConfig.dragTransitionTime / 2,
+      ease     : Ease['o4']
+    }).start(this.values.styles)
   }
 
   // appearanceActionsSticky :: _ -> _
@@ -286,15 +288,6 @@ class CursorComponent extends Component {
         ...CursorStyles.sticky
       },
       duration: 300
-      // ease     : {
-      //   opacity      : easing.reversed(easing.createExpoIn(9)),
-      //   strokeStart  : easing.easeOut,
-      //   strokeEnd    : easing.easeOut,
-      //   radius       : easing.createExpoIn(2),
-      //   lineWidth    : easing.easeOut,
-      //   arrowOffset  : easing.easeOut,
-      //   arrowOpacity : easing.easeOut
-      // }
     }).start(this.values.styles)
   }
 
@@ -325,8 +318,8 @@ class CursorComponent extends Component {
         ...currStyles,
         ...CursorStyles.exitTransition
       },
-      duration: AppConfig.pageTransitionTime - 200
-      // \\ease     : easing.createExpoIn(3)
+      duration : AppConfig.pageTransitionTime,
+      ease     : Ease['io3']
     }).start(this.values.styles)
   }
 
@@ -341,15 +334,15 @@ class CursorComponent extends Component {
             strokeStart : 0,
             strokeEnd   : 0,
             opacity     : 1,
-            radius      : 30,
-            lineWidth   : 0.5
+            radius      : 20,
+            lineWidth   : 1
           },
           to: {
             ...currStyles,
             ...CursorStyles.enterTransition
           },
           duration : AppConfig.pageTransitionTime * 2,
-          ease     : easing.anticipate
+          ease     : Ease['io4']
         }).start(this.values.styles)
       }
     })

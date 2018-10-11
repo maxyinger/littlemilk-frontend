@@ -108,8 +108,8 @@ class StickyComponent extends Component {
     this.actions.position.physics = physics({
       from           : this.values.position.get(),
       to             : { x: 0, y: 0 },
-      friction       : 0.85,
-      springStrength : 250
+      friction       : 0.98,
+      springStrength : 170
     }).start(this.values.position)
 
     const target = this.target.current
@@ -140,7 +140,7 @@ class StickyComponent extends Component {
     // Set physics to go towards computed constraint motion.
     this.actions.position.physics = physics({
       from           : this.values.position.get(),
-      friction       : 0.925,
+      friction       : 0.94,
       springStrength : 280,
       restSpeed      : false
     }).start(this.values.position)
@@ -192,7 +192,7 @@ class StickyComponent extends Component {
       <NavLink
         exact={this.props.exact}
         to={this.props.to}
-        className="link"
+        className="nav-link"
         activeClassName="active"
       >
         <span

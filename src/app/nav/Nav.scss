@@ -43,15 +43,14 @@
   -webkit-text-stroke-color: $color--white;
 }
 
-.logo,
-_px {
+.logo {
   position: absolute;
   z-index: 1;
   left: calc(100vw / 28);
   bottom: calc(100vw / 28);
 }
 
-.nav-link-wrap .link,
+.nav-link-wrap .nav-link,
 .logo,
 _px {
   @extend %font-size--nav;
@@ -65,8 +64,8 @@ _px {
   transition: 0.2s opacity;
 }
 
-.nav-link-wrap .link.active .target,
-.nav-link-wrap .link .target.isSticky {
+.nav-link-wrap .nav-link.active .target,
+.nav-link-wrap .nav-link .target.isSticky {
   opacity: 1;
   // color: $color--white;
 }

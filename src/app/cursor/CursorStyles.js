@@ -19,7 +19,7 @@ const link = {
 }
 
 const drag = {
-  radius       : 15,
+  radius       : 10,
   arrowOpacity : 1,
   arrowOffset  : 5
 }
@@ -29,18 +29,18 @@ const noCursor = {
 
 const sticky = {
   radius    : 50,
-  lineWidth : 0.5
+  lineWidth : 1
   // opacity : 0.6
 }
 
 const exitTransition = {
-  strokeEnd : 0,
-  opacity   : 0
+  strokeEnd: 0
+  // opacity   : 0
 }
 
 const enterTransition = {
   strokeEnd : 100,
-  radius    : 30,
+  radius    : 20,
   opacity   : 1
 }
 
