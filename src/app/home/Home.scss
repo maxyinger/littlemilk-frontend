@@ -25,6 +25,7 @@
 .h-menu-wrap {
   position: absolute;
   left: calc(100vw / 7);
+  //right: 0;
   // top: calc(100vh / 7);
   top: 50vh;
   transform: translateY(-100%);
@@ -218,21 +219,52 @@
 }
 
 .h-menu-list {
+  // will-change: transform;
+}
+
+.h-menu-list,
+.h-menu-mask {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  color: $color--white;
 }
+
+// .h-menu-mask {
+//   overflow: hidden;
+// }
 
 .h-menu-item {
   position: relative;
   opacity: 1;
   color: transparent;
-  -webkit-text-stroke: 1px $color--white;
-  transition: color 0.5s;
+  // -webkit-text-stroke: 1px $color--white;
+  transition: color 1s;
 }
 
-.h-menu-item.active {
+.h-menu-mask .h-menu-list {
+  position: relative;
+}
+
+.h-menu-mask .h-menu-item {
+  // color: rgba(255, 255, 255, 0.1);
+  // -webkit-text-stroke: 1px $color--grey;
+}
+
+.h-menu-item {
   color: $color--white;
+  opacity: 0.1;
+  text-align: right;
+}
+
+.h-menu-index {
+  @extend %font-size--header--x-large;
+
+  position: absolute;
+  font-family: $font-family--header;
+  color: $color--white;
+  right: -20vh;
+  // bottom: calc(100vh / 7);
+  top: calc(100vh * 2 / 7);
+  text-align: right;
 }

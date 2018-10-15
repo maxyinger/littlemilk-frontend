@@ -3,7 +3,7 @@ import appConfig from '../App.config'
 import Ease from '../common/Ease'
 
 export const MenuController = posed.div({
-  active: { staggerChildren: appConfig.dragTransitionTime / 50 }
+  // active: { staggerChildren: appConfig.dragTransitionTime / 50 }
 })
 
 export const MenuItemInner = posed.div({

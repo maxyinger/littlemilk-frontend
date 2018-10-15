@@ -23,7 +23,7 @@ class AboutComponent extends Component {
   componentDidMount () {}
 
   render () {
-    return <Surp>Info!</Surp>
+    return <Surp />
   }
 }
 

@@ -8,6 +8,7 @@ class MenuComponent extends Component {
     super(props)
 
     this.list = React.createRef()
+    this.maskList = React.createRef()
   }
 
   componentDidMount () {
@@ -24,6 +25,17 @@ class MenuComponent extends Component {
             list.style.transform = `translate3d(0px, ${transform}%, 0px)`
           }
         }
+      ),
+
+      transformPercent2: value(
+        scrollToTransform(scrollPercent),
+        scrollPercent => {
+          const maskList = this.maskList.current
+          const transform = scrollToTransform(scrollPercent)
+          if (maskList && transform) {
+            maskList.style.transform = `translate3d(0px, ${transform}%, 0px)`
+          }
+        }
       )
     }
 
@@ -31,6 +43,7 @@ class MenuComponent extends Component {
      * Needed to update transform of list initially.
      */
     this.values.transformPercent.update(scrollPercent)
+    this.values.transformPercent2.update(scrollPercent)
 
     // Initial actions.
     this.actions = {
@@ -40,11 +53,18 @@ class MenuComponent extends Component {
         springStrength : 100,
         restSpeed      : false
       }).start(this.values.transformPercent)
+      // physics2: physics({
+      //   from           : this.values.transformPercent2.get(),
+      //   friction       : 0.98,
+      //   springStrength : 110,
+      //   restSpeed      : false
+      // }).start(this.values.transformPercent2)
     }
   }
 
   componentDidUpdate () {
     this.actions.physics.setSpringTarget(this.props.scrollPercent)
+    // this.actions.physics2.setSpringTarget(this.props.scrollPercent)
   }
 
   render () {
@@ -69,6 +89,26 @@ class MenuComponent extends Component {
             </li>
           ))}
         </ul>
+
+        <div className="h-menu-index oh">
+          <MenuItemInner>{currentProjectIndex + 1}.</MenuItemInner>
+        </div>
+        {/* <div className="h-menu-mask">
+          <ul ref={this.maskList} className="h-menu-list">
+            {projects.map((project, i) => (
+              <li
+                key={project.title}
+                className={
+                  (currentProjectIndex === i ? 'active ' : ' ') + 'h-menu-item '
+                }
+              >
+                <div className="h-menu-title oh">
+                  <MenuItemInner>{project.title}</MenuItemInner>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div> */}
       </MenuController>
     )
   }
