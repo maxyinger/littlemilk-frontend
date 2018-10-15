@@ -2,6 +2,7 @@ import posed from 'react-pose'
 import appConfig from '../App.config'
 import styled from 'styled-components'
 import Ease from '../common/Ease'
+
 export const Section = posed.div()
 
 export const Data = posed.div({

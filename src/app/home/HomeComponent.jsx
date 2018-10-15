@@ -4,6 +4,7 @@ import { stopActions } from '../../utils/actionHelpers'
 import { listen, pointer } from 'popmotion'
 import RollerContainer from './RollerContainer'
 import SectionsContainer from './SectionsContainer'
+import MenuContainer from './MenuContainer'
 import './Home.scss'
 
 class HomeComponent extends Component {
@@ -94,6 +95,9 @@ class HomeComponent extends Component {
   render () {
     return (
       <div className="h">
+        <div className="h-menu-wrap">
+          <MenuContainer />
+        </div>
         <div className="h-roller-wrap">
           <RollerContainer />
         </div>

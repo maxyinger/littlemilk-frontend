@@ -22,6 +22,14 @@
   left: calc(100vw / 28);
 }
 
+.h-menu-wrap {
+  position: absolute;
+  left: calc(100vw / 7);
+  // top: calc(100vh / 7);
+  top: 50vh;
+  transform: translateY(-100%);
+}
+
 /** 
  * Roller
  */
@@ -69,10 +77,8 @@
 
 .h-roller-index {
   &-number {
-    //position: absolute;
     color: $color--grey;
     margin-right: 10px;
-    //transform: translateX(-150%);
   }
 
   &-name {
@@ -98,7 +104,6 @@
   }
 
   &-name {
-    // @extend %font-size--copy--medium;
     @extend %font-size--roller-em;
 
     font-family: $font-family--header;
@@ -198,4 +203,36 @@
 .h-link-wrap {
   position: relative;
   margin-top: calc(100vh / 14 * 3 / 4);
+}
+
+/**
+ * Menu
+ */
+.h-menu {
+  @extend %font-size--header--large;
+
+  position: relative;
+  font-family: $font-family--header;
+  text-transform: uppercase;
+  color: transparent;
+}
+
+.h-menu-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  color: $color--white;
+}
+
+.h-menu-item {
+  position: relative;
+  opacity: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px $color--white;
+  transition: color 0.5s;
+}
+
+.h-menu-item.active {
+  color: $color--white;
 }

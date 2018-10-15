@@ -47,7 +47,7 @@ class RollerComponent extends Component {
       physics: physics({
         from           : this.values.transformPercent.get(),
         friction       : 0.98,
-        springStrength : 140,
+        springStrength : 150,
         restSpeed      : false
       }).start(this.values.transformPercent)
     }
