@@ -4,4 +4,4 @@ node_modules
 dist
 coverage
 .yarn-cache
-/src/app/assets
+# /src/app/assets
