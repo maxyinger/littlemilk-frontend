@@ -67,7 +67,8 @@ const createTitleOpacityFromIndex = createSelector(
     pipe(
       interpolate([0, 1], [0, numProjects - 1]),
       v => index - v,
-      v => v * 2,
+      v => v * 3,
+      v => v + 0.3,
       v => Math.abs(v),
       v => v - 1,
       clamp(0, 1)
@@ -80,6 +81,16 @@ const createScrollToTransform = createSelector([getNumProjects], numProjects =>
     v => v * -100
   )
 )
+
+// const createScrollPercentToIndex = createSelector(
+//   [getNumProjects],
+//   numProjects =>
+//     pipe(
+//       interpolate([0, 1], [0, numProjects - 1]),
+//       v => v - 0.5,
+//       steps(numProjects, 0, numProjects - 1)
+//     )
+// )
 
 const createScrollPercentToIndex = createSelector(
   [getNumProjects],

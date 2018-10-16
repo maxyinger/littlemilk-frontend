@@ -24,8 +24,9 @@
 
 .h-menu-wrap {
   position: absolute;
-  left: calc(100vw / 7);
-  //right: 0;
+  // left: calc(100vw / 7);
+  // left: 0;
+  right: 0;
   // top: calc(100vh / 7);
   top: 50vh;
   transform: translateY(-100%);
@@ -215,6 +216,7 @@
   position: relative;
   font-family: $font-family--header;
   text-transform: uppercase;
+  text-align: right;
   color: transparent;
 }
 
@@ -226,13 +228,13 @@
 .h-menu-mask {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   height: 100%;
 }
 
-// .h-menu-mask {
-//   overflow: hidden;
-// }
+.h-menu-mask {
+  overflow: hidden;
+}
 
 .h-menu-item {
   position: relative;
@@ -244,17 +246,29 @@
 
 .h-menu-mask .h-menu-list {
   position: relative;
-}
-
-.h-menu-mask .h-menu-item {
-  // color: rgba(255, 255, 255, 0.1);
-  // -webkit-text-stroke: 1px $color--grey;
+  text-align: right;
 }
 
 .h-menu-item {
   color: $color--white;
   opacity: 0.1;
   text-align: right;
+  // transition: 1s opacity, 0s color;
+}
+
+// .h-menu-mask .h-menu-item {
+//   opacity: 1;
+//   color: $color--white;
+//   // transition: 0s opacity;
+// }
+
+.h-menu-item.active {
+  // color: $color--white;
+  // opacity: 1;
+}
+
+.h-menu-mask .h-menu-item.active {
+  // opacity: 0;
 }
 
 .h-menu-index {
@@ -263,8 +277,11 @@
   position: absolute;
   font-family: $font-family--header;
   color: $color--white;
-  right: -20vh;
+  right: calc(100vw / 7);
   // bottom: calc(100vh / 7);
   top: calc(100vh * 2 / 7);
   text-align: right;
+  white-space: nowrap;
+  // padding: 50px;
+  // transform: translateY(50px);
 }

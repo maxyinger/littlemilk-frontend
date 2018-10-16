@@ -22,3 +22,20 @@ export const MenuItemInner = posed.div({
     }
   }
 })
+
+// export const MenuItemInner = posed.div({
+//   active: {
+//     opacity: 1,
+//     transition : {
+//       duration : appConfig.dragTransitionTime,
+//       ease     : Ease['o4']
+//     }
+//   },
+//   inActive: {
+//     opacity: .5,
+//     transition : {
+//       duration : (appConfig.dragTransitionTime * 2) / 3,
+//       ease     : Ease['o4']
+//     }
+//   }
+// })

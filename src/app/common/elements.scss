@@ -25,6 +25,7 @@ h1 {
 
 a {
   text-decoration: none;
+  color: $color--white;
 }
 
 b {
@@ -39,6 +40,14 @@ svg {
 
 .oh {
   overflow: hidden;
+}
+
+.no-cursor {
+  pointer-events: all;
+
+  & > * {
+    pointer-events: none;
+  }
 }
 
 .link {

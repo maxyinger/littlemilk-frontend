@@ -1,0 +1,47 @@
+@import "../common/colors";
+@import "../common/type";
+
+.i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  color: $color--white;
+}
+
+.i-stream {
+  position: absolute;
+  bottom: 50%;
+}
+
+.i-header {
+  @extend %font-size--header--large;
+
+  color: $color--white;
+  opacity: 0.1;
+}
+
+.i-content {
+  @extend %font-size--copy--medium;
+
+  position: absolute;
+  left: 50%;
+  top: calc(100vh / 3.5);
+  transform: translateX(-50%);
+}
+
+.i-socials {
+  margin-bottom: calc(100vh / 7);
+}
+
+.i-social {
+  text-transform: Capitalize;
+  font-size: 60px;
+  // font-family: $font-family--copy;
+
+  // &:hover {
+  //   opacity: 1;
+  // }
+}

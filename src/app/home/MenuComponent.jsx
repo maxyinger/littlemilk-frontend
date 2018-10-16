@@ -21,29 +21,30 @@ class MenuComponent extends Component {
         scrollPercent => {
           const list = this.list.current
           const transform = scrollToTransform(scrollPercent)
+          // const maskList = this.maskList.current
           if (list && transform) {
             list.style.transform = `translate3d(0px, ${transform}%, 0px)`
-          }
-        }
-      ),
-
-      transformPercent2: value(
-        scrollToTransform(scrollPercent),
-        scrollPercent => {
-          const maskList = this.maskList.current
-          const transform = scrollToTransform(scrollPercent)
-          if (maskList && transform) {
-            maskList.style.transform = `translate3d(0px, ${transform}%, 0px)`
+            // maskList.style.transform = `translate3d(0px, ${transform}%, 0px)`
           }
         }
       )
+
+      // transformPercent2: value(
+      //   scrollToTransform(scrollPercent),
+      //   scrollPercent => {
+      //     const maskList = this.maskList.current
+      //     const transform = scrollToTransform(scrollPercent)
+      //     if (maskList && transform) {
+      //       maskList.style.transform = `translate3d(0px, ${transform}%, 0px)`
+      //     }
+      //   }
+      // )
     }
 
     /**
      * Needed to update transform of list initially.
      */
     this.values.transformPercent.update(scrollPercent)
-    this.values.transformPercent2.update(scrollPercent)
 
     // Initial actions.
     this.actions = {
@@ -91,7 +92,7 @@ class MenuComponent extends Component {
         </ul>
 
         <div className="h-menu-index oh">
-          <MenuItemInner>{currentProjectIndex + 1}.</MenuItemInner>
+          <MenuItemInner>{currentProjectIndex + 1}</MenuItemInner>
         </div>
         {/* <div className="h-menu-mask">
           <ul ref={this.maskList} className="h-menu-list">
