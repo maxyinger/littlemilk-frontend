@@ -11,19 +11,21 @@
   color: $color--white;
 }
 
-.i-stream {
+.i-stream-wrap {
   position: absolute;
-  bottom: 50%;
+  bottom: 50vh;
+  left: 0;
+  right: 0;
 }
 
 .i-header {
-  @extend %font-size--header--large;
-
+  // @extend %font-size--header--large;
+  font-size: 40px;
   color: $color--white;
-  opacity: 0.1;
+  opacity: 0.075;
 }
 
-.i-content {
+.i-info {
   @extend %font-size--copy--medium;
 
   position: absolute;
@@ -31,10 +33,6 @@
   right: 0;
   bottom: 0;
   left: 0;
-  // display: flex;
-  // // flex-direction: column;
-  // align-items: center;
-  // justify-content: center;
   left: calc(100vw / 3.5);
   top: 50vh;
   transform: translateY(-300px);

@@ -67,7 +67,6 @@ const AppComponent = ({
   <Router>
     <div
       onMouseMove={({ target }) => {
-        console.log(target)
         if (target.classList.contains('no-cursor') && !noCursor) toggleCursor()
         if (!target.classList.contains('no-cursor') && noCursor) toggleCursor()
       }}
