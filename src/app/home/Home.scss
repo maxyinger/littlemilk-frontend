@@ -150,15 +150,18 @@
 
 .h-data-wrap {
   top: 50vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  position: absolute;
+  left: calc(100vw / 3.5);
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-start;
+  // align-items: center;
 }
 
 .h-data {
   @extend %font-size--copy--medium;
 
+  display: inline-block;
   margin-top: calc(100vh / 14);
 }
 
@@ -205,6 +208,12 @@
 .h-link-wrap {
   position: relative;
   margin-top: calc(100vh / 14 * 3 / 4);
+}
+
+.h-date {
+  //margin-left: 80px;
+  font-family: $font-family--header;
+  text-transform: uppercase;
 }
 
 /**

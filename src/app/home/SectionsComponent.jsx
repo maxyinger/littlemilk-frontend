@@ -121,14 +121,14 @@ class SectionsComponent extends Component {
                       <DataLine>Collaborated with Cognak</DataLine>
                     </div>
                   </div>
+                  <div className="h-link-wrap oh">
+                    <DataLine>
+                      <AWrap target="_blank" href="/">
+                        Launch
+                      </AWrap>
+                    </DataLine>
+                  </div>
                 </Data>
-                <div className="h-link-wrap oh">
-                  <DataLine>
-                    <AWrap target="_blank" href="/">
-                      Launch
-                    </AWrap>
-                  </DataLine>
-                </div>
               </div>
             </Section>
           ))}

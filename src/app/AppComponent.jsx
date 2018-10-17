@@ -78,11 +78,12 @@ const AppComponent = ({
     >
       <Background pose={theme === 'light' ? 'themeLight' : 'themeDark'} />
       <NavContainer />
-      <main className="routes">
+      <main className="routes-wrap">
         <Route
           render={({ location }) => (
             <PoseGroup flipMove={false} preEnterPose="mount">
               <TransitionController
+                className="routes-controller"
                 onValueChange={{
                   progress: v => {
                     /**
