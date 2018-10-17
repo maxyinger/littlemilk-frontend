@@ -23,9 +23,10 @@ const TransitionController = posed.div({
     progress: 0
   },
   enter: {
-    progress   : 1,
-    delay      : config.pageTransitionTime,
-    transition : { duration: config.pageTransitionTime }
+    progress       : 1,
+    delay          : config.pageTransitionTime,
+    beforeChildren : true,
+    transition     : { duration: config.pageTransitionTime }
   },
   exit: {
     progress   : 2,
