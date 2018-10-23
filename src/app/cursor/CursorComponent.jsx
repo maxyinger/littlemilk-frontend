@@ -158,7 +158,7 @@ class CursorComponent extends Component {
     this.actions.position.physics = physics({
       from           : this.values.position.get(),
       friction       : 0.99,
-      springStrength : 140,
+      springStrength : 100,
       restSpeed      : false
     }).start(this.values.position)
     this.actions.position.pointer = pointer().start(

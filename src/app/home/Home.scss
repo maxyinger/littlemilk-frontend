@@ -81,6 +81,7 @@
   &-number {
     color: $color--grey;
     margin-right: 10px;
+    position: relative;
   }
 
   &-name {
@@ -261,7 +262,7 @@
 .h-menu-item {
   color: $color--white;
   opacity: 0.1;
-  text-align: right;
+  text-align: left;
   // transition: 1s opacity, 0s color;
 }
 
@@ -281,15 +282,16 @@
 }
 
 .h-menu-index {
-  @extend %font-size--header--x-large;
+  @extend %font-size--copy--medium;
 
   position: absolute;
-  font-family: $font-family--header;
+  font-family: $font-family--copy;
   color: $color--white;
-  right: calc(100vw / 7);
-  // bottom: calc(100vh / 7);
-  top: calc(100vh * 2 / 7);
-  text-align: right;
+  transform: translateY(-100%);
+  left: 0;
+  //bottom: 0;
+  // top: calc(50vh);
+  text-align: center;
   white-space: nowrap;
   // padding: 50px;
   // transform: translateY(50px);

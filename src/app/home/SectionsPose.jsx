@@ -13,24 +13,92 @@ export const Data = posed.div({
 })
 
 export const DataLine = posed.div({
+  mount : { transform: 'translate3d(0, 200%, 0)' },
+  enter : {
+    transform: ({ isCurrent }) =>
+      isCurrent ? 'translate3d(0, 0%, 0)' : 'translate3d(0, 200%, 0)',
+    transition: {
+      duration : appConfig.pageTransitionTime,
+      ease     : Ease['io4']
+    }
+  },
+  exit: {
+    transform: ({ isCurrent }) =>
+      isCurrent ? 'translate3d(0, -100%, 0)' : 'translate3d(0, 200%, 0)',
+    transition: {
+      duration : appConfig.pageTransitionTime,
+      ease     : Ease['io3']
+    }
+  },
   active: {
     transform  : 'translate3d(0, 0%, 0)',
     transition : {
       duration : appConfig.dragTransitionTime,
-      ease     : Ease['o4']
+      ease     : Ease['o5']
     }
   },
   inActive: {
     transform  : 'translate3d(0, 200%, 0)',
     transition : {
       duration : appConfig.dragTransitionTime,
-      ease     : Ease['o4']
+      ease     : Ease['o5']
+    }
+  }
+})
+
+export const CurrentIndexLine = posed.div({
+  mount : { transform: 'translate3d(0, -100%, 0)' },
+  enter : {
+    transform  : 'translate3d(0, 0%, 0)',
+    transition : {
+      duration : appConfig.pageTransitionTime,
+      ease     : Ease['io4']
+    }
+  },
+  exit: {
+    transform  : 'translate3d(0, -100%, 0)',
+    transition : {
+      duration : appConfig.pageTransitionTime,
+      ease     : Ease['io3']
+    }
+  },
+  active: {
+    transform  : 'translate3d(0, 0%, 0)',
+    transition : {
+      duration : appConfig.dragTransitionTime,
+      ease     : Ease['o5']
+    }
+  },
+  inActive: {
+    transform  : 'translate3d(0, -100%, 0)',
+    transition : {
+      duration : appConfig.dragTransitionTime,
+      ease     : Ease['o5']
     }
   }
 })
 
 export const TitleChar = styled(
   posed.div({
+    mount: {
+      transform: 'translate3d(-100%, 0, 0)'
+    },
+    enter: {
+      transform: ({ isCurrent }) =>
+        isCurrent ? 'translate3d(0%, 0, 0)' : 'translate3d(-150%, 0, 0)',
+      transition: {
+        duration : appConfig.pageTransitionTime,
+        ease     : Ease['io4']
+      }
+    },
+    exit: {
+      transform: ({ isCurrent }) =>
+        isCurrent ? 'translate3d(110%, 0, 0)' : 'translate3d(-150%, 0, 0)',
+      transition: {
+        duration : appConfig.pageTransitionTime,
+        ease     : Ease['io3']
+      }
+    },
     active: {
       transform  : 'translate3d(0%, 0, 0)',
       transition : {

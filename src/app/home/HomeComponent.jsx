@@ -80,7 +80,7 @@ class HomeComponent extends Component {
           }
 
           // Prepare before dispatching to store.
-          const mappedPercent = newPercentOffset * (100 / 50)
+          const mappedPercent = newPercentOffset * (100 / 70)
           const clampedPercent = clampScrollPercentOffset(mappedPercent)
           updateScrollPercentOffset(clampedPercent)
           // console.log(`

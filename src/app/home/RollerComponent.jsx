@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { physics, value } from 'popmotion'
+import { RollerTransition } from './RollerPose'
 import { stopActions } from '../../utils/actionHelpers'
 
 /**
@@ -71,39 +72,24 @@ class RollerComponent extends Component {
         height
         <ul ref={this.indexList} className="h-roller-indexes">
           {projects.map((project, i) => (
-            <li key={project.indexName} className="h-roller-index">
-              <div className="h-roller-index-number">{project.indexName}</div>
-              <div
-                className="h-roller-index-name"
-                style={
-                  {
-                    // opacity: this.titleOpacity[i](scrollPercent)
-                    // opacity: 0.2
-                  }
-                }
-              >
-                {' '}
-                {project.title}
-              </div>
+            <li key={project.indexName} className="h-roller-index oh">
+              <RollerTransition className="h-roller-index">
+                <div className="h-roller-index-number">{project.indexName}</div>
+                <div className="h-roller-index-name"> {project.title}</div>
+              </RollerTransition>
             </li>
           ))}
         </ul>
         <div className="h-roller-titles-mask">
           <ul ref={this.titleList} className="h-roller-titles">
             {projects.map((project, i) => (
-              <li key={project.title} className="h-roller-title">
-                <div className="h-roller-title-number">{project.indexName}</div>
-                <div
-                  className="h-roller-title-name"
-                  style={
-                    {
-                      // opacity: this.titleOpacity[i](scrollPercent)
-                      // opacity: 0.2
-                    }
-                  }
-                >
-                  {project.title}
-                </div>
+              <li key={project.title} className="h-roller-title oh">
+                <RollerTransition>
+                  <div className="h-roller-title-number">
+                    {project.indexName}
+                  </div>
+                  <div className="h-roller-title-name">{project.title}</div>
+                </RollerTransition>
               </li>
             ))}
           </ul>

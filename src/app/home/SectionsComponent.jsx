@@ -6,7 +6,8 @@ import {
   Data,
   TitleChar,
   TitleCharWrap,
-  TitleChars
+  TitleChars,
+  CurrentIndexLine
 } from './SectionsPose'
 import AWrap from '../common/AWrap'
 import { value, physics } from 'popmotion'
@@ -69,15 +70,22 @@ class SectionsComponent extends Component {
     const { projects, isDragging, currentProjectIndex } = this.props
     return (
       <React.Fragment>
-        <div className="h-index">
-          00
-          {currentProjectIndex + 1}.
+        <div className="h-index oh">
+          <CurrentIndexLine
+            // initialPose="mount"
+            pose={!isDragging ? 'active' : 'inActive'}
+          >
+            00
+            {currentProjectIndex + 1}.
+          </CurrentIndexLine>
         </div>
         <div className="h-sections" ref={this.sections}>
           {projects.map((project, i) => (
             <Section
               key={project.id}
               className="h-section"
+              isCurrent={currentProjectIndex === i}
+              // initialPose="mount"
               pose={
                 !isDragging && currentProjectIndex === i ? 'active' : 'inActive'
               }
@@ -86,9 +94,11 @@ class SectionsComponent extends Component {
                 <div className="h-title">
                   <div className="h-title-mask">
                     <TitleChars className="h-title-stream">
-                      {project.title.split('').map((char, i) => (
-                        <TitleCharWrap key={i} className="oh">
-                          <TitleChar>{char}</TitleChar>
+                      {project.title.split('').map((char, j) => (
+                        <TitleCharWrap key={j} className="oh">
+                          <TitleChar isCurrent={currentProjectIndex === i}>
+                            {char}
+                          </TitleChar>
                         </TitleCharWrap>
                       ))}
                     </TitleChars>
@@ -99,30 +109,38 @@ class SectionsComponent extends Component {
                 <Data className="h-data">
                   <div className="h-date">
                     <div className="oh">
-                      <DataLine>July 2018</DataLine>
+                      <DataLine isCurrent={currentProjectIndex === i}>
+                        July 2018
+                      </DataLine>
                     </div>
                   </div>
                   <ul className="h-roles">
                     {project.roles.map(role => (
                       <li key={role} className="h-role">
                         <div className="oh">
-                          <DataLine>{role}</DataLine>
+                          <DataLine isCurrent={currentProjectIndex === i}>
+                            {role}
+                          </DataLine>
                         </div>
                       </li>
                     ))}
                   </ul>
                   <div className="h-deliverable">
                     <div className="oh">
-                      <DataLine>Cognak.com</DataLine>
+                      <DataLine isCurrent={currentProjectIndex === i}>
+                        Cognak.com
+                      </DataLine>
                     </div>
                   </div>
                   <div className="h-collaborator">
                     <div className="oh">
-                      <DataLine>Collaborated with Cognak</DataLine>
+                      <DataLine isCurrent={currentProjectIndex === i}>
+                        Collaborated with Cognak
+                      </DataLine>
                     </div>
                   </div>
                   <div className="h-link-wrap oh">
-                    <DataLine>
+                    <DataLine isCurrent={currentProjectIndex === i}>
                       <AWrap target="_blank" href="/">
                         Launch
                       </AWrap>

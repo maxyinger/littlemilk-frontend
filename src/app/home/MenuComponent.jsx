@@ -92,7 +92,10 @@ class MenuComponent extends Component {
         </ul>
 
         <div className="h-menu-index oh">
-          <MenuItemInner>{currentProjectIndex + 1}</MenuItemInner>
+          <MenuItemInner>
+            00
+            {currentProjectIndex + 1}.
+          </MenuItemInner>
         </div>
         {/* <div className="h-menu-mask">
           <ul ref={this.maskList} className="h-menu-list">
