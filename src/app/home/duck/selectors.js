@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import { transform } from 'popmotion'
 
-const { interpolate, steps, pipe, clamp } = transform
+const { interpolate, steps, pipe, clamp, linearSpring, conditional } = transform
 
 const getStickyIndex = ({ app }) => app.stickyIndex
 const getNoCursor = ({ app }) => app.noCursor
@@ -18,14 +18,12 @@ const createClampScrollPercentOffset = createSelector(
   scrollPercent => clamp(-1 * scrollPercent, 1 - scrollPercent)
 )
 
-const createStepsScrollPercent = createSelector(
-  [getScrollPercent, getNumProjects],
-  (scrollPercent, numProjects) =>
-    pipe(
-      v => v + scrollPercent,
-      // v => stepProgress(numProjects, v)
-      steps(numProjects, 0, 1)
-    )
+const createStepsScrollPercent = createSelector([getNumProjects], numProjects =>
+  pipe(
+    clamp(0, 1),
+    // v => stepProgress(numProjects, v)
+    steps(numProjects, 0, 1)
+  )
 )
 
 const getIsDraggable = createSelector(
@@ -96,6 +94,7 @@ const createScrollPercentToIndex = createSelector(
   [getNumProjects],
   numProjects =>
     pipe(
+      clamp(0, 1),
       interpolate([0, 1], [0, numProjects - 1]),
       steps(numProjects, 0, numProjects - 1)
     )
@@ -107,6 +106,29 @@ const getCurrentProjectIndex = createSelector(
     scrollPercentToIndex(scrollPercent + scrollPercentOffset)
 )
 
+const createNormalizedDragPipe = createSelector(
+  [getScrollPercent],
+  scrollPercent =>
+    pipe(
+      // Initialize pointer with initial yPos
+      ({ y }) => -1 * y,
+      // Normalize with window.innerHeight (yPercent)
+      v => v / window.innerHeight,
+      // Map to be percentage of viewport
+      v => v * (100 / 70),
+      // If current scroll + yPercent greater than 1 add contraint motion towards 1
+      conditional(
+        v => v > 1 - scrollPercent,
+        linearSpring(0.1, 1 - scrollPercent)
+      ),
+      // If current scroll + yPercent less than 0 add constraint motion towards 0
+      conditional(
+        v => v < -1 * scrollPercent,
+        linearSpring(0.1, -1 * scrollPercent)
+      )
+    )
+)
+
 export default {
   getIsDraggable,
   getProjectsWithTags,
@@ -116,5 +138,7 @@ export default {
   createTitleOpacityFromIndex,
   getCurrentProjectIndex,
   createClampScrollPercentOffset,
-  createStepsScrollPercent
+  createStepsScrollPercent,
+  createNormalizedDragPipe,
+  createScrollPercentToIndex
 }

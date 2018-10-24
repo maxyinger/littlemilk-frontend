@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { value, physics } from 'popmotion'
+import { value, physics, pointer } from 'popmotion'
 import { MenuController, MenuItemInner } from './MenuPose'
+import { stopActions } from '../../utils/actionHelpers'
 
 class MenuComponent extends Component {
   constructor (props) {
     super(props)
 
     this.list = React.createRef()
-    this.maskList = React.createRef()
   }
 
   componentDidMount () {
@@ -16,29 +16,22 @@ class MenuComponent extends Component {
 
     // Initial values.
     this.values = {
-      transformPercent: value(
-        scrollToTransform(scrollPercent),
-        scrollPercent => {
-          const list = this.list.current
-          const transform = scrollToTransform(scrollPercent)
-          // const maskList = this.maskList.current
-          if (list && transform) {
-            list.style.transform = `translate3d(0px, ${transform}%, 0px)`
-            // maskList.style.transform = `translate3d(0px, ${transform}%, 0px)`
-          }
+      transformPercent: value(scrollPercent, scrollPercent => {
+        // Update view
+        const list = this.list.current
+        const transform = scrollToTransform(scrollPercent)
+        if (list && transform) {
+          list.style.transform = `translate3d(0px, ${transform}%, 0px)`
         }
-      )
 
-      // transformPercent2: value(
-      //   scrollToTransform(scrollPercent),
-      //   scrollPercent => {
-      //     const maskList = this.maskList.current
-      //     const transform = scrollToTransform(scrollPercent)
-      //     if (maskList && transform) {
-      //       maskList.style.transform = `translate3d(0px, ${transform}%, 0px)`
-      //     }
-      //   }
-      // )
+        // TODO: Update currentIndex value for view, not store.
+        // const currentIndex = this.props.scrollPercentToIndex(scrollPercent)
+        // if (this.props.currentProjectIndex !== currentIndex) {
+        //   this.props.updateCurrentProjectIndex(currentIndex)
+        // }
+
+        return scrollPercent
+      })
     }
 
     /**
@@ -51,21 +44,55 @@ class MenuComponent extends Component {
       physics: physics({
         from           : this.values.transformPercent.get(),
         friction       : 0.98,
-        springStrength : 100,
+        springStrength : 120,
         restSpeed      : false
-      }).start(this.values.transformPercent)
-      // physics2: physics({
-      //   from           : this.values.transformPercent2.get(),
-      //   friction       : 0.98,
-      //   springStrength : 110,
-      //   restSpeed      : false
-      // }).start(this.values.transformPercent2)
+      }).start(this.values.transformPercent),
+      pointer: {}
     }
   }
 
-  componentDidUpdate () {
-    this.actions.physics.setSpringTarget(this.props.scrollPercent)
-    // this.actions.physics2.setSpringTarget(this.props.scrollPercent)
+  componentDidUpdate (prevProps) {
+    const {
+      isDragging,
+      normalizedDragPipe,
+      scrollPercent,
+      stepsScrollPercent
+    } = this.props
+
+    // If start dragging setup pipes to pointer.
+    if (prevProps.isDragging !== isDragging && isDragging) {
+      this.actions.pointer = pointer({ y: 0 })
+        .pipe(
+          normalizedDragPipe,
+          v => v + scrollPercent
+        )
+        .start(v => this.actions.physics.setSpringTarget(v))
+    }
+
+    // If stop dragging update store and clean up pointer.
+    if (prevProps.isDragging !== isDragging && !isDragging) {
+      // Update ScrollPercent
+      const steppedScrollTotal = stepsScrollPercent(
+        this.values.transformPercent.get()
+      )
+      this.props.updateScrollPercent(steppedScrollTotal)
+
+      // Update Current Index
+      const currentIndex = this.props.scrollPercentToIndex(scrollPercent)
+      if (this.props.currentProjectIndex !== currentIndex) {
+        this.props.updateCurrentProjectIndex(currentIndex)
+      }
+      stopActions(this.actions.pointer)
+    }
+
+    if (!isDragging) {
+      this.actions.physics.setSpringTarget(scrollPercent)
+    }
+  }
+
+  componentWillUnmount () {
+    stopActions(this.values)
+    stopActions(this.actions)
   }
 
   render () {
@@ -97,33 +124,22 @@ class MenuComponent extends Component {
             {currentProjectIndex + 1}.
           </MenuItemInner>
         </div>
-        {/* <div className="h-menu-mask">
-          <ul ref={this.maskList} className="h-menu-list">
-            {projects.map((project, i) => (
-              <li
-                key={project.title}
-                className={
-                  (currentProjectIndex === i ? 'active ' : ' ') + 'h-menu-item '
-                }
-              >
-                <div className="h-menu-title oh">
-                  <MenuItemInner>{project.title}</MenuItemInner>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div> */}
       </MenuController>
     )
   }
 }
 
 MenuComponent.propTypes = {
-  scrollPercent       : PropTypes.number.isRequired,
-  scrollToTransform   : PropTypes.func.isRequired,
-  isDragging          : PropTypes.bool.isRequired,
-  currentProjectIndex : PropTypes.number.isRequired,
-  projects            : PropTypes.arrayOf(PropTypes.object).isRequired
+  scrollPercent             : PropTypes.number.isRequired,
+  scrollToTransform         : PropTypes.func.isRequired,
+  isDragging                : PropTypes.bool.isRequired,
+  currentProjectIndex       : PropTypes.number.isRequired,
+  projects                  : PropTypes.arrayOf(PropTypes.object).isRequired,
+  normalizedDragPipe        : PropTypes.func.isRequired,
+  scrollPercentToIndex      : PropTypes.func.isRequired,
+  updateCurrentProjectIndex : PropTypes.func.isRequired,
+  updateScrollPercent       : PropTypes.func.isRequired,
+  stepsScrollPercent        : PropTypes.func.isRequired
 }
 
 export default MenuComponent

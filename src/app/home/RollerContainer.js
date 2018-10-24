@@ -3,20 +3,22 @@ import { homeSelectors } from './duck'
 import RollerComponent from './RollerComponent'
 
 const mapStateToProps = state => {
-  const { scrollPercent, scrollPercentOffset } = state.home
+  const { scrollPercent } = state.home
   const {
     getRollerProjects,
     getCurrentProjectIndex,
     createScrollToTransform,
-    createTitleOpacityFromIndex
+    createTitleOpacityFromIndex,
+    createNormalizedDragPipe
   } = homeSelectors
   return {
     isDragging          : state.app.isDragging,
-    scrollPercent       : scrollPercent + scrollPercentOffset,
+    scrollPercent       : scrollPercent,
     projects            : getRollerProjects(state),
     currentProjectIndex : getCurrentProjectIndex(state),
     scrollToTransform   : createScrollToTransform(state),
-    titleIndexToOpacity : createTitleOpacityFromIndex(state)
+    titleIndexToOpacity : createTitleOpacityFromIndex(state),
+    normalizedDragPipe  : createNormalizedDragPipe(state)
   }
 }
 

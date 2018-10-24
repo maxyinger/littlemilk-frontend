@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { physics, value } from 'popmotion'
+import { physics, value, pointer } from 'popmotion'
 import { RollerTransition } from './RollerPose'
 import { stopActions } from '../../utils/actionHelpers'
 
@@ -14,10 +14,6 @@ class RollerComponent extends Component {
     this.indexList = React.createRef()
     this.titleList = React.createRef()
   }
-
-  titleOpacity = this.props.projects.map((project, i) =>
-    this.props.titleIndexToOpacity(i)
-  )
 
   componentDidMount () {
     const { scrollToTransform, scrollPercent } = this.props
@@ -50,15 +46,31 @@ class RollerComponent extends Component {
         friction       : 0.98,
         springStrength : 150,
         restSpeed      : false
-      }).start(this.values.transformPercent)
+      }).start(this.values.transformPercent),
+      pointer: {}
     }
   }
 
-  componentDidUpdate () {
-    this.actions.physics.setSpringTarget(this.props.scrollPercent)
+  componentDidUpdate (prevProps) {
+    const { isDragging, normalizedDragPipe, scrollPercent } = this.props
+    if (prevProps.isDragging !== isDragging && isDragging) {
+      this.actions.pointer = pointer({ y: 0 })
+        .pipe(
+          normalizedDragPipe,
+          v => v + scrollPercent
+        )
+        .start(v => this.actions.physics.setSpringTarget(v))
+    }
+    if (prevProps.isDragging !== isDragging && !isDragging) {
+      stopActions(this.actions.pointer)
+    }
+    if (!isDragging) {
+      this.actions.physics.setSpringTarget(scrollPercent)
+    }
   }
 
   componentWillUnmount () {
+    stopActions(this.values)
     stopActions(this.actions)
   }
 
@@ -102,10 +114,10 @@ class RollerComponent extends Component {
 RollerComponent.propTypes = {
   scrollPercent       : PropTypes.number.isRequired,
   scrollToTransform   : PropTypes.func.isRequired,
-  titleIndexToOpacity : PropTypes.func.isRequired,
   isDragging          : PropTypes.bool.isRequired,
   currentProjectIndex : PropTypes.number.isRequired,
-  projects            : PropTypes.arrayOf(PropTypes.object).isRequired
+  projects            : PropTypes.arrayOf(PropTypes.object).isRequired,
+  normalizedDragPipe  : PropTypes.func.isRequired
 }
 
 export default RollerComponent

@@ -56,7 +56,7 @@ export const CurrentIndexLine = posed.div({
     }
   },
   exit: {
-    transform  : 'translate3d(0, -100%, 0)',
+    transform  : 'translate3d(0, -200%, 0)',
     transition : {
       duration : appConfig.pageTransitionTime,
       ease     : Ease['io3']
@@ -70,7 +70,7 @@ export const CurrentIndexLine = posed.div({
     }
   },
   inActive: {
-    transform  : 'translate3d(0, -100%, 0)',
+    transform  : 'translate3d(0, -200%, 0)',
     transition : {
       duration : appConfig.dragTransitionTime,
       ease     : Ease['o5']

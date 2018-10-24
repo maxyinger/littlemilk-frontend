@@ -19,7 +19,7 @@ const config = {
     normalize : [inProjectSrc('utils/normalize')],
     main      : [inProjectSrc(project.main)]
   },
-  devtool : project.sourcemap ? 'source-map' : false,
+  devtool : project.sourcemaps ? 'source-map' : false,
   output  : {
     path          : inProject(project.outDir),
     filename      : __DEV__ ? '[name].bundle.js' : '[name].bundle.[chunkhash].js',

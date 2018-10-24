@@ -3,6 +3,7 @@ import types from './types'
 export const INITIAL_STATE = {
   scrollPercent       : 0,
   scrollPercentOffset : 0,
+  currentProjectIndex : 0,
   projects            : {
     byId: {
       incredible: {
@@ -99,6 +100,14 @@ const homeReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         scrollPercentOffset
+      }
+    }
+
+    case types.UPDATE_CURRENT_PROJECT_INDEX: {
+      const { currentProjectIndex } = action.payload
+      return {
+        ...state,
+        currentProjectIndex
       }
     }
 

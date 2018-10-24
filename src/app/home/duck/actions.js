@@ -14,7 +14,15 @@ const updateScrollPercent = scrollPercent => ({
   }
 })
 
+const updateCurrentProjectIndex = currentProjectIndex => ({
+  type    : types.UPDATE_CURRENT_PROJECT_INDEX,
+  payload : {
+    currentProjectIndex
+  }
+})
+
 export default {
   updateScrollPercent,
-  updateScrollPercentOffset
+  updateScrollPercentOffset,
+  updateCurrentProjectIndex
 }

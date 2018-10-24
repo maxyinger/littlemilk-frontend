@@ -1,27 +1,39 @@
 import { connect } from 'react-redux'
-import { homeSelectors } from './duck'
+import { homeSelectors, homeActions } from './duck'
 import MenuComponent from './MenuComponent'
 
 const mapStateToProps = state => {
-  const { scrollPercent, scrollPercentOffset } = state.home
+  const { scrollPercent } = state.home
   const {
     createScrollToTransform,
-    getCurrentProjectIndex,
-    getRollerProjects
+    getRollerProjects,
+    createNormalizedDragPipe,
+    createScrollPercentToIndex,
+    createStepsScrollPercent
   } = homeSelectors
 
   return {
-    isDragging          : state.app.isDragging,
-    scrollPercent       : scrollPercent + scrollPercentOffset,
-    scrollToTransform   : createScrollToTransform(state),
-    currentProjectIndex : getCurrentProjectIndex(state),
-    projects            : getRollerProjects(state)
+    isDragging           : state.app.isDragging,
+    scrollPercent        : scrollPercent,
+    scrollToTransform    : createScrollToTransform(state),
+    currentProjectIndex  : state.home.currentProjectIndex,
+    projects             : getRollerProjects(state),
+    normalizedDragPipe   : createNormalizedDragPipe(state),
+    scrollPercentToIndex : createScrollPercentToIndex(state),
+    stepsScrollPercent   : createStepsScrollPercent(state)
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  updateCurrentProjectIndex: index =>
+    dispatch(homeActions.updateCurrentProjectIndex(index)),
+  updateScrollPercent: scrollPercent =>
+    dispatch(homeActions.updateScrollPercent(scrollPercent))
+})
+
 const MenuContainer = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(MenuComponent)
 
 export default MenuContainer
