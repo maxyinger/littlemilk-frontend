@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { physics, value, pointer } from 'popmotion'
 import { RollerTransition } from './RollerPose'
@@ -8,7 +8,7 @@ import { stopActions } from '../../utils/actionHelpers'
  * TODO: Clean up you filthy animal.
  */
 
-class RollerComponent extends Component {
+class RollerComponent extends PureComponent {
   constructor (props) {
     super(props)
     this.indexList = React.createRef()

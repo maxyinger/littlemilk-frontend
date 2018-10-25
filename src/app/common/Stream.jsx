@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import posed from 'react-pose'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
@@ -33,7 +33,7 @@ const StreamInner = styled(
   display: inline-block;
 `
 
-class Stream extends Component {
+class Stream extends PureComponent {
   constructor (props) {
     super(props)
     this.state = {

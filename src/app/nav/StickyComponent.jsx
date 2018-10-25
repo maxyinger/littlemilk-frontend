@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -24,7 +24,7 @@ const NavLinkInner = styled.span`
   transform: translate3d(0px, 0px, 0px);
 `
 
-class StickyComponent extends Component {
+class StickyComponent extends PureComponent {
   constructor (props) {
     super(props)
     this.target = React.createRef()

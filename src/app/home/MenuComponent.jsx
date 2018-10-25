@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { value, physics, pointer } from 'popmotion'
 import { MenuController, MenuItemInner } from './MenuPose'
 import { stopActions } from '../../utils/actionHelpers'
 
-class MenuComponent extends Component {
+class MenuComponent extends PureComponent {
   constructor (props) {
     super(props)
 

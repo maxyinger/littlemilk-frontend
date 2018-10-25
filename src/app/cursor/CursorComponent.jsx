@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
   value,
   tween,
@@ -24,7 +24,7 @@ import './Cursor.scss'
  * actions state (increase friction on physics).
  */
 
-class CursorComponent extends Component {
+class CursorComponent extends PureComponent {
   constructor (props) {
     super(props)
     this.canvas = React.createRef()

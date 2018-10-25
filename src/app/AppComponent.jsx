@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import posed, { PoseGroup } from 'react-pose'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
@@ -55,64 +55,73 @@ const Background = styled(posed.div(backgroundProps))`
   z-index: -1;
 `
 
-const AppComponent = ({
-  theme,
-  startExitTransition,
-  startEnterTransition,
-  endTransition,
-  toggleCursor,
-  noCursor,
-  stickyIndex,
-  isExitTransition
-}) => (
-  <Router>
-    <div
-      onMouseMove={({ target }) => {
-        if (target.classList.contains('no-cursor') && !noCursor) toggleCursor()
-        if (!target.classList.contains('no-cursor') && noCursor) toggleCursor()
-      }}
-      className={
-        `app ${theme === 'light' ? 'theme--light ' : 'theme--dark '}` +
-        (stickyIndex >= 0 && !isExitTransition ? 'pointer ' : '')
-      }
-    >
-      <Background pose={theme === 'light' ? 'themeLight' : 'themeDark'} />
-      <NavContainer />
-      <main className="routes-wrap">
-        <Route
-          render={({ location }) => (
-            <PoseGroup flipMove={false} preEnterPose="mount">
-              <TransitionController
-                className="routes-controller"
-                onValueChange={{
-                  progress: v => {
-                    /**
-                     * First re-render from prop change causing
-                     * onValue change to fire once per frame even
-                     * though value doesn't change. Causing sticky
-                     * to not work on first second
-                     */
-                    if (v === 0) startExitTransition()
-                    if (v === 1) endTransition()
-                    if (v === 2) startEnterTransition()
-                  }
-                }}
-                key={location.pathname}
-              >
-                <Switch location={location}>
-                  <Route path="/" exact component={Home} key="home" />
-                  <Route path="/info" component={About} key="about" />
-                  <Route component={FourOhFour} key="fourOhFour" />
-                </Switch>
-              </TransitionController>
-            </PoseGroup>
-          )}
-        />
-      </main>
-      <CursorContainer />
-    </div>
-  </Router>
-)
+class AppComponent extends PureComponent {
+  mouseMove = ({ target }) => {
+    if (target.classList.contains('no-cursor') && !this.props.noCursor) {
+      this.props.toggleCursor()
+    }
+    if (!target.classList.contains('no-cursor') && this.props.noCursor) {
+      this.props.toggleCursor()
+    }
+  }
+
+  render () {
+    const {
+      theme,
+      startExitTransition,
+      startEnterTransition,
+      endTransition,
+      stickyIndex,
+      isExitTransition
+    } = this.props
+    return (
+      <Router>
+        <div
+          onMouseMove={this.mouseMove}
+          className={
+            `app ${theme === 'light' ? 'theme--light ' : 'theme--dark '}` +
+            (stickyIndex >= 0 && !isExitTransition ? 'pointer ' : '')
+          }
+        >
+          <Background pose={theme === 'light' ? 'themeLight' : 'themeDark'} />
+          <NavContainer />
+          <main className="routes-wrap">
+            <Route
+              render={({ location }) => (
+                <PoseGroup flipMove={false} preEnterPose="mount">
+                  <TransitionController
+                    className="routes-controller"
+                    onValueChange={{
+                      progress: v => {
+                        /**
+                         * First re-render from prop change causing
+                         * onValue change to fire once per frame even
+                         * though value doesn't change. Causing sticky
+                         * to not work on first second
+                         */
+                        if (v === 0) startExitTransition()
+                        if (v === 1) endTransition()
+                        if (v === 2) startEnterTransition()
+                      }
+                    }}
+                    key={location.pathname}
+                  >
+                    <Switch location={location}>
+                      <Route path="/" exact component={Home} key="home" />
+                      <Route path="/info" component={About} key="about" />
+                      <Route component={FourOhFour} key="fourOhFour" />
+                    </Switch>
+                  </TransitionController>
+                </PoseGroup>
+              )}
+            />
+          </main>
+          <CursorContainer />
+        </div>
+      </Router>
+    )
+  }
+}
 
 AppComponent.propTypes = {
   theme                : PropTypes.string.isRequired,
