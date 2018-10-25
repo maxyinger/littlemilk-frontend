@@ -176,7 +176,7 @@
 }
 
 .h-index {
-  @extend %font-size--copy--small;
+  @extend %font-size--nav;
 
   position: absolute;
   top: calc(100vw / 28);

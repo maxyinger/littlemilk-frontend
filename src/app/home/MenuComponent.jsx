@@ -78,7 +78,8 @@ class MenuComponent extends PureComponent {
       this.props.updateScrollPercent(steppedScrollTotal)
 
       // Update Current Index
-      const currentIndex = this.props.scrollPercentToIndex(scrollPercent)
+      const currentIndex = this.props.scrollPercentToIndex(steppedScrollTotal)
+      console.log(currentIndex)
       if (this.props.currentProjectIndex !== currentIndex) {
         this.props.updateCurrentProjectIndex(currentIndex)
       }

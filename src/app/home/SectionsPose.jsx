@@ -81,7 +81,7 @@ export const CurrentIndexLine = posed.div({
 export const TitleChar = styled(
   posed.div({
     mount: {
-      transform: 'translate3d(-100%, 0, 0)'
+      transform: 'translate3d(-110%, 0, 0)'
     },
     enter: {
       transform: ({ isCurrent }) =>

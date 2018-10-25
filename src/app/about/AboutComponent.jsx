@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import Stream from '../common/Stream'
 import AWrap from '../common/AWrap'
 import {
@@ -9,7 +9,11 @@ import {
 } from './AboutPose'
 import './About.scss'
 
-class AboutComponent extends PureComponent {
+class AboutComponent extends Component {
+  shouldComponentUpdate () {
+    return false
+  }
+
   render () {
     return (
       <div className="i">

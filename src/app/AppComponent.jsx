@@ -9,7 +9,7 @@ import config from './App.config.js'
  * * Routes
  */
 import Home from './home/HomeContainer'
-import About from './about/AboutContainer'
+import About from './about/AboutComponent'
 import FourOhFour from './common/FourOhFour'
 
 /**
