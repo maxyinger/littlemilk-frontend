@@ -26,7 +26,7 @@
   position: absolute;
   // left: calc(100vw / 7);
   // left: 0;
-  right: 0;
+  left: calc(100vw * 3 / 14);
   // top: calc(100vh / 7);
   top: 50vh;
   transform: translateY(-100%);
@@ -239,7 +239,7 @@ _px {
 .h-menu-mask {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   height: 100%;
 }
 
@@ -288,12 +288,12 @@ _px {
   position: absolute;
   font-family: $font-family--copy;
   color: $color--white;
-  transform: translateY(-100%);
-  left: 0;
+  transform: translate(-50%, -100%);
+  left: calc(100vw * 4 / 14);
   //bottom: 0;
   // top: calc(50vh);
   text-align: center;
   white-space: nowrap;
   // padding: 50px;
-  // transform: translateY(50px);
+  // transform: translateX(-200%);
 }

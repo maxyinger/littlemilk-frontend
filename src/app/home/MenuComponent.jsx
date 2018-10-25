@@ -9,6 +9,7 @@ class MenuComponent extends PureComponent {
     super(props)
 
     this.list = React.createRef()
+    this.index = React.createRef()
   }
 
   componentDidMount () {
@@ -24,11 +25,12 @@ class MenuComponent extends PureComponent {
           list.style.transform = `translate3d(0px, ${transform}%, 0px)`
         }
 
-        // TODO: Update currentIndex value for view, not store.
-        // const currentIndex = this.props.scrollPercentToIndex(scrollPercent)
-        // if (this.props.currentProjectIndex !== currentIndex) {
-        //   this.props.updateCurrentProjectIndex(currentIndex)
-        // }
+        // TODO: Update currentIndex value for view.
+        const index = this.index.current
+        if (index) {
+          const currIndex = this.props.scrollPercentToIndex(scrollPercent)
+          index.textContent = `00${currIndex + 1}.`
+        }
 
         return scrollPercent
       })
@@ -121,8 +123,7 @@ class MenuComponent extends PureComponent {
 
         <div className="h-menu-index oh">
           <MenuItemInner>
-            00
-            {currentProjectIndex + 1}.
+            <span ref={this.index}>001.</span>
           </MenuItemInner>
         </div>
       </MenuController>

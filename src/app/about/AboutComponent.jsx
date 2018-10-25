@@ -21,19 +21,19 @@ class AboutComponent extends Component {
           <InfoStreamMask className="oh">
             <InfoStreamInner>
               <Stream speed={2.5}>
-                <h1 className="i-header">LITTLEMILK.STUDIO @</h1>
+                <div className="i-header">LITTLEMILK.STUDIO @</div>
               </Stream>
               <Stream speed={4}>
-                <h1 className="i-header">LITTLEMILK.STUDIO @</h1>
+                <div className="i-header">LITTLEMILK.STUDIO @</div>
               </Stream>
               <Stream speed={7}>
-                <h1 className="i-header">LITTLEMILK.STUDIO @</h1>
+                <div className="i-header">LITTLEMILK.STUDIO @</div>
               </Stream>
               <Stream speed={3.2}>
-                <h1 className="i-header">LITTLEMILK.STUDIO @</h1>
+                <div className="i-header">LITTLEMILK.STUDIO @</div>
               </Stream>
               <Stream speed={2.1}>
-                <h1 className="i-header">LITTLEMILK.STUDIO @ </h1>
+                <div className="i-header">LITTLEMILK.STUDIO @ </div>
               </Stream>
             </InfoStreamInner>
           </InfoStreamMask>
