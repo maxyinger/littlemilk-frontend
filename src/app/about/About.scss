@@ -33,7 +33,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  left: calc(100vw / 3.5);
+  left: calc(100vw * 3 / 14);
   top: 50vh;
   transform: translateY(-300px);
 }

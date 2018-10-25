@@ -152,7 +152,7 @@
 .h-data-wrap {
   top: 50vh;
   position: absolute;
-  left: calc(100vw / 3.5);
+  left: calc(100vw * 3 / 14);
   // display: flex;
   // flex-direction: column;
   // justify-content: flex-start;
@@ -175,12 +175,13 @@
   transform: translateY(100px);
 }
 
-.h-index {
+.h-index,
+_px {
   @extend %font-size--nav;
 
   position: absolute;
   top: calc(100vw / 28);
-  left: calc(100vw / 7);
+  left: calc(100vw * 3 / 14);
   color: $color--grey;
   // line-height: 2.15;
 }
