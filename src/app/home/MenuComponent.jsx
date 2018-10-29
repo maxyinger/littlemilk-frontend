@@ -79,12 +79,6 @@ class MenuComponent extends PureComponent {
       )
       this.props.updateScrollPercent(steppedScrollTotal)
 
-      // Update Current Index
-      const currentIndex = this.props.scrollPercentToIndex(steppedScrollTotal)
-      console.log(currentIndex)
-      if (this.props.currentProjectIndex !== currentIndex) {
-        this.props.updateCurrentProjectIndex(currentIndex)
-      }
       stopActions(this.actions.pointer)
     }
 
@@ -99,7 +93,8 @@ class MenuComponent extends PureComponent {
   }
 
   render () {
-    const { projects, currentProjectIndex, isDragging } = this.props
+    const { projects, isDragging } = this.props
+    console.log('menu render')
     return (
       <MenuController
         pose={isDragging ? 'active' : 'inActive'}
@@ -108,12 +103,7 @@ class MenuComponent extends PureComponent {
         {'Height'}
         <ul ref={this.list} className="h-menu-list">
           {projects.map((project, i) => (
-            <li
-              key={project.title}
-              className={
-                (currentProjectIndex === i ? 'active ' : ' ') + 'h-menu-item '
-              }
-            >
+            <li key={project.title} className="h-menu-item">
               <div className="h-menu-title oh">
                 <MenuItemInner>{project.title}</MenuItemInner>
               </div>
@@ -132,16 +122,14 @@ class MenuComponent extends PureComponent {
 }
 
 MenuComponent.propTypes = {
-  scrollPercent             : PropTypes.number.isRequired,
-  scrollToTransform         : PropTypes.func.isRequired,
-  isDragging                : PropTypes.bool.isRequired,
-  currentProjectIndex       : PropTypes.number.isRequired,
-  projects                  : PropTypes.arrayOf(PropTypes.object).isRequired,
-  normalizedDragPipe        : PropTypes.func.isRequired,
-  scrollPercentToIndex      : PropTypes.func.isRequired,
-  updateCurrentProjectIndex : PropTypes.func.isRequired,
-  updateScrollPercent       : PropTypes.func.isRequired,
-  stepsScrollPercent        : PropTypes.func.isRequired
+  scrollPercent        : PropTypes.number.isRequired,
+  scrollToTransform    : PropTypes.func.isRequired,
+  isDragging           : PropTypes.bool.isRequired,
+  projects             : PropTypes.arrayOf(PropTypes.object).isRequired,
+  normalizedDragPipe   : PropTypes.func.isRequired,
+  scrollPercentToIndex : PropTypes.func.isRequired,
+  updateScrollPercent  : PropTypes.func.isRequired,
+  stepsScrollPercent   : PropTypes.func.isRequired
 }
 
 export default MenuComponent

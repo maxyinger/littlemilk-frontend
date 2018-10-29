@@ -16,7 +16,6 @@ const mapStateToProps = state => {
     isDragging           : state.app.isDragging,
     scrollPercent        : scrollPercent,
     scrollToTransform    : createScrollToTransform(state),
-    currentProjectIndex  : state.home.currentProjectIndex,
     projects             : getRollerProjects(state),
     normalizedDragPipe   : createNormalizedDragPipe(state),
     scrollPercentToIndex : createScrollPercentToIndex(state),

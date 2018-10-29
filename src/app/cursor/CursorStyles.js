@@ -30,7 +30,7 @@ const noCursor = {
 const sticky = {
   radius    : 50,
   lineWidth : 1
-  // opacity : 0.6
+  // opacity   : 0.5
 }
 
 const exitTransition = {

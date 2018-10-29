@@ -7,62 +7,72 @@ export const INITIAL_STATE = {
   projects            : {
     byId: {
       incredible: {
-        id            : 'incredible',
-        title         : 'Incredible',
-        client        : 'Incredible Foods',
-        year          : 2018,
-        collaborators : ['Cognak'],
-        roles         : ['Full stack development', 'Interaction design'],
-        imageUrl      : 'image.png',
-        description   :
+        id           : 'incredible',
+        title        : 'Incredible',
+        client       : 'Incredible Foods',
+        date         : 'February 2018',
+        deliverable  : 'Incrediblefoods.com',
+        url          : 'http://incrediblefoods.com/',
+        collaborator : 'Cognak',
+        roles        : ['Full Stack Development', 'Interaction Design'],
+        imageUrl     : 'image.png',
+        description  :
           'Here is a small description for this project. I hope you like it!',
         tags: [1]
       },
       hollis: {
-        id            : 'hollis',
-        title         : 'Hollis',
-        client        : 'Hollis Autobody',
-        year          : 2017,
-        collaborators : ['Facta Studio', 'Initial Design Group'],
-        roles         : ['Front end development', 'Interaction design'],
-        imageUrl      : 'image.png',
-        description   :
+        id           : 'hollis',
+        title        : 'Hollis',
+        client       : 'Hollis Autobody',
+        date         : 'May 2017',
+        deliverable  : 'Hollisautobody.com',
+        url          : 'https://hollisautobody.com/',
+        collaborator : 'Facta Studio',
+        roles        : ['Front End Development', 'Interaction Design'],
+        imageUrl     : 'image.png',
+        description  :
           'Here is a small description for this project. I hope you like it!',
         tags: [2]
       },
       voltiv: {
-        id            : 'voltiv',
-        title         : 'Voltiv',
-        client        : 'Voltiv Sound',
-        year          : 2018,
-        collaborators : [],
-        roles         : ['Full stack development', 'Interaction design'],
-        imageUrl      : 'image.png',
-        description   :
+        id           : 'voltiv',
+        title        : 'Voltiv',
+        client       : 'Voltiv Sound',
+        date         : 'July 2018',
+        deliverable  : 'Voltivsound.com',
+        url          : 'https://voltivsound.com',
+        collaborator : 'Cognak',
+        roles        : ['Full Stack Development', 'Interaction Design', 'Web Design'],
+        imageUrl     : 'image.png',
+        description  :
           'Here is a small description for this project. I hope you like it!',
         tags: [1, 2]
       },
       cognak: {
-        id            : 'cogank',
-        title         : 'Cognak',
-        client        : 'Cognak',
-        year          : 2016,
-        collaborators : ['Cognak'],
-        roles         : ['Full stack development', 'Interaction design'],
-        imageUrl      : 'image.png',
-        description   :
+        id           : 'cogank',
+        title        : 'Cognak',
+        client       : 'Cognak',
+        date         : 'October 2016',
+        deliverable  : 'Cognak.com',
+        url          : 'http://www.cognak.com/',
+        collaborator : 'Cognak',
+        roles        : ['Full Stack Development', 'Interaction Design'],
+        imageUrl     : 'image.png',
+        description  :
           'Collaborated in 2016 with Cognak to develop a new website showcasing Cognak’s distilled, clean look & feel.',
         tags: [1]
       },
       stoneturn: {
-        id            : 'stoneturn',
-        title         : 'StoneTurn',
-        client        : 'Stoneturn',
-        year          : 2017,
-        collaborators : ['Facta Studio', 'Initial Design Group'],
-        roles         : ['Front end development', 'Interaction design'],
-        imageUrl      : 'image.png',
-        description   :
+        id           : 'stoneturn',
+        title        : 'StoneTurn',
+        client       : 'Stoneturn',
+        date         : 'September 2017',
+        deliverable  : 'Stoneturn.com',
+        url          : 'https://stoneturn.com/',
+        collaborator : 'Facta Studio',
+        roles        : ['Front End Development', 'Interaction Design'],
+        imageUrl     : 'image.png',
+        description  :
           'Here is a small description for this project. I hope you like it!',
         tags: [1, 2]
       }

@@ -1,28 +1,16 @@
 import { connect } from 'react-redux'
 import HomeComponent from './HomeComponent'
 import { appActions } from '../duck'
-import { homeActions, homeSelectors } from './duck'
+import { homeSelectors } from './duck'
 
 const mapStateToProps = state => ({
-  scrollPercent            : state.home.scrollPercent,
-  scrollPercentOffset      : state.home.scrollPercentOffset,
-  isDragging               : state.app.isDragging,
-  isDraggable              : homeSelectors.getIsDraggable(state),
-  currentProject           : homeSelectors.getCurrentProjectIndex(state),
-  projectsWithTags         : homeSelectors.getProjectsWithTags(state),
-  projectImageUrls         : homeSelectors.getProjectImageUrls(state),
-  clampScrollPercentOffset : homeSelectors.createClampScrollPercentOffset(state),
-  stepsScrollPercent       : homeSelectors.createStepsScrollPercent(state)
+  isDragging  : state.app.isDragging,
+  isDraggable : homeSelectors.getIsDraggable(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-  makeThemeLight      : () => dispatch(appActions.makeThemeLight()),
-  startDragging       : () => dispatch(appActions.startDragging()),
-  endDragging         : () => dispatch(appActions.endDragging()),
-  updateScrollPercent : scrollPercent =>
-    dispatch(homeActions.updateScrollPercent(scrollPercent)),
-  updateScrollPercentOffset: scrollPercentOffset =>
-    dispatch(homeActions.updateScrollPercentOffset(scrollPercentOffset))
+  startDragging : () => dispatch(appActions.startDragging()),
+  endDragging   : () => dispatch(appActions.endDragging())
 })
 
 const HomeContainer = connect(

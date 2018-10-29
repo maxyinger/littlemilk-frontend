@@ -3,11 +3,14 @@ import SectionsComponent from './SectionsComponent'
 import { homeSelectors } from './duck'
 
 const mapStateToProps = state => {
-  const { getProjectsWithTags } = homeSelectors
+  const { getProjectsWithTags, createScrollPercentToIndex } = homeSelectors
   return {
     isDragging          : state.app.isDragging,
     projects            : getProjectsWithTags(state),
-    currentProjectIndex : state.home.currentProjectIndex
+    // currentProjectIndex : state.home.currentProjectIndex
+    currentProjectIndex : createScrollPercentToIndex(state)(
+      state.home.scrollPercent
+    )
   }
 }
 

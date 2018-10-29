@@ -56,22 +56,46 @@ class AboutComponent extends Component {
           <ul className="i-socials">
             <li className="i-social oh">
               <InfoLine>
-                <AWrap href="#">github</AWrap>
+                <AWrap
+                  target="_blank"
+                  href="https://github.com/littlemilkstudio"
+                >
+                  github
+                </AWrap>
               </InfoLine>
             </li>
             <li className="i-social oh">
               <InfoLine>
-                <AWrap href="#">codepen</AWrap>
+                <AWrap
+                  target="_blank"
+                  href="https://codepen.io/littlemilkstudio/"
+                >
+                  codepen
+                </AWrap>
               </InfoLine>
             </li>
             <li className="i-social oh">
               <InfoLine>
-                <AWrap href="#">dribbble</AWrap>
+                <AWrap target="_blank" href="https://dribbble.com/littlemilk">
+                  dribbble
+                </AWrap>
               </InfoLine>
             </li>
             <li className="i-social oh">
               <InfoLine>
-                <AWrap href="#">Get In Touch</AWrap>
+                <AWrap
+                  target="_blank"
+                  href="https://www.shadertoy.com/user/littlemilk"
+                >
+                  shadertoy
+                </AWrap>
+              </InfoLine>
+            </li>
+            <li className="i-social oh">
+              <InfoLine>
+                <AWrap href="mailto:maxwellyinger@gmail.com">
+                  Get In Touch
+                </AWrap>
               </InfoLine>
             </li>
           </ul>

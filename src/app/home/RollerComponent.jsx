@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { physics, value, pointer } from 'popmotion'
 import { RollerTransition } from './RollerPose'
@@ -8,7 +8,7 @@ import { stopActions } from '../../utils/actionHelpers'
  * TODO: Clean up you filthy animal.
  */
 
-class RollerComponent extends PureComponent {
+class RollerComponent extends Component {
   constructor (props) {
     super(props)
     this.indexList = React.createRef()
@@ -51,9 +51,9 @@ class RollerComponent extends PureComponent {
     }
   }
 
-  componentDidUpdate (prevProps) {
-    const { isDragging, normalizedDragPipe, scrollPercent } = this.props
-    if (prevProps.isDragging !== isDragging && isDragging) {
+  shouldComponentUpdate (nextProps) {
+    const { isDragging, normalizedDragPipe, scrollPercent } = nextProps
+    if (this.props.isDragging !== isDragging && isDragging) {
       this.actions.pointer = pointer({ y: 0 })
         .pipe(
           normalizedDragPipe,
@@ -61,12 +61,13 @@ class RollerComponent extends PureComponent {
         )
         .start(v => this.actions.physics.setSpringTarget(v))
     }
-    if (prevProps.isDragging !== isDragging && !isDragging) {
+    if (this.props.isDragging !== isDragging && !isDragging) {
       stopActions(this.actions.pointer)
     }
     if (!isDragging) {
       this.actions.physics.setSpringTarget(scrollPercent)
     }
+    return false
   }
 
   componentWillUnmount () {
@@ -76,6 +77,8 @@ class RollerComponent extends PureComponent {
 
   render () {
     const { projects } = this.props
+
+    console.log('roller render')
 
     return (
       <div className="h-roller">
@@ -112,12 +115,11 @@ class RollerComponent extends PureComponent {
 }
 
 RollerComponent.propTypes = {
-  scrollPercent       : PropTypes.number.isRequired,
-  scrollToTransform   : PropTypes.func.isRequired,
-  isDragging          : PropTypes.bool.isRequired,
-  currentProjectIndex : PropTypes.number.isRequired,
-  projects            : PropTypes.arrayOf(PropTypes.object).isRequired,
-  normalizedDragPipe  : PropTypes.func.isRequired
+  scrollPercent      : PropTypes.number.isRequired,
+  scrollToTransform  : PropTypes.func.isRequired,
+  isDragging         : PropTypes.bool.isRequired,
+  projects           : PropTypes.arrayOf(PropTypes.object).isRequired,
+  normalizedDragPipe : PropTypes.func.isRequired
 }
 
 export default RollerComponent

@@ -24,9 +24,9 @@ const TransitionController = posed.div({
   },
   enter: {
     progress       : 1,
-    delay          : config.pageTransitionTime,
+    // delay          : config.pageTransitionTime,
     beforeChildren : true,
-    transition     : { duration: config.pageTransitionTime }
+    transition     : { duration: config.pageTransitionTime * 1.8 }
   },
   exit: {
     progress   : 2,
@@ -88,7 +88,11 @@ class AppComponent extends PureComponent {
           <main className="routes-wrap">
             <Route
               render={({ location }) => (
-                <PoseGroup flipMove={false} preEnterPose="mount">
+                <PoseGroup
+                  flipMove={false}
+                  preEnterPose="mount"
+                  // animateOnMount={true}
+                >
                   <TransitionController
                     className="routes-controller"
                     onValueChange={{

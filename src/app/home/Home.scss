@@ -26,7 +26,7 @@
   position: absolute;
   // left: calc(100vw / 7);
   // left: 0;
-  left: calc(100vw * 3 / 14);
+  left: calc(100vw / 7);
   // top: calc(100vh / 7);
   top: 50vh;
   transform: translateY(-100%);
@@ -153,10 +153,6 @@
   top: 50vh;
   position: absolute;
   left: calc(100vw * 3 / 14);
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: flex-start;
-  // align-items: center;
 }
 
 .h-data {
@@ -175,15 +171,16 @@
   transform: translateY(100px);
 }
 
-.h-index,
-_px {
-  @extend %font-size--nav;
+.h-index {
+  @extend %font-size--copy--medium;
 
   position: absolute;
-  top: calc(100vw / 28);
+  bottom: calc(50vh + (100vw / 7));
   left: calc(100vw * 3 / 14);
-  color: $color--grey;
-  // line-height: 2.15;
+  padding: 20px 0;
+  transform: translateY(-14px);
+  // color: $color--grey;
+  // opacity: 0.3;
 }
 
 .h-title-stream {
