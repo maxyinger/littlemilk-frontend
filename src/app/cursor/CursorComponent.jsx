@@ -326,7 +326,7 @@ class CursorComponent extends PureComponent {
   // appearanceActionsEnterTransition:: _ -> _
   appearanceActionsEnterTransition = () => {
     const currStyles = this.values.styles.get()
-    delay(300).start({
+    delay(AppConfig.pageTransitionTime / 2).start({
       complete: () => {
         this.actions.appearance.tween = tween({
           from: {
@@ -341,7 +341,7 @@ class CursorComponent extends PureComponent {
             ...currStyles,
             ...CursorStyles.enterTransition
           },
-          duration : AppConfig.pageTransitionTime * 2,
+          duration : AppConfig.pageTransitionTime * 1.5,
           ease     : Ease['io4']
         }).start(this.values.styles)
       }

@@ -93,7 +93,7 @@ class AboutComponent extends Component {
             </li>
             <li className="i-social oh">
               <InfoLine>
-                <AWrap href="mailto:maxwellyinger@gmail.com">
+                <AWrap href="mailto:hello@littlemilk.studio">
                   Get In Touch
                 </AWrap>
               </InfoLine>
