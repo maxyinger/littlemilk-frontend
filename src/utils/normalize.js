@@ -11,6 +11,8 @@
    1) Object.assign
    2) Promise
    3) Fetch
+   4) WeakSet
+   5) Array.fill, Array.find, & others
 
    ====================================================== */
 
@@ -35,4 +37,20 @@ if (typeof Promise === 'undefined') {
 // the feature check / polyfill above.
 if (typeof window.fetch === 'undefined') {
   require('whatwg-fetch')
+}
+
+// 4) WeakSet
+// ------------------------------------
+// Popmotion requires WeakSet Polyfill
+if (typeof window.WeakSet === 'undefined') {
+  console.log('noWeakSet')
+  window.WeakSet = require('weakset')
+}
+
+// 5) Array.fill, Array.find & others
+// ------------------------------------
+// Babel polyfill for legacy browsers because useBuiltIns is set to false
+// in webpack config.
+if (!Array.prototype.fill) {
+  require('babel-polyfill')
 }

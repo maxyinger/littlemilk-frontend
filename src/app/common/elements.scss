@@ -3,8 +3,9 @@
 @import "./type";
 
 html,
-._px {
+_px {
   background-color: $color--black;
+  color: $color--white;
   font-family: $font-family--copy;
   font-weight: $font-weight--medium;
   font-size: 14px;
@@ -136,4 +137,8 @@ svg {
     opacity: 0;
     transition: transform 0s;
   }
+}
+
+.copy-link {
+  border-bottom: 1px solid $color--white;
 }
