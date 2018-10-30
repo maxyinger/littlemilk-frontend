@@ -22,7 +22,7 @@ export const DataLine = posed.div({
     }
   },
   exit: {
-    transform  : 'translate3d(0, -100%, 0)',
+    transform  : 'translate3d(0, -150%, 0)',
     transition : {
       duration : appConfig.pageTransitionTime,
       ease     : Ease['io3']
@@ -45,7 +45,7 @@ export const DataLine = posed.div({
 })
 
 export const CurrentIndexLine = posed.div({
-  mount : { transform: 'translate3d(0, -330%, 0)' },
+  mount : { transform: 'translate3d(0, 200%, 0)' },
   enter : {
     transform  : 'translate3d(0, 0%, 0)',
     transition : {
@@ -68,7 +68,7 @@ export const CurrentIndexLine = posed.div({
     }
   },
   inActive: {
-    transform  : 'translate3d(0, -330%, 0)',
+    transform  : 'translate3d(0, 150%, 0)',
     transition : {
       duration : appConfig.dragTransitionTime,
       ease     : Ease['o5']

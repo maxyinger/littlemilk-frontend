@@ -10,6 +10,7 @@ const MAKE_THEME_LIGHT = `${APP} Make Theme Light`
 const TOGGLE_CURSOR = `${APP} Toggle Cursor`
 const START_DRAGGING = `${APP} Start Dragging`
 const END_DRAGGING = `${APP} End Dragging`
+const UPDATE_ACTIVE_INDEX = `${APP} Update Active Index`
 
 export default {
   MAKE_STICKY,
@@ -22,5 +23,6 @@ export default {
   MAKE_THEME_LIGHT,
   TOGGLE_CURSOR,
   START_DRAGGING,
-  END_DRAGGING
+  END_DRAGGING,
+  UPDATE_ACTIVE_INDEX
 }

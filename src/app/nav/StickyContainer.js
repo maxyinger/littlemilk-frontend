@@ -18,10 +18,13 @@ const mapDispatchToProps = dispatch => {
   const makeSticky = (index, point) =>
     dispatch(appActions.makeSticky(index, point))
   const breakSticky = () => dispatch(appActions.breakSticky())
+  const updateActiveIndex = activeIndex =>
+    dispatch(appActions.updateActiveIndex(activeIndex))
 
   return {
     makeSticky,
-    breakSticky
+    breakSticky,
+    updateActiveIndex
   }
 }
 

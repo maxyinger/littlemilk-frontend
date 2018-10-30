@@ -48,6 +48,13 @@ const endDragging = () => ({
   type: types.END_DRAGGING
 })
 
+const updateActiveIndex = activeIndex => ({
+  type    : types.UPDATE_ACTIVE_INDEX,
+  payload : {
+    activeIndex
+  }
+})
+
 export default {
   makeSticky,
   breakSticky,
@@ -59,5 +66,6 @@ export default {
   makeThemeLight,
   toggleCursor,
   startDragging,
-  endDragging
+  endDragging,
+  updateActiveIndex
 }

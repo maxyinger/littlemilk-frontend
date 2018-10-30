@@ -57,6 +57,14 @@ class StickyComponent extends PureComponent {
       }
     }
 
+    // Update active index so on first load active link can't become sticky
+    if (
+      this.target.current &&
+      this.target.current.parentNode.classList.contains('active')
+    ) {
+      this.props.updateActiveIndex(this.props.index)
+    }
+
     // Initialize actions on mount.
     this.actionsReducer(this.props.actionsState)
   }
@@ -91,6 +99,10 @@ class StickyComponent extends PureComponent {
       }
       case types.IS_STICKY: {
         this.actionsSticky()
+        break
+      }
+      case types.IS_DRAGGING: {
+        this.actionsDragging()
         break
       }
       default: {
@@ -130,6 +142,20 @@ class StickyComponent extends PureComponent {
           'bounding box for default emitter action'
       )
     }
+  }
+
+  // actionsDragging :: _ -> _
+  actionsDragging = () => {
+    // Stop running actions.
+    stopActions(this.actions.position)
+
+    // Set physics to return position to origin.
+    this.actions.position.physics = physics({
+      from           : this.values.position.get(),
+      to             : { x: 0, y: 0 },
+      friction       : 0.98,
+      springStrength : 170
+    }).start(this.values.position)
   }
 
   // actionsSticky :: _ -> _
@@ -210,15 +236,16 @@ class StickyComponent extends PureComponent {
 
 StickyComponent.propTypes = {
   /** props for NavLink */
-  to           : PropTypes.string.isRequired,
-  exact        : PropTypes.bool,
-  index        : PropTypes.number.isRequired,
+  to                : PropTypes.string.isRequired,
+  exact             : PropTypes.bool,
+  index             : PropTypes.number.isRequired,
+  actionsState      : PropTypes.string.isRequired,
   /** props from store */
-  makeSticky   : PropTypes.func.isRequired,
-  breakSticky  : PropTypes.func.isRequired,
-  actionsState : PropTypes.string.isRequired,
+  makeSticky        : PropTypes.func.isRequired,
+  breakSticky       : PropTypes.func.isRequired,
+  updateActiveIndex : PropTypes.func.isRequired,
   /** redirect required props from RR4 */
-  history      : PropTypes.shape({
+  history           : PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
   /** who doesn't love children */

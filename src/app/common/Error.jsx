@@ -10,6 +10,8 @@ const ErrorContainer = styled.div`
   z-index: 10000;
   background-color: #000000;
   color: #ffffff;
+  pointer-events: all;
+  font-size: 16px;
 `
 
 const ErrorWrap = styled.div`
@@ -36,6 +38,14 @@ export const ErrorTouchDevice = () => (
   <ErrorContainer>
     <ErrorWrap>
       <p>Touch device support coming soon.</p>
+    </ErrorWrap>
+  </ErrorContainer>
+)
+
+export const ErrorScreenSize = () => (
+  <ErrorContainer>
+    <ErrorWrap>
+      <p>Please increase browser size.</p>
     </ErrorWrap>
   </ErrorContainer>
 )

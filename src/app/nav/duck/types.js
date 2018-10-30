@@ -6,6 +6,7 @@ const EXIT_TRANSITION = `${STICKY} Exit Transition`
 const DEFAULT = `${STICKY} Default`
 const MAKE_STICKY = `${STICKY} MAKE_STICKY`
 const BREAK_STICKY = `${STICKY} BREAK_STICKY`
+const IS_DRAGGING = `${STICKY} IS_DRAGGING`
 
 export default {
   IS_STICKY,
@@ -14,5 +15,6 @@ export default {
   IS_ACTIVE,
   DEFAULT,
   MAKE_STICKY,
-  BREAK_STICKY
+  BREAK_STICKY,
+  IS_DRAGGING
 }

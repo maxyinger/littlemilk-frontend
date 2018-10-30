@@ -78,8 +78,6 @@ class RollerComponent extends Component {
   render () {
     const { projects } = this.props
 
-    console.log('roller render')
-
     return (
       <div className="h-roller">
         {/* needed to set the height through css to

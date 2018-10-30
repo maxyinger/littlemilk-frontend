@@ -94,22 +94,20 @@ class MenuComponent extends PureComponent {
 
   render () {
     const { projects, isDragging } = this.props
-    console.log('menu render')
     return (
-      <MenuController
-        pose={isDragging ? 'active' : 'inActive'}
-        className="h-menu"
-      >
-        {'Height'}
-        <ul ref={this.list} className="h-menu-list">
-          {projects.map((project, i) => (
-            <li key={project.title} className="h-menu-item">
-              <div className="h-menu-title oh">
-                <MenuItemInner>{project.title}</MenuItemInner>
-              </div>
-            </li>
-          ))}
-        </ul>
+      <MenuController pose={isDragging ? 'active' : 'inActive'}>
+        <div className="h-menu">
+          {'Height'}
+          <ul ref={this.list} className="h-menu-list">
+            {projects.map((project, i) => (
+              <li key={project.title} className="h-menu-item">
+                <div className="h-menu-title oh">
+                  <MenuItemInner>{project.title}</MenuItemInner>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <div className="h-menu-index oh">
           <MenuItemInner>

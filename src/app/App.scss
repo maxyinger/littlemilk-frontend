@@ -46,3 +46,11 @@
 .app.pointer {
   cursor: pointer;
 }
+
+.error-screen-size {
+  display: none;
+
+  @media screen and (max-width: 800px) {
+    display: block;
+  }
+}

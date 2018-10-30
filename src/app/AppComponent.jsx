@@ -17,6 +17,7 @@ import FourOhFour from './common/FourOhFour'
  */
 import CursorContainer from './cursor/CursorContainer'
 import NavContainer from './nav/NavContainer'
+import { ErrorScreenSize } from './common/Error'
 
 const TransitionController = posed.div({
   mount: {
@@ -55,7 +56,23 @@ const Background = styled(posed.div(backgroundProps))`
   z-index: -1;
 `
 
+const preventDefault = e => {
+  e = e || window.event
+  if (e.preventDefault) e.preventDefault()
+  e.returnValue = false
+}
+
 class AppComponent extends PureComponent {
+  componentDidMount () {
+    // Disable scroll for application.
+    if (window.addEventListener) {
+      // older FF
+      window.addEventListener('DOMMouseScroll', preventDefault, false)
+    }
+    window.onwheel = preventDefault // modern standard
+    window.onmousewheel = document.onmousewheel = preventDefault // older browsers, IE
+  }
+
   mouseMove = ({ target }) => {
     if (target.classList.contains('no-cursor') && !this.props.noCursor) {
       this.props.toggleCursor()
@@ -121,6 +138,9 @@ class AppComponent extends PureComponent {
             />
           </main>
           <CursorContainer />
+          <div className="error-screen-size">
+            <ErrorScreenSize />
+          </div>
         </div>
       </Router>
     )

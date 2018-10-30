@@ -24,10 +24,8 @@
 
 .h-menu-wrap {
   position: absolute;
-  // left: calc(100vw / 7);
-  // left: 0;
-  left: calc(100vw / 7);
-  // top: calc(100vh / 7);
+  left: 0;
+  right: 0;
   top: 50vh;
   transform: translateY(-100%);
 }
@@ -39,7 +37,6 @@
 .h-roller {
   position: absolute;
   // this sets the height so .h-roller-title-name is always visible
-  // @extend %font-size--copy--medium;
   @extend %font-size--roller-em;
 
   line-height: 1.8;
@@ -222,14 +219,11 @@
   @extend %font-size--header--large;
 
   position: relative;
+  left: calc(100vw / 7);
   font-family: $font-family--header;
   text-transform: uppercase;
   text-align: right;
   color: transparent;
-}
-
-.h-menu-list {
-  // will-change: transform;
 }
 
 .h-menu-list,
@@ -248,35 +242,17 @@
   position: relative;
   opacity: 1;
   color: transparent;
-  // -webkit-text-stroke: 1px $color--white;
   transition: color 1s;
 }
 
 .h-menu-mask .h-menu-list {
   position: relative;
-  // text-align: left;
 }
 
 .h-menu-item {
   color: $color--white;
   opacity: 0.1;
   text-align: left;
-  // transition: 1s opacity, 0s color;
-}
-
-// .h-menu-mask .h-menu-item {
-//   opacity: 1;
-//   color: $color--white;
-//   // transition: 0s opacity;
-// }
-
-.h-menu-item.active {
-  // color: $color--white;
-  // opacity: 1;
-}
-
-.h-menu-mask .h-menu-item.active {
-  // opacity: 0;
 }
 
 .h-menu-index {
@@ -286,11 +262,7 @@
   font-family: $font-family--copy;
   color: $color--white;
   transform: translate(-50%, -100%);
-  left: calc(100vw * 4 / 14);
-  //bottom: 0;
-  // top: calc(50vh);
+  left: 50vw;
   text-align: center;
   white-space: nowrap;
-  // padding: 50px;
-  // transform: translateX(-200%);
 }

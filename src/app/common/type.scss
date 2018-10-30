@@ -23,22 +23,17 @@ $font-weight--bold: 800;
 }
 
 %font-size--copy--medium {
-  // font-size: responsive 27px 37px;
   font-size: 30px;
   line-height: 1.5;
-  // font-range: 670px 2560px;
 }
 
 %font-size--header--large {
-  // font-size: responsive 259px 302px;
   font-size: 259px;
   line-height: 0.8;
-  // font-range: 670px 2560px;
 }
 
 %font-size--header--x-large {
-  // font-size: responsive 259px 102px;
-  font-size: 407px;
+  font-size: 380px;
+  // font-size: 407px;
   line-height: 0.78;
-  // font-range: 670px 2560px;
 }

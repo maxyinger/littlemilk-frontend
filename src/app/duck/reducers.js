@@ -102,6 +102,13 @@ const appReducer = (state = INITIAL_STATE, action) => {
       }
     }
 
+    case types.UPDATE_ACTIVE_INDEX: {
+      return {
+        ...state,
+        ...action.payload
+      }
+    }
+
     default:
       return state
   }

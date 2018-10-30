@@ -35,7 +35,6 @@ class HomeComponent extends Component {
   }
 
   render () {
-    console.log('home render')
     return (
       <div className="h">
         <div className="h-menu-wrap">

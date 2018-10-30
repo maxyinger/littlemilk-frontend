@@ -49,7 +49,7 @@ export default {
   },
 
   get safari () {
-    return this.uA.match(/version\/[\d\.]+.*safari/)
+    return this.uA.match(/version\/[\d.]+.*safari/)
   },
 
   get isSafari () {
