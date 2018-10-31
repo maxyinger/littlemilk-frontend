@@ -9,8 +9,7 @@
     "build": "npm run clean && NODE_ENV=production npm run compile",
     "start": "NODE_ENV=development node build/scripts/start",
     "test": "NODE_ENV=test jest -u",
-    "test:watch": "npm test -- --coverage --watch",
-    "deploy": "node server/server.js"
+    "test:watch": "npm test -- --coverage --watch"
   },
   "repository": "https://github.com/littlemilkstudio/littlemilk-frontend",
   "homepage": "https://littlemilkstudio.github.io/littlemilk-frontend",
