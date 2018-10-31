@@ -9,9 +9,11 @@
     "build": "npm run clean && NODE_ENV=production npm run compile",
     "start": "NODE_ENV=development node build/scripts/start",
     "test": "NODE_ENV=test jest -u",
-    "test:watch": "npm test -- --coverage --watch"
+    "test:watch": "npm test -- --coverage --watch",
+    "deploy": "node server/server.js"
   },
-  "repository": "https://github.com/littlemilkstudio/littlemilk-comingsoon-frontend",
+  "repository": "https://github.com/littlemilkstudio/littlemilk-frontend",
+  "homepage": "https://littlemilkstudio.github.io/littlemilk-frontend",
   "author": "Max Yinger",
   "license": "MIT",
   "jest": {
@@ -100,11 +102,7 @@
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-transition-group": "^2.4.0",
     "redux": "^4.0.0",
-    "redux-injector": "^0.1.0",
-    "redux-saga": "^0.16.0",
-    "redux-sagas-injector": "^0.2.3",
     "reselect": "^3.0.1",
     "styled-components": "^4.0.0",
     "weakset": "^1.0.0",

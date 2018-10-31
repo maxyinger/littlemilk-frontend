@@ -1,5 +1,5 @@
 import React from 'react'
 
-const FourOhFour = () => <h1>404 Not Found</h1>
+const FourOhFour = () => <p>Page not found.</p>
 
 export default FourOhFour

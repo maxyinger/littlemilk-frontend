@@ -49,3 +49,11 @@ export const ErrorScreenSize = () => (
     </ErrorWrap>
   </ErrorContainer>
 )
+
+export const ErrorNotFound = () => (
+  <ErrorContainer>
+    <ErrorWrap>
+      <p>Page not found.</p>
+    </ErrorWrap>
+  </ErrorContainer>
+)

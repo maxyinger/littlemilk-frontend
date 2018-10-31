@@ -119,12 +119,12 @@ const createNormalizedDragPipe = createSelector(
       // If current scroll + yPercent greater than 1 add contraint motion towards 1
       conditional(
         v => v > 1 - scrollPercent,
-        linearSpring(0.1, 1 - scrollPercent)
+        linearSpring(0.25, 1 - scrollPercent)
       ),
       // If current scroll + yPercent less than 0 add constraint motion towards 0
       conditional(
         v => v < -1 * scrollPercent,
-        linearSpring(0.1, -1 * scrollPercent)
+        linearSpring(0.25, -1 * scrollPercent)
       )
     )
 )
