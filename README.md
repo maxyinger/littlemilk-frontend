@@ -53,10 +53,12 @@ Ben Lesh, lead of RxJS, has a great video on accomplishing reactive and stateful
 - [Globby Ball][14] of App State
 - Contact Form Page
 - 404 and Device Support Redesign
+- Preloader, Maybe Drag Intro Tutorial
 
 ## References
 
 - [Architecture Used][15]
+- Modified Build of [react-redux-starter-kit][19] to work with Webpack 4
 - [Page Transition Example][16]
 - [Constraint Motion Example][17]
 - [Aristide Benoist Easing Functions][18]
@@ -79,3 +81,4 @@ Ben Lesh, lead of RxJS, has a great video on accomplishing reactive and stateful
 [16]: https://popmotion.io/pose/examples/route-transitions-reach-router/
 [17]: https://popmotion.io/learn/constrain-motion/
 [18]: https://github.com/ariiiman/s/blob/master/src/Core/Ease.js
+[19]: https://github.com/davezuko/react-redux-starter-kit
