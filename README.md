@@ -1,5 +1,7 @@
 # littlemilk.studio website
 
+# ![littlemilk.studio](public/avatar_github.png)
+
 ## Overview
 
 This repository contains all the front end code for the current [littlemilk.studio][1] website and the toolset required to build it.
