@@ -1,5 +1,3 @@
-# littlemilk.studio website
-
 # ![littlemilk.studio](public/avatar_github.png)
 
 ## Overview
