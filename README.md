@@ -10,11 +10,17 @@ This project seeks to explore animation in React apps. Animations fall into two 
 
 ## Stateful vs Reactive Animations
 
-_Disclaimer_: If not familiar with functional based programming practices, you should be fine to understand stateful animations, but recommend catching up on some of the core concepts before looking into reactive animations. An excelent tutorial can be found [Here][8] by [MPJ of Fun Fun Function][9]. Also MPJ has several videos on [Dependancy Injection][10] which I found quite useful for composing pipelines for reactive animations.
+_Disclaimer_: If not familiar with functional based programming practices, you should be fine to understand stateful animations, but recommend catching up on some of the core concepts before looking into reactive animations. An excellent tutorial can be found [Here][8] by [MPJ of Fun Fun Function][9]. Also MPJ has several videos on [Dependancy Injection][10] which I found quite useful for composing pipelines for reactive animations.
 
 ### Stateful Animations
 
-Stateful Animations tween states in the app and are accomplished through the heavy use of [react-pose][6] in this project. A common example of stateful animations are CSS transitions, where a state is represented by adding a class to an element and that state can cascade to child elements allowing them to transition properly to the new state in the app. The main constraint with CSS animations however, is that they often don't suffice for the robustness needed for certain animations. It's more of a challenge to make the properties the new state depends on dynamic in such cases, not to mention the lack of beautiful easing functions! The main aspect to note here is that stateful animations, although transitioning to a dynamically generated property, transition to a static,single value for each respective property. If the property is however frequently changing and better represented as a stream of values rather than a change in state, we look to reactive animations!
+Stateful Animations tween states in the app and are accomplished through the heavy use of [react-pose][6] in this project.
+
+A common example of stateful animations are CSS transitions, where a state is represented by adding a class to an element and that state can cascade to child elements allowing them to transition properly to the new state in the app.
+
+The main constraint with CSS animations however, is that they often don't suffice for the robustness needed for certain animations. It's more of a challenge to make the properties the new state depends on dynamic in such cases, not to mention the lack of beautiful easing functions!
+
+The main aspect of stateful animations to note here is that stateful animations, although transitioning to a dynamically generated property, transition to a static,single value for each respective property. If the property is however frequently changing and better represented as a stream of values rather than a change in state, we look to reactive animations!
 
 ### Reactive Animations
 
@@ -50,7 +56,7 @@ Ben Lesh, lead of RxJS, has a great video on accomplishing reactive and stateful
 
 ## References
 
-- [Architecture][15]
+- [Architecture Used][15]
 - [Page Transition Example][16]
 - [Constraint Motion Example][17]
 - [Aristide Benoist Easing Functions][18]
