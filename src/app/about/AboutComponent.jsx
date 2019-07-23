@@ -44,7 +44,10 @@ class AboutComponent extends Component {
               <InfoLine>PROFILE</InfoLine>
             </div>
             <div className="oh">
-              <InfoLine>Creative Web Studio of Max Yinger.</InfoLine>
+              <InfoLine>Creation of Max Yinger.</InfoLine>
+            </div>
+            <div className="oh">
+              <InfoLine>Currently Employed at Formidable.</InfoLine>
             </div>
             <div className="oh">
               <InfoLine>Interaction Design / Development.</InfoLine>
@@ -66,10 +69,7 @@ class AboutComponent extends Component {
             </li>
             <li className="i-social oh">
               <InfoLine>
-                <AWrap
-                  target="_blank"
-                  href="https://codepen.io/littlemilk/"
-                >
+                <AWrap target="_blank" href="https://codepen.io/littlemilk/">
                   codepen
                 </AWrap>
               </InfoLine>
@@ -88,6 +88,13 @@ class AboutComponent extends Component {
                   href="https://www.shadertoy.com/user/littlemilk"
                 >
                   shadertoy
+                </AWrap>
+              </InfoLine>
+            </li>
+            <li className="i-social oh">
+              <InfoLine>
+                <AWrap target="_blank" href="https://formidable.com/">
+                  formidable
                 </AWrap>
               </InfoLine>
             </li>
