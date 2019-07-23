@@ -4,7 +4,7 @@ export default {
    * the value the stronger of a bind
    * [0-1]
    */
-  springStrength : 0.13,
+  springStrength : 0.5,
   /**
    * Pixel distance within which navLink becomes sticky
    */
