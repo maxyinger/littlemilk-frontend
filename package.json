@@ -9,7 +9,8 @@
     "build": "npm run clean && NODE_ENV=production npm run compile",
     "start": "NODE_ENV=development node build/scripts/start",
     "test": "NODE_ENV=test jest -u",
-    "test:watch": "npm test -- --coverage --watch"
+    "test:watch": "npm test -- --coverage --watch",
+    "deploy": "gh-pages -d build"
   },
   "repository": "https://github.com/littlemilkstudio/littlemilk-frontend",
   "homepage": "https://littlemilkstudio.github.io/littlemilk-frontend",
@@ -90,6 +91,7 @@
   "dependencies": {
     "compression": "^1.7.3",
     "express": "^4.16.3",
+    "gh-pages": "^2.0.1",
     "node-sass": "^4.9.3",
     "object-assign": "^4.1.1",
     "promise": "^8.0.1",
