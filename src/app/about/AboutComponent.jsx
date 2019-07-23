@@ -68,7 +68,7 @@ class AboutComponent extends Component {
               <InfoLine>
                 <AWrap
                   target="_blank"
-                  href="https://codepen.io/littlemilkstudio/"
+                  href="https://codepen.io/littlemilk/"
                 >
                   codepen
                 </AWrap>

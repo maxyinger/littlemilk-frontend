@@ -10,7 +10,7 @@
     "start": "NODE_ENV=development node build/scripts/start",
     "test": "NODE_ENV=test jest -u",
     "test:watch": "npm test -- --coverage --watch",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "repository": "https://github.com/littlemilkstudio/littlemilk-frontend",
   "homepage": "https://littlemilkstudio.github.io/littlemilk-frontend",
