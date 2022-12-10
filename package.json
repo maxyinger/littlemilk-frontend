@@ -90,7 +90,7 @@
   },
   "dependencies": {
     "compression": "^1.7.3",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "gh-pages": "^2.0.1",
     "node-sass": "^4.9.3",
     "object-assign": "^4.1.1",
